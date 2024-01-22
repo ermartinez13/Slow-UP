@@ -46,10 +46,10 @@ export function Timer() {
   return (
     <div className="timer">
       <div className="display">
-        <TimeDisplay />
+        <TimeDisplay time={seconds} />
         <TotalsDisplay />
       </div>
-      <ActionButtons />
+      <ActionButtons start={start} pause={pause} stop={stop} status={status} />
     </div>
   );
 }
