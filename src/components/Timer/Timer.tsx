@@ -46,7 +46,12 @@ export function Timer() {
   return (
     <div className="timer">
       <div className="display">
-        <TimeDisplay time={seconds} />
+        <TimeDisplay
+          time={seconds}
+          setTime={setSeconds}
+          key={seconds}
+          status={status}
+        />
         <TotalsDisplay />
       </div>
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
