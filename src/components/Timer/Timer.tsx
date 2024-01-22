@@ -6,7 +6,12 @@ import { TotalsDisplay } from "./TotalsDisplay";
 
 const DEFAULT_TIME = 2400;
 
-export function Timer() {
+interface Props {
+  totalTime: number;
+  updateTotalTime: (time: number) => void;
+}
+
+export function Timer({ totalTime, updateTotalTime }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
   const [seconds, setSeconds] = useState(DEFAULT_TIME);
   const intervalRef = useRef<number | null>(null);
@@ -27,6 +32,7 @@ export function Timer() {
     setStatus("off");
     setSeconds(DEFAULT_TIME);
     clearInterval();
+    updateTotalTime(DEFAULT_TIME);
   };
 
   const pause = () => {
@@ -52,7 +58,7 @@ export function Timer() {
           key={seconds}
           status={status}
         />
-        <TotalsDisplay />
+        <TotalsDisplay totalTime={totalTime} />
       </div>
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
     </div>
