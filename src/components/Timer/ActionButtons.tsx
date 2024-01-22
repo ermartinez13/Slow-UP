@@ -1,3 +1,8 @@
 export function ActionButtons() {
-  return <></>;
+  return (
+    <div className="action-buttons">
+      <button>Cancel</button>
+      <button>Start</button>
+    </div>
+  );
 }
