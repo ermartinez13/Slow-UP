@@ -4,3 +4,20 @@
   padding: 2rem;
   text-align: center;
 }
+
+.time-display {
+  display: flex;
+  flex-direction: row;
+}
+
+.time-unit {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-unit > input {
+  width: 4rem;
+  font-size: 2rem;
+  text-align: center;
+  border: none;
+}
