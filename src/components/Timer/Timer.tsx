@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
@@ -14,38 +14,44 @@ interface Props {
 export function Timer({ totalTime, updateTotalTime }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
   const [seconds, setSeconds] = useState(DEFAULT_TIME);
-  const intervalRef = useRef<number | null>(null);
+  const workerRef = useRef<Worker | null>(null);
 
   const start = () => {
     if (status === "on") return;
+    workerRef.current?.postMessage({ type: "START" });
     setStatus("on");
-    intervalRef.current = window.setInterval(tick, 1000);
-  };
-
-  const clearInterval = () => {
-    window.clearInterval(intervalRef.current!);
-    intervalRef.current = null;
   };
 
   const stop = () => {
     if (status === "off") return;
     setStatus("off");
+    workerRef.current?.postMessage({ type: "STOP" });
     setSeconds(DEFAULT_TIME);
-    clearInterval();
     updateTotalTime(DEFAULT_TIME);
   };
 
   const pause = () => {
     if (status === "paused") return;
+    workerRef.current?.postMessage({ type: "PAUSE" });
     setStatus("paused");
-    clearInterval();
   };
 
-  const tick = () => {
-    setSeconds((prev) => prev - 1);
-  };
+  useEffect(() => {
+    const worker = new Worker("/worker.js");
+    workerRef.current = worker;
 
-  if (status !== "off" && seconds == 0) {
+    const tick = () => setSeconds((prev) => prev - 1);
+
+    worker.onmessage = ({ data }) => {
+      if (data.type === "TICK") tick();
+    };
+
+    return () => {
+      worker.terminate();
+    };
+  }, []);
+
+  if (seconds === 0 && status !== "off") {
     stop();
   }
 
