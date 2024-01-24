@@ -1,0 +1,13 @@
+services:
+  app:
+    # specifies the build configuration for creating a container image from source
+    build: ./
+    container_name: slow-up
+    # set the host IP, host port, and container port mappings
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      # directory on host machine is mounted into container (ie. local edits reflected in container; for dev server reload purposes)
+      - .:/app
+      # protects node_modules created during image build from being obscured by bind mount above
+      - /app/node_modules
