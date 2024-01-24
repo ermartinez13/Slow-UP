@@ -4,8 +4,6 @@ services:
     build: ./
     container_name: slow-up
     # set the host IP, host port, and container port mappings
-    ports:
-      - "3000"
     volumes:
       # directory on host machine is mounted into container (ie. local edits reflected in container; for dev server reload purposes)
       - .:/app
