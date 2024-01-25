@@ -1,20 +1,20 @@
 import { useState } from "react";
 
 interface Props {
-  time: number;
-  setTime: React.Dispatch<React.SetStateAction<number>>;
+  timeLeft: number;
+  setTimeBudget: React.Dispatch<React.SetStateAction<number>>;
   status: "on" | "paused" | "off";
 }
 
-export function TimeDisplay({ time, setTime, status }: Props) {
-  const [hours, setHours] = useState(Math.floor(time / 3600));
-  const [minutes, setMinutes] = useState(Math.floor(time / 60) % 60);
-  const [seconds, setSeconds] = useState(time % 60);
+export function TimeDisplay({ timeLeft, setTimeBudget, status }: Props) {
+  const [hours, setHours] = useState(Math.floor(timeLeft / 3600));
+  const [minutes, setMinutes] = useState(Math.floor(timeLeft / 60) % 60);
+  const [seconds, setSeconds] = useState(timeLeft % 60);
 
-  const updateTime = () => {
+  const updateTimeBudget = () => {
     const nextHours = hours * 3600;
     const nextMinutes = minutes * 60;
-    setTime(nextHours + nextMinutes + seconds);
+    setTimeBudget(nextHours + nextMinutes + seconds);
   };
 
   return (
@@ -27,7 +27,7 @@ export function TimeDisplay({ time, setTime, status }: Props) {
           id="hours"
           value={hours}
           onChange={(e) => setHours(Number(e.currentTarget.value))}
-          onBlur={updateTime}
+          onBlur={updateTimeBudget}
           disabled={status !== "off"}
         />
       </div>
@@ -40,7 +40,7 @@ export function TimeDisplay({ time, setTime, status }: Props) {
           id="minutes"
           value={minutes}
           onChange={(e) => setMinutes(Number(e.currentTarget.value))}
-          onBlur={updateTime}
+          onBlur={updateTimeBudget}
           disabled={status !== "off"}
         />
       </div>
@@ -53,7 +53,7 @@ export function TimeDisplay({ time, setTime, status }: Props) {
           id="seconds"
           value={seconds}
           onChange={(e) => setSeconds(Number(e.currentTarget.value))}
-          onBlur={updateTime}
+          onBlur={updateTimeBudget}
           disabled={status !== "off"}
         />
       </div>

@@ -14,8 +14,10 @@ interface Props {
 
 export function Timer({ totalTime, updateTotalTime }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
-  const [seconds, setSeconds] = useState(DEFAULT_TIME);
+  const [timeSpent, setTimeSpent] = useState(0);
+  const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
   const workerRef = useRef<Worker | null>(null);
+  const timeLeft = timeBudget - timeSpent;
 
   const start = () => {
     if (status === "on") return;
@@ -28,8 +30,8 @@ export function Timer({ totalTime, updateTotalTime }: Props) {
     setStatus("off");
     workerRef.current?.postMessage({ type: "STOP" });
     notify();
-    setSeconds(DEFAULT_TIME);
-    updateTotalTime(DEFAULT_TIME);
+    setTimeSpent(0);
+    updateTotalTime(timeSpent);
   };
 
   const pause = () => {
@@ -42,7 +44,7 @@ export function Timer({ totalTime, updateTotalTime }: Props) {
     const worker = new Worker("/worker.js");
     workerRef.current = worker;
 
-    const tick = () => setSeconds((prev) => prev - 1);
+    const tick = () => setTimeSpent((prev) => prev + 1);
 
     worker.onmessage = ({ data }) => {
       if (data.type === "TICK") tick();
@@ -53,7 +55,7 @@ export function Timer({ totalTime, updateTotalTime }: Props) {
     };
   }, []);
 
-  if (seconds === 0 && status !== "off") {
+  if (timeSpent >= timeBudget && status !== "off") {
     stop();
   }
 
@@ -61,9 +63,9 @@ export function Timer({ totalTime, updateTotalTime }: Props) {
     <div className="timer">
       <div className="display">
         <TimeDisplay
-          time={seconds}
-          setTime={setSeconds}
-          key={seconds}
+          timeLeft={timeLeft}
+          setTimeBudget={setTimeBudget}
+          key={timeLeft}
           status={status}
         />
         <TotalsDisplay totalTime={totalTime} />
