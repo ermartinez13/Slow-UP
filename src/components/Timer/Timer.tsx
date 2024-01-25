@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
 import { TotalsDisplay } from "./TotalsDisplay";
+import { notify } from "../../helpers";
 
 const DEFAULT_TIME = 2400;
 
@@ -26,6 +27,7 @@ export function Timer({ totalTime, updateTotalTime }: Props) {
     if (status === "off") return;
     setStatus("off");
     workerRef.current?.postMessage({ type: "STOP" });
+    notify();
     setSeconds(DEFAULT_TIME);
     updateTotalTime(DEFAULT_TIME);
   };
