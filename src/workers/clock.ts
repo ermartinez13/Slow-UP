@@ -6,7 +6,7 @@ const tick = () => {
 
 self.onmessage = ({ data }) => {
   if (data.type === "START") {
-    intervalId = setInterval(tick, 1000);
+    intervalId = self.setInterval(tick, 1000);
   }
 
   if (data.type === "STOP" || data.type === "PAUSE") {
