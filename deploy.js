@@ -50,9 +50,21 @@ connect(
       .withExec([
         "s3",
         "cp",
+        "/tmp/dist/index.html",
+        "s3://up.ermartinez.com",
+        "--cache-control",
+        "public,max-age=60,stale-while-revalidate=86400",
+      ])
+      .withExec([
+        "s3",
+        "cp",
         "/tmp/dist",
         "s3://up.ermartinez.com",
         "--recursive",
+        "--exclude",
+        "index.html",
+        "--cache-control",
+        "public,max-age=31536000,immutable",
       ])
       .stdout();
   },
