@@ -1,4 +1,5 @@
-let intervalId;
+let intervalId: number | undefined;
+
 const tick = () => {
   self.postMessage({ type: "TICK" });
 };

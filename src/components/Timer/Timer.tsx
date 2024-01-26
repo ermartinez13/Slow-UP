@@ -41,7 +41,9 @@ export function Timer({ totalTime, updateTotalTime }: Props) {
   };
 
   useEffect(() => {
-    const worker = new Worker("/worker.js");
+    const worker = new Worker(
+      new URL("../../workers/clock.ts", import.meta.url)
+    );
     workerRef.current = worker;
 
     const tick = () => setTimeSpent((prev) => prev + 1);
