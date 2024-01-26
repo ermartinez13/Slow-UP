@@ -5,10 +5,13 @@ services:
     container_name: slow-up
     # set the host IP, host port, and container port mappings
     volumes:
-      # directory on host machine is mounted into container (ie. local edits reflected in container; for dev server reload purposes)
-      - .:/app
-      # protects node_modules created during image build from being obscured by bind mount above
-      - /app/node_modules
+      # source files on host machine are mounted into container (ie. local edits reflected in container; for dev server reload purposes)
+      - ./src:/app/src
+    develop:
+      watch:
+        # rebuild and restart container whenever app dependencies change
+        - action: rebuild
+          path: package.json
   caddy:
     image: caddy:latest
     restart: unless-stopped
