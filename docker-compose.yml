@@ -1,0 +1,29 @@
+services:
+  app:
+    # specifies the build configuration for creating a container image from source
+    build: ./
+    container_name: slow-up
+    # set the host IP, host port, and container port mappings
+    volumes:
+      # source files on host machine are mounted into container (ie. local edits reflected in container; for dev server reload purposes)
+      - ./src:/app/src
+    develop:
+      watch:
+        # rebuild and restart container whenever app dependencies change
+        - action: rebuild
+          path: package.json
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
