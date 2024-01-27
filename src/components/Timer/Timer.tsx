@@ -6,16 +6,25 @@ import { TotalsDisplay } from "./TotalsDisplay";
 import { notify } from "../../helpers";
 
 const DEFAULT_TIME = 2400;
+const DEFAULT_TIME_ENTRY = {
+  start: -1,
+  text: "",
+};
 
 interface Props {
   totalTime: number;
-  updateTotalTime: (time: number) => void;
+  updateTimeEntries: (timeEntry: {
+    start: number;
+    end: number;
+    text: string;
+  }) => void;
 }
 
-export function Timer({ totalTime, updateTotalTime }: Props) {
+export function Timer({ totalTime, updateTimeEntries }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
   const [timeSpent, setTimeSpent] = useState(0);
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
+  const [partialTimeEntry, setPartialTimeEntry] = useState(DEFAULT_TIME_ENTRY);
   const workerRef = useRef<Worker | null>(null);
   const timeLeft = timeBudget - timeSpent;
 
@@ -23,6 +32,10 @@ export function Timer({ totalTime, updateTotalTime }: Props) {
     if (status === "on") return;
     workerRef.current?.postMessage({ type: "START" });
     setStatus("on");
+    setPartialTimeEntry((prev) => ({
+      ...prev,
+      start: Date.now(),
+    }));
   };
 
   const stop = () => {
@@ -31,7 +44,12 @@ export function Timer({ totalTime, updateTotalTime }: Props) {
     workerRef.current?.postMessage({ type: "STOP" });
     notify();
     setTimeSpent(0);
-    updateTotalTime(timeSpent);
+    const timeEntry = {
+      ...partialTimeEntry,
+      end: Date.now(),
+    };
+    setPartialTimeEntry(DEFAULT_TIME_ENTRY);
+    updateTimeEntries(timeEntry);
   };
 
   const pause = () => {

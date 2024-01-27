@@ -5,9 +5,9 @@ import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
 
 function App() {
-  const [totalTime, setTotalTime] = useState<number>(
-    () => Number(window.localStorage.getItem("totalTime")) ?? 0
-  );
+  const [timeEntries, setTimeEntries] = useState<
+    Array<{ start: number; end: number; text: string }>
+  >(() => JSON.parse(window.localStorage.getItem("entries") ?? "[]"));
   const [
     shouldRequestNotificationsPermission,
     setShouldRequestNotificationsPermission,
@@ -15,11 +15,19 @@ function App() {
     // if permission is not default then persimion is granted, denied, or Notifications API is not supported
     () => window.Notification?.permission === "default"
   );
+  const totalTime =
+    timeEntries.length > 0
+      ? (timeEntries[timeEntries.length - 1].end - timeEntries[0].start) / 1000
+      : 0;
 
-  const updateTotalTime = (time: number) => {
-    const nextValue = totalTime + time;
-    window.localStorage.setItem("totalTime", nextValue.toString());
-    setTotalTime(nextValue);
+  const updateTimeEntries = (entry: {
+    start: number;
+    end: number;
+    text: string;
+  }) => {
+    const nextValue = timeEntries.concat(entry);
+    window.localStorage.setItem("entries", JSON.stringify(nextValue));
+    setTimeEntries(nextValue);
   };
 
   const requestPermission = () => {
@@ -58,7 +66,7 @@ function App() {
       {shouldRequestNotificationsPermission ? (
         <NotificationsPermissionBtn handleClick={requestPermission} />
       ) : null}
-      <Timer totalTime={totalTime} updateTotalTime={updateTotalTime} />
+      <Timer totalTime={totalTime} updateTimeEntries={updateTimeEntries} />
     </>
   );
 }
