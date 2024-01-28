@@ -6,7 +6,7 @@ interface Props {
 
 export function TimeEntries({ entries }: Props) {
   return (
-    <div>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
       {entries.map((entry) => {
         return <TimeEntry entry={entry} />;
       })}

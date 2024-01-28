@@ -27,16 +27,23 @@ export function TimeEntry({ entry }: Props) {
   const totalMinutes = Math.floor((entry.end - entry.start) / 1000 / 60);
   const totalSeconds = Math.floor((entry.end - entry.start) / 1000) % 60;
   return (
-    <div>
-      <p>
+    <div
+      style={{
+        border: "1px dashed gray",
+        padding: "1rem",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
         {dateOneFormatted}{" "}
         {dateOneFormatted !== dateTwoFormatted ? `- ${dateTwoFormatted}` : null}
       </p>
-      <p>
+      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
         {timeStart} - {timeEnd}
       </p>
-      <p>
-        {totalMinutes}min {totalSeconds}s
+      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
+        {totalMinutes === 0 ? "" : `${totalMinutes}min`} {totalSeconds}s
       </p>
     </div>
   );
