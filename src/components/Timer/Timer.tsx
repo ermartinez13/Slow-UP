@@ -23,7 +23,9 @@ export function Timer({ updateTimeEntries }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
   const [timeSpent, setTimeSpent] = useState(0);
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
-  const [partialTimeEntry, setPartialTimeEntry] = useState(DEFAULT_TIME_ENTRY);
+  const [partialTimeEntry, setPartialTimeEntry] = useState({
+    ...DEFAULT_TIME_ENTRY,
+  });
   const workerRef = useRef<Worker | null>(null);
   const timeLeft = timeBudget - timeSpent;
 
@@ -47,7 +49,7 @@ export function Timer({ updateTimeEntries }: Props) {
       ...partialTimeEntry,
       end: Date.now(),
     };
-    setPartialTimeEntry(DEFAULT_TIME_ENTRY);
+    setPartialTimeEntry({ ...DEFAULT_TIME_ENTRY });
     updateTimeEntries(timeEntry);
   };
 
