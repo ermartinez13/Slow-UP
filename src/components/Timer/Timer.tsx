@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
 import { notify } from "../../helpers";
+import { Comment } from "./Comment";
 
 const DEFAULT_TIME = 2400;
 const DEFAULT_TIME_ENTRY = {
@@ -88,6 +89,11 @@ export function Timer({ updateTimeEntries }: Props) {
         />
       </div>
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
+      <Comment
+        text={partialTimeEntry.text}
+        updateTimeEntry={setPartialTimeEntry}
+        key={partialTimeEntry.text}
+      />
     </div>
   );
 }
