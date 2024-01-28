@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
+import { TimeEntries } from "./components/TimeEntries";
 
 function App() {
   const [timeEntries, setTimeEntries] = useState<
@@ -67,6 +68,7 @@ function App() {
         <NotificationsPermissionBtn handleClick={requestPermission} />
       ) : null}
       <Timer totalTime={totalTime} updateTimeEntries={updateTimeEntries} />
+      <TimeEntries entries={timeEntries} />
     </>
   );
 }
