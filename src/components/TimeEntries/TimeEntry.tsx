@@ -45,6 +45,9 @@ export function TimeEntry({ entry }: Props) {
       <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
         {totalMinutes === 0 ? "" : `${totalMinutes}min`} {totalSeconds}s
       </p>
+      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
+        {entry.text ? `"${entry.text}"` : ""}
+      </p>
     </div>
   );
 }
