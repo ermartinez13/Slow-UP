@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
-import { TotalsDisplay } from "./TotalsDisplay";
 import { notify } from "../../helpers";
 
 const DEFAULT_TIME = 2400;
@@ -12,7 +11,6 @@ const DEFAULT_TIME_ENTRY = {
 };
 
 interface Props {
-  totalTime: number;
   updateTimeEntries: (timeEntry: {
     start: number;
     end: number;
@@ -20,7 +18,7 @@ interface Props {
   }) => void;
 }
 
-export function Timer({ totalTime, updateTimeEntries }: Props) {
+export function Timer({ updateTimeEntries }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
   const [timeSpent, setTimeSpent] = useState(0);
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
@@ -88,7 +86,6 @@ export function Timer({ totalTime, updateTimeEntries }: Props) {
           key={timeLeft}
           status={status}
         />
-        <TotalsDisplay totalTime={totalTime} />
       </div>
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
     </div>

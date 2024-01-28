@@ -5,6 +5,7 @@ import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
 import { TimeEntries } from "./components/TimeEntries";
 import { getTodaysTotalTime } from "./helpers";
+import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 
 function App() {
   const [timeEntries, setTimeEntries] = useState<
@@ -61,13 +62,18 @@ function App() {
   }, []);
 
   return (
-    <>
-      {shouldRequestNotificationsPermission ? (
-        <NotificationsPermissionBtn handleClick={requestPermission} />
-      ) : null}
-      <Timer totalTime={totalTime} updateTimeEntries={updateTimeEntries} />
-      <TimeEntries entries={timeEntries} />
-    </>
+    <main>
+      <section>
+        {shouldRequestNotificationsPermission ? (
+          <NotificationsPermissionBtn handleClick={requestPermission} />
+        ) : null}
+        <Timer updateTimeEntries={updateTimeEntries} />
+      </section>
+      <section>
+        <TotalsDisplay totalTime={totalTime} />
+        <TimeEntries entries={timeEntries} />
+      </section>
+    </main>
   );
 }
 
