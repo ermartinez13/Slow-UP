@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
+import { TimeEntries } from "./components/TimeEntries";
+import { getTodaysTotalTime } from "./helpers";
+import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 
 function App() {
-  const [totalTime, setTotalTime] = useState<number>(
-    () => Number(window.localStorage.getItem("totalTime")) ?? 0
-  );
+  const [timeEntries, setTimeEntries] = useState<
+    Array<{ start: number; end: number; text: string }>
+  >(() => JSON.parse(window.localStorage.getItem("entries") ?? "[]"));
   const [
     shouldRequestNotificationsPermission,
     setShouldRequestNotificationsPermission,
@@ -15,11 +18,16 @@ function App() {
     // if permission is not default then persimion is granted, denied, or Notifications API is not supported
     () => window.Notification?.permission === "default"
   );
+  const totalTime = getTodaysTotalTime(timeEntries);
 
-  const updateTotalTime = (time: number) => {
-    const nextValue = totalTime + time;
-    window.localStorage.setItem("totalTime", nextValue.toString());
-    setTotalTime(nextValue);
+  const updateTimeEntries = (entry: {
+    start: number;
+    end: number;
+    text: string;
+  }) => {
+    const nextValue = timeEntries.concat(entry);
+    window.localStorage.setItem("entries", JSON.stringify(nextValue));
+    setTimeEntries(nextValue);
   };
 
   const requestPermission = () => {
@@ -54,12 +62,18 @@ function App() {
   }, []);
 
   return (
-    <>
-      {shouldRequestNotificationsPermission ? (
-        <NotificationsPermissionBtn handleClick={requestPermission} />
-      ) : null}
-      <Timer totalTime={totalTime} updateTotalTime={updateTotalTime} />
-    </>
+    <main>
+      <section>
+        {shouldRequestNotificationsPermission ? (
+          <NotificationsPermissionBtn handleClick={requestPermission} />
+        ) : null}
+        <Timer updateTimeEntries={updateTimeEntries} />
+      </section>
+      <section>
+        <TotalsDisplay totalTime={totalTime} />
+        <TimeEntries entries={timeEntries} />
+      </section>
+    </main>
   );
 }
 

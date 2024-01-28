@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+main {
+  display: grid;
+  row-gap: 5rem;
+}
+
 .time-display {
   display: flex;
   flex-direction: row;
@@ -35,5 +40,6 @@ button {
 
 .timer {
   display: grid;
-  row-gap: 4rem;
+  row-gap: 2rem;
+  place-content: center;
 }
