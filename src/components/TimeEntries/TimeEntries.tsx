@@ -1,3 +1,4 @@
+import { getTodaysEarliestEntryIndex } from "../../helpers";
 import { TimeEntry } from "./TimeEntry";
 
 interface Props {
@@ -5,9 +6,19 @@ interface Props {
 }
 
 export function TimeEntries({ entries }: Props) {
+  const idx = getTodaysEarliestEntryIndex(entries);
+  const todaysEntries = entries.slice(idx).reverse();
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
-      {entries.map((entry) => {
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(4, 1fr)",
+        maxHeight: "318px",
+        overflow: "auto",
+      }}
+    >
+      {todaysEntries.map((entry) => {
         return <TimeEntry entry={entry} />;
       })}
     </div>
