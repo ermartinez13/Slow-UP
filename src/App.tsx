@@ -4,6 +4,7 @@ import "./App.css";
 import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
 import { TimeEntries } from "./components/TimeEntries";
+import { getTodaysTotalTime } from "./helpers";
 
 function App() {
   const [timeEntries, setTimeEntries] = useState<
@@ -16,10 +17,7 @@ function App() {
     // if permission is not default then persimion is granted, denied, or Notifications API is not supported
     () => window.Notification?.permission === "default"
   );
-  const totalTime =
-    timeEntries.length > 0
-      ? (timeEntries[timeEntries.length - 1].end - timeEntries[0].start) / 1000
-      : 0;
+  const totalTime = getTodaysTotalTime(timeEntries);
 
   const updateTimeEntries = (entry: {
     start: number;
