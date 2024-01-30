@@ -1,4 +1,5 @@
 import { WorkUnit } from "../Timer/Timer.models";
+import { getTimeSpentStr } from "./TimeEntries.helpers";
 
 interface Props {
   entry: WorkUnit;
@@ -27,8 +28,7 @@ export function TimeEntry({ entry, updateTimeEntry }: Props) {
     .padStart(2, "0")}:${dateTwo.getMinutes().toString().padStart(2, "0")}${
     dateOne.getHours() >= 12 ? "pm" : "am"
   }`;
-  const totalMinutes = Math.floor((entry.end - entry.start) / 1000 / 60);
-  const totalSeconds = Math.floor((entry.end - entry.start) / 1000) % 60;
+  const timeSpent = entry.spent ? getTimeSpentStr(entry.spent) : "n/a";
   return (
     <div
       style={{
@@ -45,9 +45,7 @@ export function TimeEntry({ entry, updateTimeEntry }: Props) {
       <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
         {timeStart} - {timeEnd}
       </p>
-      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
-        {totalMinutes === 0 ? "" : `${totalMinutes}min`} {totalSeconds}s
-      </p>
+      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>{timeSpent}</p>
       <textarea
         defaultValue={entry.description ? entry.description : ""}
         style={{ marginBlockStart: "0", marginBlockEnd: "0" }}
