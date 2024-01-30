@@ -24,7 +24,13 @@ export function TimeEntries({ entries, updateTimeEntry }: Props) {
       }}
     >
       {todaysEntries.map((entry) => {
-        return <TimeEntry entry={entry} updateTimeEntry={updateTimeEntry} />;
+        return (
+          <TimeEntry
+            entry={entry}
+            key={entry.start}
+            updateTimeEntry={updateTimeEntry}
+          />
+        );
       })}
     </div>
   );
