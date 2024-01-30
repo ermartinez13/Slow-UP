@@ -12,14 +12,14 @@ const DEFAULT_TIME_ENTRY = {
 };
 
 interface Props {
-  updateTimeEntries: (timeEntry: {
+  addTimeEntry: (timeEntry: {
     start: number;
     end: number;
     text: string;
   }) => void;
 }
 
-export function Timer({ updateTimeEntries }: Props) {
+export function Timer({ addTimeEntry }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
   const [timeSpent, setTimeSpent] = useState(0);
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
@@ -50,7 +50,7 @@ export function Timer({ updateTimeEntries }: Props) {
       end: Date.now(),
     };
     setPartialTimeEntry({ ...DEFAULT_TIME_ENTRY });
-    updateTimeEntries(timeEntry);
+    addTimeEntry(timeEntry);
   };
 
   const pause = () => {
