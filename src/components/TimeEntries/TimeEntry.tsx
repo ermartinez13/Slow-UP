@@ -1,8 +1,13 @@
 interface Props {
   entry: { start: number; end: number; text: string };
+  updateTimeEntry: (entry: {
+    start: number;
+    end: number;
+    text: string;
+  }) => void;
 }
 
-export function TimeEntry({ entry }: Props) {
+export function TimeEntry({ entry, updateTimeEntry }: Props) {
   const dateOne = new Date(entry.start);
   const dateTwo = new Date(entry.end);
   const dateOneFormatted = `${(dateOne.getMonth() + 1)
@@ -45,9 +50,11 @@ export function TimeEntry({ entry }: Props) {
       <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
         {totalMinutes === 0 ? "" : `${totalMinutes}min`} {totalSeconds}s
       </p>
-      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>
-        {entry.text ? `"${entry.text}"` : ""}
-      </p>
+      <textarea
+        defaultValue={entry.text ? entry.text : ""}
+        style={{ marginBlockStart: "0", marginBlockEnd: "0" }}
+        onBlur={(e) => updateTimeEntry({ ...entry, text: e.target.value })}
+      ></textarea>
     </div>
   );
 }

@@ -3,9 +3,14 @@ import { TimeEntry } from "./TimeEntry";
 
 interface Props {
   entries: Array<{ start: number; end: number; text: string }>;
+  updateTimeEntry: (timeEntry: {
+    start: number;
+    end: number;
+    text: string;
+  }) => void;
 }
 
-export function TimeEntries({ entries }: Props) {
+export function TimeEntries({ entries, updateTimeEntry }: Props) {
   const idx = getTodaysEarliestEntryIndex(entries);
   const todaysEntries = entries.slice(idx).reverse();
 
@@ -19,7 +24,7 @@ export function TimeEntries({ entries }: Props) {
       }}
     >
       {todaysEntries.map((entry) => {
-        return <TimeEntry entry={entry} />;
+        return <TimeEntry entry={entry} updateTimeEntry={updateTimeEntry} />;
       })}
     </div>
   );
