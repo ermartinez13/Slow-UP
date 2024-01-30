@@ -38,3 +38,22 @@ export function getTodaysTotalTime(
     .reduce((acc, entry) => acc + entry.end - entry.start, 0);
   return totalInMS / 1000;
 }
+
+export function getEntryIndex(
+  entry: { start: number; end: number; text: string },
+  entries: { start: number; end: number; text: string }[]
+) {
+  let low = 0;
+  let high = entries.length - 1;
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    if (entries[mid].start === entry.start && entries[mid].end === entry.end) {
+      return mid;
+    } else if (entries[mid].end > entry.end) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return -1;
+}

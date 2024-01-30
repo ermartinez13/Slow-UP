@@ -4,7 +4,7 @@ import "./App.css";
 import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
 import { TimeEntries } from "./components/TimeEntries";
-import { getTodaysTotalTime } from "./helpers";
+import { getEntryIndex, getTodaysTotalTime } from "./helpers";
 import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
   );
   const totalTime = getTodaysTotalTime(timeEntries);
 
-  const updateTimeEntries = (entry: {
+  const addTimeEntry = (entry: {
     start: number;
     end: number;
     text: string;
@@ -28,6 +28,18 @@ function App() {
     const nextValue = timeEntries.concat(entry);
     window.localStorage.setItem("entries", JSON.stringify(nextValue));
     setTimeEntries(nextValue);
+  };
+
+  const updateTimeEntry = (entry: {
+    start: number;
+    end: number;
+    text: string;
+  }) => {
+    const copy = window.structuredClone(timeEntries);
+    const targetIdx = getEntryIndex(entry, copy);
+    Object.assign(copy[targetIdx], entry);
+    window.localStorage.setItem("entries", JSON.stringify(copy));
+    setTimeEntries(copy);
   };
 
   const requestPermission = () => {
@@ -67,11 +79,11 @@ function App() {
         {shouldRequestNotificationsPermission ? (
           <NotificationsPermissionBtn handleClick={requestPermission} />
         ) : null}
-        <Timer updateTimeEntries={updateTimeEntries} />
+        <Timer addTimeEntry={addTimeEntry} />
       </section>
       <section>
         <TotalsDisplay totalTime={totalTime} />
-        <TimeEntries entries={timeEntries} />
+        <TimeEntries entries={timeEntries} updateTimeEntry={updateTimeEntry} />
       </section>
     </main>
   );
