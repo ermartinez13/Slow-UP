@@ -47,7 +47,7 @@ export function TimeEntry({ entry, updateTimeEntry }: Props) {
       </p>
       <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>{timeSpent}</p>
       <textarea
-        defaultValue={entry.description ? entry.description : ""}
+        defaultValue={entry.description ? entry.description : entry.text ?? ""}
         style={{ marginBlockStart: "0", marginBlockEnd: "0" }}
         onBlur={(e) =>
           updateTimeEntry({ ...entry, description: e.target.value })
