@@ -1,10 +1,8 @@
+import { WorkUnit } from "../Timer/Timer.models";
+
 interface Props {
-  entry: { start: number; end: number; text: string };
-  updateTimeEntry: (entry: {
-    start: number;
-    end: number;
-    text: string;
-  }) => void;
+  entry: WorkUnit;
+  updateTimeEntry: (entry: WorkUnit) => void;
 }
 
 export function TimeEntry({ entry, updateTimeEntry }: Props) {
@@ -51,9 +49,11 @@ export function TimeEntry({ entry, updateTimeEntry }: Props) {
         {totalMinutes === 0 ? "" : `${totalMinutes}min`} {totalSeconds}s
       </p>
       <textarea
-        defaultValue={entry.text ? entry.text : ""}
+        defaultValue={entry.description ? entry.description : ""}
         style={{ marginBlockStart: "0", marginBlockEnd: "0" }}
-        onBlur={(e) => updateTimeEntry({ ...entry, text: e.target.value })}
+        onBlur={(e) =>
+          updateTimeEntry({ ...entry, description: e.target.value })
+        }
       ></textarea>
     </div>
   );

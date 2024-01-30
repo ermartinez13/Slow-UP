@@ -4,26 +4,23 @@ import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
 import { notify } from "../../helpers";
 import { Comment } from "./Comment";
+import { PartialTimeEntry, WorkUnit } from "./Timer.models";
 
 const DEFAULT_TIME = 2400;
-const DEFAULT_TIME_ENTRY = {
+const DEFAULT_TIME_ENTRY: PartialTimeEntry = {
   start: -1,
-  text: "",
+  description: "",
 };
 
 interface Props {
-  addTimeEntry: (timeEntry: {
-    start: number;
-    end: number;
-    text: string;
-  }) => void;
+  addTimeEntry: (timeEntry: WorkUnit) => void;
 }
 
 export function Timer({ addTimeEntry }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
   const [timeSpent, setTimeSpent] = useState(0);
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
-  const [partialTimeEntry, setPartialTimeEntry] = useState({
+  const [partialTimeEntry, setPartialTimeEntry] = useState<PartialTimeEntry>({
     ...DEFAULT_TIME_ENTRY,
   });
   const workerRef = useRef<Worker | null>(null);
@@ -45,9 +42,10 @@ export function Timer({ addTimeEntry }: Props) {
     workerRef.current?.postMessage({ type: "STOP" });
     notify();
     setTimeSpent(0);
-    const timeEntry = {
+    const timeEntry: WorkUnit = {
       ...partialTimeEntry,
       end: Date.now(),
+      spent: -1,
     };
     setPartialTimeEntry({ ...DEFAULT_TIME_ENTRY });
     addTimeEntry(timeEntry);
@@ -92,9 +90,9 @@ export function Timer({ addTimeEntry }: Props) {
       </div>
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
       <Comment
-        text={partialTimeEntry.text}
-        updateTimeEntry={setPartialTimeEntry}
-        key={partialTimeEntry.text}
+        description={partialTimeEntry.description}
+        updatePartialTimeEntry={setPartialTimeEntry}
+        key={partialTimeEntry.description}
       />
     </div>
   );

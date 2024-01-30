@@ -1,13 +1,10 @@
 import { getTodaysEarliestEntryIndex } from "../../helpers";
+import { WorkUnit } from "../Timer/Timer.models";
 import { TimeEntry } from "./TimeEntry";
 
 interface Props {
-  entries: Array<{ start: number; end: number; text: string }>;
-  updateTimeEntry: (timeEntry: {
-    start: number;
-    end: number;
-    text: string;
-  }) => void;
+  entries: WorkUnit[];
+  updateTimeEntry: (timeEntry: WorkUnit) => void;
 }
 
 export function TimeEntries({ entries, updateTimeEntry }: Props) {

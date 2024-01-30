@@ -6,11 +6,12 @@ import { NotificationsPermissionBtn } from "./components/NotificationsPermission
 import { TimeEntries } from "./components/TimeEntries";
 import { getEntryIndex, getTodaysTotalTime } from "./helpers";
 import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
+import { WorkUnit } from "./components/Timer/Timer.models";
 
 function App() {
-  const [timeEntries, setTimeEntries] = useState<
-    Array<{ start: number; end: number; text: string }>
-  >(() => JSON.parse(window.localStorage.getItem("entries") ?? "[]"));
+  const [timeEntries, setTimeEntries] = useState<WorkUnit[]>(() =>
+    JSON.parse(window.localStorage.getItem("entries") ?? "[]")
+  );
   const [
     shouldRequestNotificationsPermission,
     setShouldRequestNotificationsPermission,
@@ -20,21 +21,13 @@ function App() {
   );
   const totalTime = getTodaysTotalTime(timeEntries);
 
-  const addTimeEntry = (entry: {
-    start: number;
-    end: number;
-    text: string;
-  }) => {
+  const addTimeEntry = (entry: WorkUnit) => {
     const nextValue = timeEntries.concat(entry);
     window.localStorage.setItem("entries", JSON.stringify(nextValue));
     setTimeEntries(nextValue);
   };
 
-  const updateTimeEntry = (entry: {
-    start: number;
-    end: number;
-    text: string;
-  }) => {
+  const updateTimeEntry = (entry: WorkUnit) => {
     const copy = window.structuredClone(timeEntries);
     const targetIdx = getEntryIndex(entry, copy);
     Object.assign(copy[targetIdx], entry);
