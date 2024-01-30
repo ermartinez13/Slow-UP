@@ -45,7 +45,7 @@ export function Timer({ addTimeEntry }: Props) {
     const timeEntry: WorkUnit = {
       ...partialTimeEntry,
       end: Date.now(),
-      spent: -1,
+      spent: timeSpent,
     };
     setPartialTimeEntry({ ...DEFAULT_TIME_ENTRY });
     addTimeEntry(timeEntry);
