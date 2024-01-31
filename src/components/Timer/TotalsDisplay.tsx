@@ -1,6 +1,6 @@
-export function TotalsDisplay({ totalTime }: { totalTime: number }) {
-  const hours = Math.floor(totalTime / 3600);
-  const minutes = Math.floor(totalTime / 60) % 60;
+export function TotalsDisplay({ totalSeconds }: { totalSeconds: number }) {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor(totalSeconds / 60) % 60;
   return (
     <span>
       {hours} hrs &nbsp;{minutes} min

@@ -13,7 +13,7 @@ export function notify() {
   }
 }
 
-export function getTodaysEarliestEntryIndex(entries: WorkUnit[]) {
+export function findTodaysEarliestEntryIdx(entries: WorkUnit[]) {
   const today = new Date();
   const timestamp = today.setHours(0, 0, 0, 0);
   let low = 0;
@@ -29,12 +29,10 @@ export function getTodaysEarliestEntryIndex(entries: WorkUnit[]) {
   return low;
 }
 
-export function getTodaysTotalTime(entries: WorkUnit[]) {
-  const idx = getTodaysEarliestEntryIndex(entries);
-  const totalInMS = entries
-    .slice(idx)
-    .reduce((acc, entry) => acc + entry.end - entry.start, 0);
-  return totalInMS / 1000;
+export function getSecondsSpentToday(entries: WorkUnit[]) {
+  const idx = findTodaysEarliestEntryIdx(entries);
+  const todaysEntries = entries.slice(idx);
+  return todaysEntries.reduce((acc, entry) => acc + entry.spent, 0);
 }
 
 export function getEntryIndex(entry: WorkUnit, entries: WorkUnit[]) {

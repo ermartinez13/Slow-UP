@@ -4,7 +4,7 @@ import "./App.css";
 import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
 import { TimeEntries } from "./components/TimeEntries";
-import { getEntryIndex, getTodaysTotalTime } from "./helpers";
+import { getEntryIndex, getSecondsSpentToday } from "./helpers";
 import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 import { WorkUnit } from "./components/Timer/Timer.models";
 import { useLocalStorage } from "./hooks/use-local-storage";
@@ -23,7 +23,7 @@ function App() {
     // if permission is not default then persimion is granted, denied, or Notifications API is not supported
     () => window.Notification?.permission === "default"
   );
-  const totalTime = getTodaysTotalTime(timeEntries);
+  const secondsSpentToday = getSecondsSpentToday(entries);
 
   const addEntry = (entry: WorkUnit) => {
     setEntries(entries.concat(entry));
@@ -76,7 +76,7 @@ function App() {
         <Timer addEntry={addEntry} />
       </section>
       <section>
-        <TotalsDisplay totalTime={totalTime} />
+        <TotalsDisplay totalSeconds={secondsSpentToday} />
         <TimeEntries entries={entries} updateEntry={updateEntry} />
       </section>
     </main>

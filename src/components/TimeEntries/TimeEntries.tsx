@@ -1,4 +1,4 @@
-import { getTodaysEarliestEntryIndex } from "../../helpers";
+import { findTodaysEarliestEntryIdx } from "../../helpers";
 import { WorkUnit } from "../Timer/Timer.models";
 import { TimeEntry } from "./TimeEntry";
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export function TimeEntries({ entries, updateEntry }: Props) {
-  const idx = getTodaysEarliestEntryIndex(entries);
+  const idx = findTodaysEarliestEntryIdx(entries);
   const todaysEntries = entries.slice(idx).reverse();
 
   return (
