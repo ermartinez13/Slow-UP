@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import "./App.css";
 import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
@@ -8,6 +6,7 @@ import { getEntryIndex, getSecondsSpentToday } from "./helpers";
 import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 import { WorkUnit } from "./components/Timer/Timer.models";
 import { useLocalStorage } from "./hooks/use-local-storage";
+import { usePermissions } from "./hooks/use-permissions";
 
 const INITIAL_ENTRIES: WorkUnit[] = [];
 
@@ -16,13 +15,7 @@ function App() {
     "entries",
     INITIAL_ENTRIES
   );
-  const [
-    shouldRequestNotificationsPermission,
-    setShouldRequestNotificationsPermission,
-  ] = useState<boolean>(
-    // if permission is not default then persimion is granted, denied, or Notifications API is not supported
-    () => window.Notification?.permission === "default"
-  );
+  const notificationsPermission = usePermissions("notifications");
   const secondsSpentToday = getSecondsSpentToday(entries);
 
   const addEntry = (entry: WorkUnit) => {
@@ -36,42 +29,11 @@ function App() {
     setEntries(nextEntries);
   };
 
-  const requestPermission = () => {
-    window.Notification?.requestPermission().then((permission) => {
-      if (permission !== "default") {
-        setShouldRequestNotificationsPermission(false);
-      }
-    });
-  };
-
-  useEffect(() => {
-    let eventTarget: PermissionStatus | null = null;
-    function handlePermissionChange(e: Event) {
-      const target = e.target;
-      if (target instanceof PermissionStatus && target.state === "prompt") {
-        setShouldRequestNotificationsPermission(true);
-      }
-    }
-
-    window.navigator.permissions
-      .query({ name: "notifications" })
-      .then((permissionStatus) => {
-        eventTarget = permissionStatus;
-        eventTarget.addEventListener("change", handlePermissionChange);
-      })
-      .catch((error) => {
-        console.error("Error querying notification permission: ", error);
-      });
-
-    return () =>
-      eventTarget?.removeEventListener("change", handlePermissionChange);
-  }, []);
-
   return (
     <main>
       <section>
-        {shouldRequestNotificationsPermission ? (
-          <NotificationsPermissionBtn handleClick={requestPermission} />
+        {"Notification" in window && notificationsPermission === "prompt" ? (
+          <NotificationsPermissionBtn />
         ) : null}
         <Timer addEntry={addEntry} />
       </section>
