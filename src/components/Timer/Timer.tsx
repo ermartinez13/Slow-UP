@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
 import { notify } from "../../helpers";
-import { Comment } from "./Comment";
 import { PartialEntry, WorkUnit } from "./Timer.models";
+import { ControlledTextArea } from "../ControlledTextArea";
 
 const DEFAULT_TIME = 2400;
 const DEFAULT_ENTRY: PartialEntry = {
@@ -78,6 +78,13 @@ export function Timer({ addEntry }: Props) {
     stop();
   }
 
+  const setContent = (content: string) => {
+    setPartialEntry((prev) => ({
+      ...prev,
+      description: content,
+    }));
+  };
+
   return (
     <div className="timer">
       <div className="display">
@@ -89,9 +96,9 @@ export function Timer({ addEntry }: Props) {
         />
       </div>
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
-      <Comment
-        description={partialEntry.description}
-        setPartialEntry={setPartialEntry}
+      <ControlledTextArea
+        content={partialEntry.description}
+        setContent={setContent}
         key={partialEntry.description}
       />
     </div>

@@ -1,3 +1,4 @@
+import { ControlledTextArea } from "../ControlledTextArea";
 import { WorkUnit } from "../Timer/Timer.models";
 import { getTimeSpentStr } from "./TimeEntries.helpers";
 
@@ -29,6 +30,11 @@ export function TimeEntry({ entry, updateEntry }: Props) {
     dateOne.getHours() >= 12 ? "pm" : "am"
   }`;
   const timeSpent = entry.spent ? getTimeSpentStr(entry.spent) : "n/a";
+
+  const setContent = (content: string) => {
+    updateEntry({ ...entry, description: content });
+  };
+
   return (
     <div
       style={{
@@ -46,11 +52,10 @@ export function TimeEntry({ entry, updateEntry }: Props) {
         {timeStart} - {timeEnd}
       </p>
       <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>{timeSpent}</p>
-      <textarea
-        defaultValue={entry.description ? entry.description : entry.text ?? ""}
-        style={{ marginBlockStart: "0", marginBlockEnd: "0" }}
-        onBlur={(e) => updateEntry({ ...entry, description: e.target.value })}
-      ></textarea>
+      <ControlledTextArea
+        content={entry.description ? entry.description : entry.text ?? ""}
+        setContent={setContent}
+      />
     </div>
   );
 }
