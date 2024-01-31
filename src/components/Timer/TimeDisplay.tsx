@@ -1,15 +1,16 @@
 import { useState } from "react";
+import { TimerStatus } from "./Timer.models";
 
 interface Props {
-  timeLeft: number;
+  secondsLeft: number;
   setTimeBudget: React.Dispatch<React.SetStateAction<number>>;
-  status: "on" | "paused" | "off";
+  status: TimerStatus;
 }
 
-export function TimeDisplay({ timeLeft, setTimeBudget, status }: Props) {
-  const [hours, setHours] = useState(Math.floor(timeLeft / 3600));
-  const [minutes, setMinutes] = useState(Math.floor(timeLeft / 60) % 60);
-  const [seconds, setSeconds] = useState(timeLeft % 60);
+export function TimeDisplay({ secondsLeft, setTimeBudget, status }: Props) {
+  const [hours, setHours] = useState(Math.floor(secondsLeft / 3600));
+  const [minutes, setMinutes] = useState(Math.floor(secondsLeft / 60) % 60);
+  const [seconds, setSeconds] = useState(secondsLeft % 60);
 
   const updateTimeBudget = () => {
     const nextHours = hours * 3600;
@@ -28,7 +29,7 @@ export function TimeDisplay({ timeLeft, setTimeBudget, status }: Props) {
           value={hours}
           onChange={(e) => setHours(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== "off"}
+          disabled={status !== TimerStatus.OFF}
         />
       </div>
       <span>:</span>
@@ -41,7 +42,7 @@ export function TimeDisplay({ timeLeft, setTimeBudget, status }: Props) {
           value={minutes}
           onChange={(e) => setMinutes(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== "off"}
+          disabled={status !== TimerStatus.OFF}
         />
       </div>
       <span>:</span>
@@ -54,7 +55,7 @@ export function TimeDisplay({ timeLeft, setTimeBudget, status }: Props) {
           value={seconds}
           onChange={(e) => setSeconds(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== "off"}
+          disabled={status !== TimerStatus.OFF}
         />
       </div>
     </div>

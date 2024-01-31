@@ -7,3 +7,16 @@ export interface WorkUnit {
 }
 
 export type PartialEntry = Pick<WorkUnit, "start" | "description">;
+
+export enum TimerStatus {
+  ON = "on",
+  PAUSED = "paused",
+  OFF = "off",
+}
+
+export enum TimerEvents {
+  START = "START",
+  STOP = "STOP",
+  PAUSE = "PAUSE",
+  TICK = "TICK",
+}
