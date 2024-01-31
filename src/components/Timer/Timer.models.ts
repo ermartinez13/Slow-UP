@@ -6,4 +6,4 @@ export interface WorkUnit {
   text?: string; // property has been deprecated, but is still relevant for existing users
 }
 
-export type PartialTimeEntry = Pick<WorkUnit, "start" | "description">;
+export type PartialEntry = Pick<WorkUnit, "start" | "description">;

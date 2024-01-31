@@ -4,24 +4,24 @@ import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
 import { notify } from "../../helpers";
 import { Comment } from "./Comment";
-import { PartialTimeEntry, WorkUnit } from "./Timer.models";
+import { PartialEntry, WorkUnit } from "./Timer.models";
 
 const DEFAULT_TIME = 2400;
-const DEFAULT_TIME_ENTRY: PartialTimeEntry = {
+const DEFAULT_ENTRY: PartialEntry = {
   start: -1,
   description: "",
 };
 
 interface Props {
-  addTimeEntry: (timeEntry: WorkUnit) => void;
+  addEntry: (timeEntry: WorkUnit) => void;
 }
 
-export function Timer({ addTimeEntry }: Props) {
+export function Timer({ addEntry }: Props) {
   const [status, setStatus] = useState<"on" | "paused" | "off">("off");
   const [timeSpent, setTimeSpent] = useState(0);
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
-  const [partialTimeEntry, setPartialTimeEntry] = useState<PartialTimeEntry>({
-    ...DEFAULT_TIME_ENTRY,
+  const [partialEntry, setPartialEntry] = useState<PartialEntry>({
+    ...DEFAULT_ENTRY,
   });
   const workerRef = useRef<Worker | null>(null);
   const timeLeft = timeBudget - timeSpent;
@@ -30,7 +30,7 @@ export function Timer({ addTimeEntry }: Props) {
     if (status === "on") return;
     workerRef.current?.postMessage({ type: "START" });
     setStatus("on");
-    setPartialTimeEntry((prev) => ({
+    setPartialEntry((prev) => ({
       ...prev,
       start: Date.now(),
     }));
@@ -43,12 +43,12 @@ export function Timer({ addTimeEntry }: Props) {
     notify();
     setTimeSpent(0);
     const timeEntry: WorkUnit = {
-      ...partialTimeEntry,
+      ...partialEntry,
       end: Date.now(),
       spent: timeSpent,
     };
-    setPartialTimeEntry({ ...DEFAULT_TIME_ENTRY });
-    addTimeEntry(timeEntry);
+    setPartialEntry({ ...DEFAULT_ENTRY });
+    addEntry(timeEntry);
   };
 
   const pause = () => {
@@ -90,9 +90,9 @@ export function Timer({ addTimeEntry }: Props) {
       </div>
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
       <Comment
-        description={partialTimeEntry.description}
-        updatePartialTimeEntry={setPartialTimeEntry}
-        key={partialTimeEntry.description}
+        description={partialEntry.description}
+        setPartialEntry={setPartialEntry}
+        key={partialEntry.description}
       />
     </div>
   );

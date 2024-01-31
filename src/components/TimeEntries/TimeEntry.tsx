@@ -3,10 +3,10 @@ import { getTimeSpentStr } from "./TimeEntries.helpers";
 
 interface Props {
   entry: WorkUnit;
-  updateTimeEntry: (entry: WorkUnit) => void;
+  updateEntry: (entry: WorkUnit) => void;
 }
 
-export function TimeEntry({ entry, updateTimeEntry }: Props) {
+export function TimeEntry({ entry, updateEntry }: Props) {
   const dateOne = new Date(entry.start);
   const dateTwo = new Date(entry.end);
   const dateOneFormatted = `${(dateOne.getMonth() + 1)
@@ -49,9 +49,7 @@ export function TimeEntry({ entry, updateTimeEntry }: Props) {
       <textarea
         defaultValue={entry.description ? entry.description : entry.text ?? ""}
         style={{ marginBlockStart: "0", marginBlockEnd: "0" }}
-        onBlur={(e) =>
-          updateTimeEntry({ ...entry, description: e.target.value })
-        }
+        onBlur={(e) => updateEntry({ ...entry, description: e.target.value })}
       ></textarea>
     </div>
   );

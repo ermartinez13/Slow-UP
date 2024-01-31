@@ -1,23 +1,18 @@
 import { useState } from "react";
-import { PartialTimeEntry } from "./Timer.models";
+import { PartialEntry } from "./Timer.models";
 
 interface Props {
   description: string;
-  updatePartialTimeEntry: React.Dispatch<
-    React.SetStateAction<PartialTimeEntry>
-  >;
+  setPartialEntry: React.Dispatch<React.SetStateAction<PartialEntry>>;
 }
 
-export function Comment({
-  description,
-  updatePartialTimeEntry: updateTimeEntry,
-}: Props) {
+export function Comment({ description, setPartialEntry }: Props) {
   const [comment, setComment] = useState<string>(description);
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.currentTarget.value);
   };
   const persistComment = () => {
-    updateTimeEntry((prev) => ({ ...prev, description: comment }));
+    setPartialEntry((prev) => ({ ...prev, description: comment }));
   };
 
   return (

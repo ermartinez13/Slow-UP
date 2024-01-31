@@ -7,10 +7,14 @@ import { TimeEntries } from "./components/TimeEntries";
 import { getEntryIndex, getTodaysTotalTime } from "./helpers";
 import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 import { WorkUnit } from "./components/Timer/Timer.models";
+import { useLocalStorage } from "./hooks/use-local-storage";
+
+const INITIAL_ENTRIES: WorkUnit[] = [];
 
 function App() {
-  const [timeEntries, setTimeEntries] = useState<WorkUnit[]>(() =>
-    JSON.parse(window.localStorage.getItem("entries") ?? "[]")
+  const [entries, setEntries] = useLocalStorage<WorkUnit[]>(
+    "entries",
+    INITIAL_ENTRIES
   );
   const [
     shouldRequestNotificationsPermission,
@@ -21,18 +25,15 @@ function App() {
   );
   const totalTime = getTodaysTotalTime(timeEntries);
 
-  const addTimeEntry = (entry: WorkUnit) => {
-    const nextValue = timeEntries.concat(entry);
-    window.localStorage.setItem("entries", JSON.stringify(nextValue));
-    setTimeEntries(nextValue);
+  const addEntry = (entry: WorkUnit) => {
+    setEntries(entries.concat(entry));
   };
 
-  const updateTimeEntry = (entry: WorkUnit) => {
-    const copy = window.structuredClone(timeEntries);
-    const targetIdx = getEntryIndex(entry, copy);
-    Object.assign(copy[targetIdx], entry);
-    window.localStorage.setItem("entries", JSON.stringify(copy));
-    setTimeEntries(copy);
+  const updateEntry = (entry: WorkUnit) => {
+    const nextEntries = window.structuredClone(entries);
+    const targetIdx = getEntryIndex(entry, nextEntries);
+    Object.assign(nextEntries[targetIdx], entry);
+    setEntries(nextEntries);
   };
 
   const requestPermission = () => {
@@ -72,11 +73,11 @@ function App() {
         {shouldRequestNotificationsPermission ? (
           <NotificationsPermissionBtn handleClick={requestPermission} />
         ) : null}
-        <Timer addTimeEntry={addTimeEntry} />
+        <Timer addEntry={addEntry} />
       </section>
       <section>
         <TotalsDisplay totalTime={totalTime} />
-        <TimeEntries entries={timeEntries} updateTimeEntry={updateTimeEntry} />
+        <TimeEntries entries={entries} updateEntry={updateEntry} />
       </section>
     </main>
   );
