@@ -4,11 +4,12 @@ const vars = [
   "AWS_ACCESS_KEY_ID",
   "AWS_SECRET_ACCESS_KEY",
   "AWS_DEFAULT_REGION",
+  "AWS_BUCKET_NAME",
 ];
 vars.forEach((v) => {
   if (!process.env[v]) {
     console.log(`${v} variable must be set`);
-    process.exit();
+    process.exit(1);
   }
 });
 
@@ -51,7 +52,7 @@ connect(
         "s3",
         "cp",
         "/tmp/dist/index.html",
-        "s3://up.ermartinez.com",
+        process.env["AWS_BUCKET_NAME"],
         "--cache-control",
         "public,max-age=60,stale-while-revalidate=86400",
       ])
@@ -59,7 +60,7 @@ connect(
         "s3",
         "cp",
         "/tmp/dist",
-        "s3://up.ermartinez.com",
+        process.env["AWS_BUCKET_NAME"],
         "--recursive",
         "--exclude",
         "index.html",

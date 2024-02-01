@@ -3,58 +3,65 @@ import { useEffect, useRef, useState } from "react";
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
 import { notify } from "../../helpers";
-import { Comment } from "./Comment";
-import { PartialTimeEntry, WorkUnit } from "./Timer.models";
-
-const DEFAULT_TIME = 2400;
-const DEFAULT_TIME_ENTRY: PartialTimeEntry = {
-  start: -1,
-  description: "",
-};
+import {
+  PartialEntry,
+  TimerEvents,
+  TimerStatus,
+  WorkUnit,
+} from "./Timer.models";
+import { ControlledTextArea } from "../ControlledTextArea";
+import { DEFAULT_ENTRY, DEFAULT_TIME } from "./Timer.constants";
 
 interface Props {
-  addTimeEntry: (timeEntry: WorkUnit) => void;
+  addEntry: (timeEntry: WorkUnit) => void;
 }
 
-export function Timer({ addTimeEntry }: Props) {
-  const [status, setStatus] = useState<"on" | "paused" | "off">("off");
+export function Timer({ addEntry }: Props) {
+  const [status, setStatus] = useState<TimerStatus>(TimerStatus.OFF);
   const [timeSpent, setTimeSpent] = useState(0);
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
-  const [partialTimeEntry, setPartialTimeEntry] = useState<PartialTimeEntry>({
-    ...DEFAULT_TIME_ENTRY,
+  const [partialEntry, setPartialEntry] = useState<PartialEntry>({
+    ...DEFAULT_ENTRY,
   });
   const workerRef = useRef<Worker | null>(null);
-  const timeLeft = timeBudget - timeSpent;
+  const secondsLeft = timeBudget - timeSpent;
 
   const start = () => {
-    if (status === "on") return;
-    workerRef.current?.postMessage({ type: "START" });
-    setStatus("on");
-    setPartialTimeEntry((prev) => ({
-      ...prev,
+    if (status === TimerStatus.ON) return;
+    workerRef.current?.postMessage({ type: TimerEvents.START });
+    setStatus(TimerStatus.ON);
+    setPartialEntry({
+      ...partialEntry,
       start: Date.now(),
-    }));
+    });
   };
 
   const stop = () => {
-    if (status === "off") return;
-    setStatus("off");
-    workerRef.current?.postMessage({ type: "STOP" });
+    if (status === TimerStatus.OFF) return;
+    setStatus(TimerStatus.OFF);
+    workerRef.current?.postMessage({ type: TimerEvents.STOP });
     notify();
     setTimeSpent(0);
     const timeEntry: WorkUnit = {
-      ...partialTimeEntry,
+      ...partialEntry,
       end: Date.now(),
       spent: timeSpent,
     };
-    setPartialTimeEntry({ ...DEFAULT_TIME_ENTRY });
-    addTimeEntry(timeEntry);
+    setPartialEntry({ ...DEFAULT_ENTRY });
+    addEntry(timeEntry);
   };
 
   const pause = () => {
-    if (status === "paused") return;
-    workerRef.current?.postMessage({ type: "PAUSE" });
-    setStatus("paused");
+    if (status === TimerStatus.PAUSED) return;
+    workerRef.current?.postMessage({ type: TimerEvents.PAUSE });
+    setStatus(TimerStatus.PAUSED);
+  };
+
+  const setContent = (content: string) => {
+    setPartialEntry((prev) => ({
+      ...prev,
+      description: content,
+    }));
   };
 
   useEffect(() => {
@@ -66,7 +73,7 @@ export function Timer({ addTimeEntry }: Props) {
     const tick = () => setTimeSpent((prev) => prev + 1);
 
     worker.onmessage = ({ data }) => {
-      if (data.type === "TICK") tick();
+      if (data.type === TimerEvents.TICK) tick();
     };
 
     return () => {
@@ -80,19 +87,17 @@ export function Timer({ addTimeEntry }: Props) {
 
   return (
     <div className="timer">
-      <div className="display">
-        <TimeDisplay
-          timeLeft={timeLeft}
-          setTimeBudget={setTimeBudget}
-          key={timeLeft}
-          status={status}
-        />
-      </div>
+      <TimeDisplay
+        secondsLeft={secondsLeft}
+        setTimeBudget={setTimeBudget}
+        key={secondsLeft}
+        status={status}
+      />
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
-      <Comment
-        description={partialTimeEntry.description}
-        updatePartialTimeEntry={setPartialTimeEntry}
-        key={partialTimeEntry.description}
+      <ControlledTextArea
+        content={partialEntry.description}
+        setContent={setContent}
+        key={partialEntry.description}
       />
     </div>
   );

@@ -6,4 +6,17 @@ export interface WorkUnit {
   text?: string; // property has been deprecated, but is still relevant for existing users
 }
 
-export type PartialTimeEntry = Pick<WorkUnit, "start" | "description">;
+export type PartialEntry = Pick<WorkUnit, "start" | "description">;
+
+export enum TimerStatus {
+  ON = "on",
+  PAUSED = "paused",
+  OFF = "off",
+}
+
+export enum TimerEvents {
+  START = "START",
+  STOP = "STOP",
+  PAUSE = "PAUSE",
+  TICK = "TICK",
+}

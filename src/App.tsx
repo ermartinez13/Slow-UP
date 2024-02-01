@@ -1,82 +1,45 @@
-import { useEffect, useState } from "react";
-
 import "./App.css";
 import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
 import { TimeEntries } from "./components/TimeEntries";
-import { getEntryIndex, getTodaysTotalTime } from "./helpers";
+import { getEntryIndex, getSecondsSpentToday } from "./helpers";
 import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 import { WorkUnit } from "./components/Timer/Timer.models";
+import { useLocalStorage } from "./hooks/use-local-storage";
+import { usePermissions } from "./hooks/use-permissions";
+
+const INITIAL_ENTRIES: WorkUnit[] = [];
 
 function App() {
-  const [timeEntries, setTimeEntries] = useState<WorkUnit[]>(() =>
-    JSON.parse(window.localStorage.getItem("entries") ?? "[]")
+  const [entries, setEntries] = useLocalStorage<WorkUnit[]>(
+    "entries",
+    INITIAL_ENTRIES
   );
-  const [
-    shouldRequestNotificationsPermission,
-    setShouldRequestNotificationsPermission,
-  ] = useState<boolean>(
-    // if permission is not default then persimion is granted, denied, or Notifications API is not supported
-    () => window.Notification?.permission === "default"
-  );
-  const totalTime = getTodaysTotalTime(timeEntries);
+  const notificationsPermission = usePermissions("notifications");
+  const secondsSpentToday = getSecondsSpentToday(entries);
 
-  const addTimeEntry = (entry: WorkUnit) => {
-    const nextValue = timeEntries.concat(entry);
-    window.localStorage.setItem("entries", JSON.stringify(nextValue));
-    setTimeEntries(nextValue);
+  const addEntry = (entry: WorkUnit) => {
+    setEntries(entries.concat(entry));
   };
 
-  const updateTimeEntry = (entry: WorkUnit) => {
-    const copy = window.structuredClone(timeEntries);
-    const targetIdx = getEntryIndex(entry, copy);
-    Object.assign(copy[targetIdx], entry);
-    window.localStorage.setItem("entries", JSON.stringify(copy));
-    setTimeEntries(copy);
+  const updateEntry = (entry: WorkUnit) => {
+    const nextEntries = window.structuredClone(entries);
+    const targetIdx = getEntryIndex(entry, nextEntries);
+    Object.assign(nextEntries[targetIdx], entry);
+    setEntries(nextEntries);
   };
-
-  const requestPermission = () => {
-    window.Notification?.requestPermission().then((permission) => {
-      if (permission !== "default") {
-        setShouldRequestNotificationsPermission(false);
-      }
-    });
-  };
-
-  useEffect(() => {
-    let eventTarget: PermissionStatus | null = null;
-    function handlePermissionChange(e: Event) {
-      const target = e.target;
-      if (target instanceof PermissionStatus && target.state === "prompt") {
-        setShouldRequestNotificationsPermission(true);
-      }
-    }
-
-    window.navigator.permissions
-      .query({ name: "notifications" })
-      .then((permissionStatus) => {
-        eventTarget = permissionStatus;
-        eventTarget.addEventListener("change", handlePermissionChange);
-      })
-      .catch((error) => {
-        console.error("Error querying notification permission: ", error);
-      });
-
-    return () =>
-      eventTarget?.removeEventListener("change", handlePermissionChange);
-  }, []);
 
   return (
     <main>
       <section>
-        {shouldRequestNotificationsPermission ? (
-          <NotificationsPermissionBtn handleClick={requestPermission} />
+        {"Notification" in window && notificationsPermission === "prompt" ? (
+          <NotificationsPermissionBtn />
         ) : null}
-        <Timer addTimeEntry={addTimeEntry} />
+        <Timer addEntry={addEntry} />
       </section>
       <section>
-        <TotalsDisplay totalTime={totalTime} />
-        <TimeEntries entries={timeEntries} updateTimeEntry={updateTimeEntry} />
+        <TotalsDisplay totalSeconds={secondsSpentToday} />
+        <TimeEntries entries={entries} updateEntry={updateEntry} />
       </section>
     </main>
   );
