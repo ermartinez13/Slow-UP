@@ -9,7 +9,7 @@ const vars = [
 vars.forEach((v) => {
   if (!process.env[v]) {
     console.log(`${v} variable must be set`);
-    process.exit();
+    process.exit(1);
   }
 });
 
