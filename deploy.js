@@ -5,6 +5,7 @@ const vars = [
   "AWS_SECRET_ACCESS_KEY",
   "AWS_DEFAULT_REGION",
   "AWS_BUCKET_NAME",
+  "AWS_SESSION_TOKEN",
 ];
 vars.forEach((v) => {
   if (!process.env[v]) {
@@ -22,6 +23,10 @@ connect(
     let awsSecretAccessKey = client.setSecret(
       "awsSecretAccessKey",
       process.env["AWS_SECRET_ACCESS_KEY"]
+    );
+    let awsSessionToken = client.setSecret(
+      "awsSessionToken",
+      process.env["AWS_SESSION_TOKEN"]
     );
     let awsRegion = process.env["AWS_DEFAULT_REGION"];
 
@@ -46,6 +51,7 @@ connect(
       .from("amazon/aws-cli:2.11.22")
       .withSecretVariable("AWS_ACCESS_KEY_ID", awsAccessKeyId)
       .withSecretVariable("AWS_SECRET_ACCESS_KEY", awsSecretAccessKey)
+      .withSecretVariable("AWS_SESSION_TOKEN", awsSessionToken)
       .withEnvVariable("AWS_DEFAULT_REGION", awsRegion)
       .withDirectory("/tmp/dist", appRunner.directory("dist"))
       .withExec([
