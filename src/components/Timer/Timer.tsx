@@ -30,10 +30,12 @@ export function Timer({ addEntry }: Props) {
     if (status === TimerStatus.ON) return;
     workerRef.current?.postMessage({ type: TimerEvents.START });
     setStatus(TimerStatus.ON);
-    setPartialEntry({
-      ...partialEntry,
-      start: Date.now(),
-    });
+    if (partialEntry.start === -1) {
+      setPartialEntry({
+        ...partialEntry,
+        start: Date.now(),
+      });
+    }
   };
 
   const stop = () => {
@@ -66,7 +68,10 @@ export function Timer({ addEntry }: Props) {
 
   useEffect(() => {
     const worker = new Worker(
-      new URL("../../workers/clock.ts", import.meta.url)
+      new URL("../../workers/clock.ts", import.meta.url),
+      {
+        type: "module",
+      }
     );
     workerRef.current = worker;
 

@@ -20,7 +20,7 @@ export function ActionButtons({ start, pause, stop, status }: Props) {
   return (
     <div className="action-buttons">
       <button onClick={stop} disabled={status === "off"}>
-        Cancel
+        Stop
       </button>
       {status === "on" ? pauseBtn : onBtn}
     </div>
