@@ -66,7 +66,10 @@ export function Timer({ addEntry }: Props) {
 
   useEffect(() => {
     const worker = new Worker(
-      new URL("../../workers/clock.ts", import.meta.url)
+      new URL("../../workers/clock.ts", import.meta.url),
+      {
+        type: "module",
+      }
     );
     workerRef.current = worker;
 
