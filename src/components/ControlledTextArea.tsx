@@ -10,6 +10,7 @@ export function ControlledTextArea({ content, setContent }: Props) {
 
   return (
     <textarea
+      rows={3}
       value={localContent}
       onChange={(e) => setLocalContent(e.target.value)}
       onBlur={() => setContent(localContent)}
