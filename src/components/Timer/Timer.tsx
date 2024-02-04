@@ -30,10 +30,12 @@ export function Timer({ addEntry }: Props) {
     if (status === TimerStatus.ON) return;
     workerRef.current?.postMessage({ type: TimerEvents.START });
     setStatus(TimerStatus.ON);
-    setPartialEntry({
-      ...partialEntry,
-      start: Date.now(),
-    });
+    if (partialEntry.start === -1) {
+      setPartialEntry({
+        ...partialEntry,
+        start: Date.now(),
+      });
+    }
   };
 
   const stop = () => {
