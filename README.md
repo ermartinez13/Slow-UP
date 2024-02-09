@@ -1,6 +1,8 @@
 # Welcome to Slow Up!
 
-[Slow Up](https://handsome-femur-998.notion.site/Slow-Up-d2425bb47fc1408e90e4ab928590f0bb?pvs=4) is a minimalist, keyboard-first, cross-platform application that consolidates aspects of a pomodoro timer, a to-do list, and a time tracker for the purpose of helping minimize burnout.
+a minimalist, keyboard-first, cross-platform application that couples simple time tracking with a good old-fashioned timer, stopwatch, and Pomodoro timer for the purpose of helping minimize burnout. A person (me) once called it, “you’re friendly timer app, on mild steroids”.
+
+To read more about its vision, upcoming features, and more, check out its Notion page at [Slow Up](https://handsome-femur-998.notion.site/Slow-Up-d2425bb47fc1408e90e4ab928590f0bb?pvs=4).
 
 # Development
 
