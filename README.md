@@ -8,7 +8,7 @@ To read more about its vision, upcoming features, and more, check out its Notion
 
 1. Run `docker compose watch` to start the services
 2. Run `docker compose logs -f` to view logs from services
-3. App will be available at `app.localhost`
+3. App will be available at `localhost`
 
 # Deployment
 
@@ -16,3 +16,8 @@ To test local deployment to staging:
 
 1. Make sure required env vars are present in `.env` file in repo root
 2. Run `dagger run node --env-file=.env ./deploy.js`
+
+# Demo
+
+Prod: https://up.ermartinez.com/
+Staging: https://staging-up.ermartinez.com/
