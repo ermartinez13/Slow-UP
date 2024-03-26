@@ -30,7 +30,7 @@ function App() {
   };
 
   return (
-    <main>
+    <main className="grid gap-y-20">
       <section>
         {"Notification" in window && notificationsPermission === "prompt" ? (
           <NotificationsPermissionBtn />

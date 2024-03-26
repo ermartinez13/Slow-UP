@@ -91,7 +91,7 @@ export function Timer({ addEntry }: Props) {
   }
 
   return (
-    <div className="timer">
+    <div className="grid gap-y-8 place-content-center">
       <TimeDisplay
         secondsLeft={secondsLeft}
         setTimeBudget={setTimeBudget}
