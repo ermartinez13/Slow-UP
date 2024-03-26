@@ -1,4 +1,3 @@
-import "./App.css";
 import { Timer } from "./components/Timer";
 import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
 import { TimeEntries } from "./components/TimeEntries";
