@@ -16,18 +16,14 @@ export function ActionButtons({ start, pause, stop, status }: Props) {
     </button>
   );
   const onBtn = (
-    <button
-      onClick={start}
-      style={{ backgroundColor: "green" }}
-      className="w-24 h-6"
-    >
+    <button onClick={start} className="w-24 h-6 bg-green-700">
       {status === "off" ? "Start" : "Resume"}
     </button>
   );
 
   return (
-    <div className="flex flex-row gap-x-4">
-      <button onClick={stop} disabled={status === "off"} className="w-24 h-6">
+    <div className="flex flex-row justify-center gap-x-4">
+      <button onClick={stop} disabled={status === "off"}>
         Stop
       </button>
       {status === "on" ? pauseBtn : onBtn}

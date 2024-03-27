@@ -19,7 +19,7 @@ export function TimeDisplay({ secondsLeft, setTimeBudget, status }: Props) {
   };
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row justify-center">
       <div className="flex flex-col">
         <label htmlFor="hours">hr</label>
         <input

@@ -20,7 +20,7 @@ export function TimeEntry({ entry, updateEntry }: Props) {
   };
 
   return (
-    <div className="border border-dashed border-gray-400 p-4 flex flex-col">
+    <div className="border border-dashed border-gray-400 p-4 flex flex-col items-center">
       <p>{dates}</p>
       <p>{times}</p>
       <p>{timeSpent}</p>
