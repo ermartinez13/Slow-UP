@@ -7,11 +7,7 @@ interface Props {
 
 export function ActionButtons({ start, pause, stop, status }: Props) {
   const pauseBtn = (
-    <button
-      onClick={pause}
-      style={{ backgroundColor: "orange" }}
-      className="w-24 h-6"
-    >
+    <button onClick={pause} className="w-24 h-6 bg-amber-700">
       Pause
     </button>
   );
@@ -23,7 +19,11 @@ export function ActionButtons({ start, pause, stop, status }: Props) {
 
   return (
     <div className="flex flex-row justify-center gap-x-4">
-      <button onClick={stop} disabled={status === "off"}>
+      <button
+        onClick={stop}
+        disabled={status === "off"}
+        className="w-24 h-6 bg-zinc-600"
+      >
         Stop
       </button>
       {status === "on" ? pauseBtn : onBtn}
