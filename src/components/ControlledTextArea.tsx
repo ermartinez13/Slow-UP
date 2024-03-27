@@ -10,7 +10,9 @@ export function ControlledTextArea({ content, setContent }: Props) {
 
   return (
     <textarea
+      className="rounded-sm border-0 p-1.5"
       rows={3}
+      cols={35}
       value={localContent}
       onChange={(e) => setLocalContent(e.target.value)}
       onBlur={() => setContent(localContent)}
