@@ -12,14 +12,7 @@ export function TimeEntries({ entries, updateEntry }: Props) {
   const todaysEntries = entries.slice(idx).reverse();
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        maxHeight: "318px",
-        overflow: "auto",
-      }}
-    >
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {todaysEntries.map((entry) => {
         return (
           <TimeEntry

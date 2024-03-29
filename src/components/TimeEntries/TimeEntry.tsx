@@ -20,17 +20,10 @@ export function TimeEntry({ entry, updateEntry }: Props) {
   };
 
   return (
-    <div
-      style={{
-        border: "1px dashed gray",
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>{dates}</p>
-      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>{times}</p>
-      <p style={{ marginBlockStart: "0", marginBlockEnd: "0" }}>{timeSpent}</p>
+    <div className="border border-dashed border-gray-400 p-4 flex flex-col items-center">
+      <p>{dates}</p>
+      <p>{times}</p>
+      <p>{timeSpent}</p>
       <ControlledTextArea
         content={entry.description ? entry.description : entry.text ?? ""}
         setContent={setContent}

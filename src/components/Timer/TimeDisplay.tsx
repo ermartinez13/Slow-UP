@@ -19,8 +19,8 @@ export function TimeDisplay({ secondsLeft, setTimeBudget, status }: Props) {
   };
 
   return (
-    <div className="time-display">
-      <div className="time-unit">
+    <div className="flex flex-row justify-center">
+      <div className="flex flex-col">
         <label htmlFor="hours">hr</label>
         <input
           type="number"
@@ -30,10 +30,11 @@ export function TimeDisplay({ secondsLeft, setTimeBudget, status }: Props) {
           onChange={(e) => setHours(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
           disabled={status !== TimerStatus.OFF}
+          className="w-16 text-2xl text-center border-none"
         />
       </div>
       <span>:</span>
-      <div className="time-unit">
+      <div className="flex flex-col">
         <label htmlFor="minutes">min</label>
         <input
           type="number"
@@ -43,10 +44,11 @@ export function TimeDisplay({ secondsLeft, setTimeBudget, status }: Props) {
           onChange={(e) => setMinutes(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
           disabled={status !== TimerStatus.OFF}
+          className="w-16 text-2xl text-center border-none"
         />
       </div>
       <span>:</span>
-      <div className="time-unit">
+      <div className="flex flex-col">
         <label htmlFor="seconds">sec</label>
         <input
           type="number"
@@ -56,6 +58,7 @@ export function TimeDisplay({ secondsLeft, setTimeBudget, status }: Props) {
           onChange={(e) => setSeconds(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
           disabled={status !== TimerStatus.OFF}
+          className="w-16 text-2xl text-center border-none"
         />
       </div>
     </div>
