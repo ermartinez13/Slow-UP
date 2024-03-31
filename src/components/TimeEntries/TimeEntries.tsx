@@ -5,9 +5,10 @@ import { TimeEntry } from "./TimeEntry";
 interface Props {
   entries: WorkUnit[];
   updateEntry: (timeEntry: WorkUnit) => void;
+  deleteEntry: (timeEntry: WorkUnit) => void;
 }
 
-export function TimeEntries({ entries, updateEntry }: Props) {
+export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
   const idx = findTodaysEarliestEntryIdx(entries);
   const todaysEntries = entries.slice(idx).reverse();
 
@@ -19,6 +20,7 @@ export function TimeEntries({ entries, updateEntry }: Props) {
             entry={entry}
             key={entry.start}
             updateEntry={updateEntry}
+            deleteEntry={deleteEntry}
           />
         );
       })}

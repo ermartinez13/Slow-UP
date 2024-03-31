@@ -28,6 +28,12 @@ function App() {
     setEntries(nextEntries);
   };
 
+  const deleteEntry = (entry: WorkUnit) => {
+    const targetIdx = getEntryIndex(entry, entries);
+    const nextEntries = entries.toSpliced(targetIdx, 1);
+    setEntries(nextEntries);
+  };
+
   return (
     <main className="grid gap-y-20">
       <section>
@@ -38,7 +44,11 @@ function App() {
       </section>
       <section>
         <TotalsDisplay totalSeconds={secondsSpentToday} />
-        <TimeEntries entries={entries} updateEntry={updateEntry} />
+        <TimeEntries
+          entries={entries}
+          updateEntry={updateEntry}
+          deleteEntry={deleteEntry}
+        />
       </section>
     </main>
   );
