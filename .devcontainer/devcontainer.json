@@ -1,0 +1,7 @@
+{
+	"name": "TBD",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/mkcert:1": {}
+	}
+}

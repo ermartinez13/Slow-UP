@@ -10,6 +10,25 @@ To read more about its vision, upcoming features, and more, check out its Notion
 2. Run `docker compose logs -f` to view logs from services
 3. App will be available at `localhost`
 
+## Dev Container
+
+On intial dev container setup, run:
+
+```shell
+# install dependencies
+npm install
+
+# create locally-trusted development certificate
+mkcert -install
+mkcert localhost
+```
+
+To launch application: 
+
+```shell
+npm run dev
+```
+
 # Deployment
 
 To test local deployment to staging:
