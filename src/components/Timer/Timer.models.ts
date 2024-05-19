@@ -20,3 +20,9 @@ export enum TimerEvents {
   PAUSE = "PAUSE",
   TICK = "TICK",
 }
+
+export enum TickEvent {
+  START = 'start',
+  STOP = 'stop',
+  TICK = 'tick',
+}
