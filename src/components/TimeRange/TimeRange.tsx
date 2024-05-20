@@ -12,20 +12,6 @@ function padZero(value: number): string {
 }
 
 export function TimeRange({ entry, secondsLeft, status }: Props) {
-  const [expectedCompletionTime, setExpectedCompletionTime] =
-    React.useState("--");
-
-  React.useEffect(() => {
-    if (status === TimerStatus.ON) {
-      const secondsLeftMs = secondsLeft * 1000;
-      const expectedCompletionDate = Date.now() + secondsLeftMs;
-
-      setExpectedCompletionTime(formatTime(expectedCompletionDate));
-    } else {
-      setExpectedCompletionTime("--");
-    }
-  }, [status, secondsLeft]);
-
   if (entry.start === -1) {
     return (
       <div>
@@ -34,6 +20,11 @@ export function TimeRange({ entry, secondsLeft, status }: Props) {
       </div>
     );
   }
+
+  const expectedCompletionTime =
+    status === TimerStatus.ON
+      ? formatTime(Date.now() + secondsLeft * 1000)
+      : "--";
 
   return (
     <div>
