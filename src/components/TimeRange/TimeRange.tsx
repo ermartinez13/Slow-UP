@@ -1,8 +1,7 @@
-import React from "react";
-import { PartialEntry, TimerStatus } from "../Timer/Timer.models";
+import { TimerStatus } from "../Timer/Timer.models";
 
 interface Props {
-  entry: PartialEntry;
+  startTimeMs: number;
   secondsLeft: number;
   status: TimerStatus;
 }
@@ -11,8 +10,8 @@ function padZero(value: number): string {
   return value.toString().padStart(2, "0");
 }
 
-export function TimeRange({ entry, secondsLeft, status }: Props) {
-  if (entry.start === -1) {
+export function TimeRange({ startTimeMs, secondsLeft, status }: Props) {
+  if (startTimeMs === -1) {
     return (
       <div>
         <p>Started at: --</p>
@@ -25,10 +24,11 @@ export function TimeRange({ entry, secondsLeft, status }: Props) {
     status === TimerStatus.ON
       ? formatTime(Date.now() + secondsLeft * 1000)
       : "--";
+  const startTime = formatTime(startTimeMs);
 
   return (
     <div>
-      <p>Started at: {formatTime(entry.start)}</p>
+      <p>Started at: {startTime}</p>
       <p>Expected completion: {expectedCompletionTime}</p>
     </div>
   );

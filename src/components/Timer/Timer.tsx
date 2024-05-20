@@ -102,7 +102,7 @@ export function Timer({ addEntry }: Props) {
       <TimeRange
         secondsLeft={secondsLeft}
         status={status}
-        entry={partialEntry}
+        startTimeMs={partialEntry.start}
       />
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
       <ControlledTextArea
