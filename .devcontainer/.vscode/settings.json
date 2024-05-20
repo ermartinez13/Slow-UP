@@ -1,0 +1,13 @@
+{
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "search.exclude": {
+    "**/node_modules": true,
+  },
+  "advancedNewFile.exclude": {
+    "**/node_modules": true,
+  }
+}

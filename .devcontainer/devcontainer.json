@@ -1,6 +1,16 @@
 {
 	"name": "TBD",
 	"image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"patbenatar.advanced-new-file",
+				"esbenp.prettier-vscode",
+				"bradlc.vscode-tailwindcss",
+				"dsznajder.es7-react-js-snippets"
+			]
+		}
+	},
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/mkcert:1": {}
 	}
