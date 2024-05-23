@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
-import { notify } from "../../helpers";
+import { notify, updatePartialEntry } from "../../helpers";
 import {
   PartialEntry,
   TimerEvents,
@@ -12,6 +12,11 @@ import {
 import { ControlledTextArea } from "../ControlledTextArea";
 import { DEFAULT_ENTRY, DEFAULT_TIME } from "./Timer.constants";
 import { TimeRange } from "../TimeRange";
+import {
+  pauseWorker,
+  startWorker,
+  stopWorker,
+} from "../../workers/clock.helpers";
 
 interface Props {
   addEntry: (timeEntry: WorkUnit) => void;
@@ -29,20 +34,21 @@ export function Timer({ addEntry }: Props) {
 
   const start = () => {
     if (status === TimerStatus.ON) return;
-    workerRef.current?.postMessage({ type: TimerEvents.START });
+    startWorker(workerRef.current);
     setStatus(TimerStatus.ON);
     if (partialEntry.start === -1) {
-      setPartialEntry({
-        ...partialEntry,
-        start: Date.now(),
-      });
+      setPartialEntry((prev) =>
+        updatePartialEntry(prev, {
+          start: Date.now(),
+        })
+      );
     }
   };
 
   const stop = () => {
     if (status === TimerStatus.OFF) return;
+    stopWorker(workerRef.current);
     setStatus(TimerStatus.OFF);
-    workerRef.current?.postMessage({ type: TimerEvents.STOP });
     notify();
     setTimeSpent(0);
     const timeEntry: WorkUnit = {
@@ -56,7 +62,7 @@ export function Timer({ addEntry }: Props) {
 
   const pause = () => {
     if (status === TimerStatus.PAUSED) return;
-    workerRef.current?.postMessage({ type: TimerEvents.PAUSE });
+    pauseWorker(workerRef.current);
     setStatus(TimerStatus.PAUSED);
   };
 
@@ -65,6 +71,22 @@ export function Timer({ addEntry }: Props) {
       ...prev,
       description: content,
     }));
+  };
+
+  const handleStartPauseClick = () => {
+    if (status === TimerStatus.ON) {
+      pause();
+    } else {
+      if (status === TimerStatus.OFF) {
+        window.addEventListener("beforeunload", beforeUnloadHandler);
+      }
+      start();
+    }
+  };
+
+  const handleStopClick = () => {
+    window.removeEventListener("beforeunload", beforeUnloadHandler);
+    stop();
   };
 
   useEffect(() => {
@@ -104,7 +126,11 @@ export function Timer({ addEntry }: Props) {
         status={status}
         startTimeMs={partialEntry.start}
       />
-      <ActionButtons start={start} pause={pause} stop={stop} status={status} />
+      <ActionButtons
+        onStartPauseClick={handleStartPauseClick}
+        onStopClick={handleStopClick}
+        status={status}
+      />
       <ControlledTextArea
         content={partialEntry.description}
         setContent={setContent}
@@ -112,4 +138,10 @@ export function Timer({ addEntry }: Props) {
       />
     </div>
   );
+}
+
+function beforeUnloadHandler(e: BeforeUnloadEvent) {
+  e.preventDefault();
+  // included for legacy support, e.g. Chrome/Edge < 119
+  e.returnValue = true;
 }
