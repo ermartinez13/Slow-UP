@@ -1,41 +1,43 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
 import { notify, updatePartialEntry } from "../../helpers";
-import {
-  PartialEntry,
-  TimerEvents,
-  TimerStatus,
-  WorkUnit,
-} from "./Timer.models";
+import { PartialEntry, TimerStatus, WorkUnit } from "./Timer.models";
 import { ControlledTextArea } from "../ControlledTextArea";
 import { DEFAULT_ENTRY, DEFAULT_TIME } from "./Timer.constants";
 import { TimeRange } from "../TimeRange";
-import {
-  pauseWorker,
-  startWorker,
-  stopWorker,
-} from "../../workers/clock.helpers";
+import { useTick } from "../../hooks/use-tick";
 
 interface Props {
   addEntry: (timeEntry: WorkUnit) => void;
 }
 
 export function Timer({ addEntry }: Props) {
-  const [status, setStatus] = useState<TimerStatus>(TimerStatus.OFF);
-  const [timeSpent, setTimeSpent] = useState(0);
+  const {
+    ticks: timeSpent,
+    isRunning,
+    start: startTicks,
+    stop: stopTicks,
+    reset,
+  } = useTick();
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
   const [partialEntry, setPartialEntry] = useState<PartialEntry>({
     ...DEFAULT_ENTRY,
   });
-  const workerRef = useRef<Worker | null>(null);
   const secondsLeft = timeBudget - timeSpent;
+
+  const getStatus = () => {
+    if (isRunning) return TimerStatus.ON;
+    else if (timeSpent > 0) return TimerStatus.PAUSED;
+    else return TimerStatus.OFF;
+  };
+
+  const status = getStatus();
 
   const start = () => {
     if (status === TimerStatus.ON) return;
-    startWorker(workerRef.current);
-    setStatus(TimerStatus.ON);
+    startTicks();
     if (partialEntry.start === -1) {
       setPartialEntry((prev) =>
         updatePartialEntry(prev, {
@@ -47,10 +49,8 @@ export function Timer({ addEntry }: Props) {
 
   const stop = () => {
     if (status === TimerStatus.OFF) return;
-    stopWorker(workerRef.current);
-    setStatus(TimerStatus.OFF);
+    reset();
     notify();
-    setTimeSpent(0);
     const timeEntry: WorkUnit = {
       ...partialEntry,
       end: Date.now(),
@@ -62,8 +62,7 @@ export function Timer({ addEntry }: Props) {
 
   const pause = () => {
     if (status === TimerStatus.PAUSED) return;
-    pauseWorker(workerRef.current);
-    setStatus(TimerStatus.PAUSED);
+    stopTicks();
   };
 
   const setContent = (content: string) => {
@@ -88,26 +87,6 @@ export function Timer({ addEntry }: Props) {
     window.removeEventListener("beforeunload", beforeUnloadHandler);
     stop();
   };
-
-  useEffect(() => {
-    const worker = new Worker(
-      new URL("../../workers/clock.ts", import.meta.url),
-      {
-        type: "module",
-      }
-    );
-    workerRef.current = worker;
-
-    const tick = () => setTimeSpent((prev) => prev + 1);
-
-    worker.onmessage = ({ data }) => {
-      if (data.type === TimerEvents.TICK) tick();
-    };
-
-    return () => {
-      worker.terminate();
-    };
-  }, []);
 
   if (timeSpent >= timeBudget && status !== "off") {
     stop();

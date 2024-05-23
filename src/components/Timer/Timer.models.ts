@@ -14,9 +14,8 @@ export enum TimerStatus {
   OFF = "off",
 }
 
-export enum TimerEvents {
-  START = "START",
-  STOP = "STOP",
-  PAUSE = "PAUSE",
-  TICK = "TICK",
+export enum ClockEvent {
+  START = 'START',
+  STOP = 'STOP',
+  TICK = 'TICK',
 }
