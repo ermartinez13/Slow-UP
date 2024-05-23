@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { TickEvent, TimerEvents } from '../components/Timer/Timer.models'; // replace with actual path
+import { ClockEvent } from '../components/Timer/Timer.models'; 
+import { startWorker, stopWorker } from '../workers/clock.helpers';
 
 export function useTick(initialTicks = 0, tickLength = 1000) {
   const [ticks, setTicks] = useState(initialTicks);
@@ -18,7 +19,7 @@ export function useTick(initialTicks = 0, tickLength = 1000) {
     const tick = () => setTicks((prev) => prev + 1);
 
     worker.onmessage = ({ data }) => {
-      if (data.type === TickEvent.TICK) tick();
+      if (data.type === ClockEvent.TICK) tick();
     };
 
     return () => {
@@ -27,19 +28,18 @@ export function useTick(initialTicks = 0, tickLength = 1000) {
   }, []);
 
   const start = () => {
-    if (workerRef.current) workerRef.current.postMessage({ type: TickEvent.START, tickLength });
+    startWorker(workerRef.current, tickLength)
     setIsRunning(true);
   };
 
   const stop = () => {
-    if (workerRef.current) workerRef.current.postMessage({ type: TickEvent.STOP });
+    stopWorker(workerRef.current)
     setIsRunning(false);
   };
 
   const reset = () => {
-    if (workerRef.current) workerRef.current.postMessage({ type: TickEvent.STOP });
+    stop()
     setTicks(initialTicks);
-    setIsRunning(false);
   };
 
   return { ticks, isRunning, start, stop, reset };

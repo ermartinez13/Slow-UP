@@ -1,18 +1,18 @@
-import { TickEvent } from "../components/Timer/Timer.models";
+import { ClockEvent } from "../components/Timer/Timer.models";
 
 let intervalId: number | undefined;
 
 const tick = () => {
-  self.postMessage({ type: TickEvent.TICK });
+  self.postMessage({ type: ClockEvent.TICK });
 };
 
 self.onmessage = ({ data }) => {
-  if (data.type === TickEvent.START) {
+  if (data.type === ClockEvent.START) {
     const tickLength = data.tickLength || 1000; // default to 1000 if not provided
     intervalId = self.setInterval(tick, tickLength);
   }
 
-  if (data.type === TickEvent.STOP) {
+  if (data.type === ClockEvent.STOP) {
     self.clearInterval(intervalId);
   }
 };

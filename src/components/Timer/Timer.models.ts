@@ -21,7 +21,7 @@ export enum TimerEvents {
   TICK = "TICK",
 }
 
-export enum TickEvent {
+export enum ClockEvent {
   START = 'start',
   STOP = 'stop',
   TICK = 'tick',
