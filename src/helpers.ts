@@ -1,4 +1,4 @@
-import { WorkUnit } from "./components/Timer/Timer.models";
+import { PartialEntry, WorkUnit } from "./components/Timer/Timer.models";
 
 export function notify() {
   const permissionGranted = window.Notification?.permission === "granted";
@@ -49,4 +49,8 @@ export function getEntryIndex(entry: WorkUnit, entries: WorkUnit[]) {
     }
   }
   return -1;
+}
+
+export function updatePartialEntry(partialEntry: PartialEntry, updates: Partial<PartialEntry>) {
+  return { ...partialEntry, ...updates };
 }
