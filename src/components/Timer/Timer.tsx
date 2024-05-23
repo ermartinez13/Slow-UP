@@ -16,22 +16,28 @@ interface Props {
 export function Timer({ addEntry }: Props) {
   const {
     ticks: timeSpent,
+    isRunning,
     start: startTicks,
     stop: stopTicks,
     reset,
   } = useTick();
-  const [status, setStatus] = useState<TimerStatus>(TimerStatus.OFF);
-  // const [timeSpent, setTimeSpent] = useState(0);
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
   const [partialEntry, setPartialEntry] = useState<PartialEntry>({
     ...DEFAULT_ENTRY,
   });
   const secondsLeft = timeBudget - timeSpent;
 
+  const getStatus = () => {
+    if (isRunning) return TimerStatus.ON;
+    else if (timeSpent > 0) return TimerStatus.PAUSED;
+    else return TimerStatus.OFF;
+  };
+
+  const status = getStatus();
+
   const start = () => {
     if (status === TimerStatus.ON) return;
     startTicks();
-    setStatus(TimerStatus.ON);
     if (partialEntry.start === -1) {
       setPartialEntry((prev) =>
         updatePartialEntry(prev, {
@@ -44,7 +50,6 @@ export function Timer({ addEntry }: Props) {
   const stop = () => {
     if (status === TimerStatus.OFF) return;
     reset();
-    setStatus(TimerStatus.OFF);
     notify();
     const timeEntry: WorkUnit = {
       ...partialEntry,
@@ -58,7 +63,6 @@ export function Timer({ addEntry }: Props) {
   const pause = () => {
     if (status === TimerStatus.PAUSED) return;
     stopTicks();
-    setStatus(TimerStatus.PAUSED);
   };
 
   const setContent = (content: string) => {
