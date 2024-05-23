@@ -11,6 +11,7 @@ import {
 } from "./Timer.models";
 import { ControlledTextArea } from "../ControlledTextArea";
 import { DEFAULT_ENTRY, DEFAULT_TIME } from "./Timer.constants";
+import { TimeRange } from "../TimeRange";
 
 interface Props {
   addEntry: (timeEntry: WorkUnit) => void;
@@ -97,6 +98,11 @@ export function Timer({ addEntry }: Props) {
         setTimeBudget={setTimeBudget}
         key={secondsLeft}
         status={status}
+      />
+      <TimeRange
+        secondsLeft={secondsLeft}
+        status={status}
+        startTimeMs={partialEntry.start}
       />
       <ActionButtons start={start} pause={pause} stop={stop} status={status} />
       <ControlledTextArea
