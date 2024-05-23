@@ -67,6 +67,22 @@ export function Timer({ addEntry }: Props) {
     }));
   };
 
+  const handleStartPauseClick = () => {
+    if (status === TimerStatus.ON) {
+      pause();
+    } else {
+      if (status === TimerStatus.OFF) {
+        window.addEventListener("beforeunload", beforeUnloadHandler);
+      }
+      start();
+    }
+  };
+
+  const handleStopClick = () => {
+    window.removeEventListener("beforeunload", beforeUnloadHandler);
+    stop();
+  };
+
   useEffect(() => {
     const worker = new Worker(
       new URL("../../workers/clock.ts", import.meta.url),
@@ -104,7 +120,11 @@ export function Timer({ addEntry }: Props) {
         status={status}
         startTimeMs={partialEntry.start}
       />
-      <ActionButtons start={start} pause={pause} stop={stop} status={status} />
+      <ActionButtons
+        onStartPauseClick={handleStartPauseClick}
+        onStopClick={handleStopClick}
+        status={status}
+      />
       <ControlledTextArea
         content={partialEntry.description}
         setContent={setContent}
@@ -112,4 +132,10 @@ export function Timer({ addEntry }: Props) {
       />
     </div>
   );
+}
+
+function beforeUnloadHandler(e: BeforeUnloadEvent) {
+  e.preventDefault();
+  // included for legacy support, e.g. Chrome/Edge < 119
+  e.returnValue = true;
 }
