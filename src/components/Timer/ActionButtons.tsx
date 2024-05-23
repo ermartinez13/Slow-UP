@@ -9,12 +9,17 @@ interface Props {
 
 export function ActionButtons({ start, pause, stop, status }: Props) {
   const isOff = status === TimerStatus.OFF;
+  const isPaused = status === TimerStatus.PAUSED;
 
   const handleStartPauseClick = () => {
+    if (!isOff && !isPaused) {
+      pause();
+      return;
+    }
     if (isOff) {
       window.addEventListener("beforeunload", beforeUnloadHandler);
     }
-    isOff ? start() : pause();
+    start();
   };
 
   const handleStopClick = () => {
@@ -22,18 +27,21 @@ export function ActionButtons({ start, pause, stop, status }: Props) {
     stop();
   };
 
-  const primaryButton = (
-    <button onClick={handleStartPauseClick} className={`${isOff ? "bg-green-700" : "bg-amber-700"} w-24 h-6`}>
-      {isOff ? "Start" : "Pause"}
-    </button>
-  );
-
   return (
     <div className="flex flex-row justify-center gap-x-4">
-      <button onClick={handleStopClick} disabled={isOff} className="w-24 h-6 bg-zinc-600">
+      <button
+        onClick={handleStopClick}
+        disabled={isOff}
+        className="w-24 h-6 bg-zinc-600"
+      >
         Stop
       </button>
-      {primaryButton}
+      <button
+        onClick={handleStartPauseClick}
+        className={`${isOff || isPaused ? "bg-green-700" : "bg-amber-700"} w-24 h-6`}
+      >
+        {isOff ? "Start" : isPaused ? "Resume" : "Pause"}
+      </button>
     </div>
   );
 }
