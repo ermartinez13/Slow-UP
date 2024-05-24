@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { getDayBoundaries } from "../../helpers/date.helpers";
 import { findFirstEntryIdxByDate } from "../../helpers/work-unit.helpers";
 import { WorkUnit } from "../Timer/Timer.models";
@@ -10,13 +11,26 @@ interface Props {
 }
 
 export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
-  const { start } = getDayBoundaries(0); // get today's boundaries
-  const idx = findFirstEntryIdxByDate(start, entries);
-  const todaysEntries = entries.slice(idx).reverse();
+  const [dateOffset, setDateOffset] = useState(0);
+
+  const { start: targetDateStart, end: targetDateEnd } =
+    getDayBoundaries(dateOffset);
+  const nextDayStart = targetDateEnd + 1;
+  const firstEntryIdxForTargetDate = findFirstEntryIdxByDate(
+    targetDateStart,
+    entries
+  );
+  const firstEntryIdxForNextDay = findFirstEntryIdxByDate(
+    nextDayStart,
+    entries
+  );
+  const targetEntries = entries
+    .slice(firstEntryIdxForTargetDate, firstEntryIdxForNextDay)
+    .reverse();
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-      {todaysEntries.map((entry) => {
+      {targetEntries.map((entry) => {
         return (
           <TimeEntry
             entry={entry}
