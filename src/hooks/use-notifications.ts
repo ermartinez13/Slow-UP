@@ -1,7 +1,7 @@
-import { usePermissions } from './use-permissions';
+import { usePermission } from './use-permission';
 
 export function useNotifications() {
-  const permissionState = usePermissions('notifications');
+  const permissionState = usePermission('notifications');
 
   const requestPermission = () => {
     window.Notification.requestPermission();

@@ -5,7 +5,7 @@ import { getEntryIndex, getSecondsSpentToday } from "./helpers";
 import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 import { WorkUnit } from "./components/Timer/Timer.models";
 import { useLocalStorage } from "./hooks/use-local-storage";
-import { usePermissions } from "./hooks/use-permissions";
+import { usePermission } from "./hooks/use-permission";
 
 const INITIAL_ENTRIES: WorkUnit[] = [];
 
@@ -14,7 +14,7 @@ function App() {
     "entries",
     INITIAL_ENTRIES
   );
-  const notificationsPermission = usePermissions("notifications");
+  const notificationsPermission = usePermission("notifications");
   const secondsSpentToday = getSecondsSpentToday(entries);
 
   const addEntry = (entry: WorkUnit) => {

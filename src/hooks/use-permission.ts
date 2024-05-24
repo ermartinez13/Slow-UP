@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function usePermissions(permissionName: PermissionName) {
+export function usePermission(permissionName: PermissionName) {
   const [permissionState, setPermissionState] = useState<
     PermissionState | undefined
   >();
