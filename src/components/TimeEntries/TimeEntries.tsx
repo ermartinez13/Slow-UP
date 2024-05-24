@@ -42,16 +42,27 @@ export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
     setDateOffset(0);
   };
 
+  const isToday = dateOffset === 0;
+  const formattedDate = new Date(targetDateStart).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <div>
       <div className="flex justify-between mb-4">
         <button onClick={handlePreviousDay}>Previous Day</button>
-        <button onClick={handleNextDay} disabled={dateOffset === 0}>
-          Next Day
-        </button>
-        <button onClick={handleToday} disabled={dateOffset === 0}>
-          Today
-        </button>
+        <span>{formattedDate}</span>
+        <div>
+          <button onClick={handleNextDay} disabled={isToday}>
+            Next Day
+          </button>
+          <button onClick={handleToday} disabled={isToday}>
+            Today
+          </button>
+        </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {targetEntries.map((entry) => {
