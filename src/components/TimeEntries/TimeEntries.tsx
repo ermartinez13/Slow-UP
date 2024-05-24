@@ -1,4 +1,5 @@
-import { findTodaysEarliestEntryIdx } from "../../helpers";
+import { getDayBoundaries } from "../../helpers/date.helpers";
+import { findFirstEntryIdxByDate } from "../../helpers/work-unit.helpers";
 import { WorkUnit } from "../Timer/Timer.models";
 import { TimeEntry } from "./TimeEntry";
 
@@ -9,7 +10,8 @@ interface Props {
 }
 
 export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
-  const idx = findTodaysEarliestEntryIdx(entries);
+  const { start } = getDayBoundaries(0); // get today's boundaries
+  const idx = findFirstEntryIdxByDate(start, entries);
   const todaysEntries = entries.slice(idx).reverse();
 
   return (
