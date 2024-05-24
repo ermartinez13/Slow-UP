@@ -2,7 +2,7 @@ import { ControlledTextArea } from "../ControlledTextArea";
 import { WorkUnit } from "../Timer/Timer.models";
 import {
   getDatesToRender,
-  getTimeSpentToRender,
+  getTimeSpentStr,
   getTimesToRender,
 } from "./TimeEntries.helpers";
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
-  const timeSpent = getTimeSpentToRender(entry.spent);
+  const timeSpentStr = getTimeSpentStr(entry.spent);
   const dates = getDatesToRender(entry.start, entry.end);
   const times = getTimesToRender(entry.start, entry.end);
   const setContent = (content: string) => {
@@ -44,7 +44,7 @@ export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
       </button>
       <p>{dates}</p>
       <p>{times}</p>
-      <p>{timeSpent}</p>
+      <p>{timeSpentStr}</p>
       <ControlledTextArea
         content={entry.description ? entry.description : entry.text ?? ""}
         setContent={setContent}

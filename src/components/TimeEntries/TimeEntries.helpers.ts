@@ -1,11 +1,3 @@
-export function getTimeSpentStr(timeSpent: number) {
-  const minutes = Math.floor(timeSpent / 60);
-  const seconds = timeSpent % 60;
-  if (minutes > 0 && seconds > 0) return `${minutes}min ${seconds}s`;
-  if (minutes > 0) return `${minutes}min`;
-  return `${seconds}s`;
-}
-
 export function getFormattedDate(timestamp: number) {
   const date = new Date(timestamp);
   const month = (date.getMonth() + 1).toString();
@@ -36,7 +28,28 @@ export function getTimesToRender(startTimestamp: number, endTimestamp: number) {
   return `${timeStart}${isSameTime ? "" : ` - ${timeEnd}`}`;
 }
 
-export function getTimeSpentToRender(timeSpent: number | undefined) {
-  if (timeSpent === undefined) return "n/a";
-  return getTimeSpentStr(timeSpent);
+interface TimeBreakdown {
+  hours: number;
+  minutes: number;
+  seconds: number;
+  centiseconds: number;
+}
+
+function millisecondsToTimeBreakdown(milliseconds: number): TimeBreakdown {
+  const centiseconds = Math.floor((milliseconds % 1000) / 10);
+  const seconds = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secondsLeft = seconds % 60;
+
+  return { hours, minutes, seconds: secondsLeft, centiseconds };
+}
+
+export function getTimeSpentStr(timeSpent: number) {
+  const {hours, minutes, seconds} = millisecondsToTimeBreakdown(timeSpent);
+  let timeString = '';
+  if (hours > 0) timeString += `${hours}h `;
+  if (minutes > 0) timeString += `${minutes}m `;
+  timeString += `${seconds}s`;
+  return timeString;
 }

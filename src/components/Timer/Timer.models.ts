@@ -1,8 +1,8 @@
 export interface WorkUnit {
-  start: number;
-  end: number;
+  start: number; // milliseconds
+  end: number; // milliseconds
   description: string;
-  spent: number;
+  spent: number; // milliseconds
   text?: string; // property has been deprecated, but is still relevant for existing users
 }
 
