@@ -29,7 +29,7 @@ export function findTodaysEarliestEntryIdx(entries: WorkUnit[]) {
   return low;
 }
 
-export function getSecondsSpentToday(entries: WorkUnit[]) {
+export function getMillisecondsSpentToday(entries: WorkUnit[]) {
   const idx = findTodaysEarliestEntryIdx(entries);
   const todaysEntries = entries.slice(idx);
   return todaysEntries.reduce((acc, entry) => acc + entry.spent, 0);

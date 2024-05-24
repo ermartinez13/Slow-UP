@@ -1,10 +1,4 @@
-export function getTimeSpentStr(timeSpent: number) {
-  const minutes = Math.floor(timeSpent / 60);
-  const seconds = timeSpent % 60;
-  if (minutes > 0 && seconds > 0) return `${minutes}min ${seconds}s`;
-  if (minutes > 0) return `${minutes}min`;
-  return `${seconds}s`;
-}
+import { millisecondsToTimeBreakdown } from "../../helpers/time-conversion";
 
 export function getFormattedDate(timestamp: number) {
   const date = new Date(timestamp);
@@ -36,7 +30,11 @@ export function getTimesToRender(startTimestamp: number, endTimestamp: number) {
   return `${timeStart}${isSameTime ? "" : ` - ${timeEnd}`}`;
 }
 
-export function getTimeSpentToRender(timeSpent: number | undefined) {
-  if (timeSpent === undefined) return "n/a";
-  return getTimeSpentStr(timeSpent);
+export function getTimeSpentStr(timeSpent: number) {
+  const {hours, minutes, seconds} = millisecondsToTimeBreakdown(timeSpent);
+  let timeString = '';
+  if (hours > 0) timeString += `${hours}h `;
+  if (minutes > 0) timeString += `${minutes}m `;
+  timeString += `${seconds}s`;
+  return timeString;
 }
