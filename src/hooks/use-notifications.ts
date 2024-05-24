@@ -7,5 +7,5 @@ export function useNotifications() {
     window.Notification.requestPermission();
   };
 
-  return [permissionState, requestPermission];
+  return [permissionState, requestPermission] as const;
 }
