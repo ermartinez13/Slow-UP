@@ -7,8 +7,8 @@ const tick = () => {
 };
 
 self.onmessage = ({ data }) => {
-  if (data.type === ClockEvent.START) {
-    const tickLength = data.tickLength || 1000; // default to 1000 if not provided
+if (data.type === ClockEvent.START) {
+    const tickLength = data.tickLength;
     intervalId = self.setInterval(tick, tickLength);
   }
 
