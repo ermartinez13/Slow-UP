@@ -2,7 +2,7 @@ import { TimerStatus } from "../Timer/Timer.models";
 
 interface Props {
   startTimeMs: number;
-  secondsLeft: number;
+  millisecondsLeft: number;
   status: TimerStatus;
 }
 
@@ -10,7 +10,7 @@ function padZero(value: number): string {
   return value.toString().padStart(2, "0");
 }
 
-export function TimeRange({ startTimeMs, secondsLeft, status }: Props) {
+export function TimeRange({ startTimeMs, millisecondsLeft, status }: Props) {
   if (startTimeMs === -1) {
     return (
       <div>
@@ -22,7 +22,7 @@ export function TimeRange({ startTimeMs, secondsLeft, status }: Props) {
 
   const expectedCompletionTime =
     status === TimerStatus.ON
-      ? formatTime(Date.now() + secondsLeft * 1000)
+      ? formatTime(Date.now() + millisecondsLeft)
       : "--";
   const startTime = formatTime(startTimeMs);
 

@@ -20,12 +20,12 @@ export function Timer({ addEntry }: Props) {
     start: startTicks,
     stop: stopTicks,
     reset,
-  } = useTick();
+  } = useTick({ tickLength: 100 });
   const [timeBudget, setTimeBudget] = useState(DEFAULT_TIME);
   const [partialEntry, setPartialEntry] = useState<PartialEntry>({
     ...DEFAULT_ENTRY,
   });
-  const secondsLeft = timeBudget - timeSpent;
+  const millisecondsLeft = timeBudget - timeSpent;
 
   const getStatus = () => {
     if (isRunning) return TimerStatus.ON;
@@ -95,13 +95,13 @@ export function Timer({ addEntry }: Props) {
   return (
     <div className="grid gap-y-8 place-content-center">
       <TimeDisplay
-        secondsLeft={secondsLeft}
+        millisecondsLeft={millisecondsLeft}
         setTimeBudget={setTimeBudget}
-        key={secondsLeft}
+        key={millisecondsLeft}
         status={status}
       />
       <TimeRange
-        secondsLeft={secondsLeft}
+        millisecondsLeft={millisecondsLeft}
         status={status}
         startTimeMs={partialEntry.start}
       />
