@@ -28,18 +28,43 @@ export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
     .slice(firstEntryIdxForTargetDate, firstEntryIdxForNextDay)
     .reverse();
 
+  const handlePreviousDay = () => {
+    setDateOffset(dateOffset + 1);
+  };
+
+  const handleNextDay = () => {
+    if (dateOffset > 0) {
+      setDateOffset(dateOffset - 1);
+    }
+  };
+
+  const handleToday = () => {
+    setDateOffset(0);
+  };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-      {targetEntries.map((entry) => {
-        return (
-          <TimeEntry
-            entry={entry}
-            key={entry.start}
-            updateEntry={updateEntry}
-            deleteEntry={deleteEntry}
-          />
-        );
-      })}
+    <div>
+      <div className="flex justify-between mb-4">
+        <button onClick={handlePreviousDay}>Previous Day</button>
+        <button onClick={handleNextDay} disabled={dateOffset === 0}>
+          Next Day
+        </button>
+        <button onClick={handleToday} disabled={dateOffset === 0}>
+          Today
+        </button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        {targetEntries.map((entry) => {
+          return (
+            <TimeEntry
+              entry={entry}
+              key={entry.start}
+              updateEntry={updateEntry}
+              deleteEntry={deleteEntry}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
