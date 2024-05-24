@@ -1,4 +1,4 @@
-export function NotificationsPermissionBtn() {
+export function NotificationsPermission() {
   const requestPermission = () => window.Notification.requestPermission();
 
   return (
