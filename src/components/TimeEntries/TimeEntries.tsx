@@ -53,13 +53,23 @@ export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <button onClick={handlePreviousDay}>Previous Day</button>
+        <button className="w-28 h-6 bg-zinc-600" onClick={handlePreviousDay}>
+          Previous Day
+        </button>
         <span>{formattedDate}</span>
-        <div>
-          <button onClick={handleNextDay} disabled={isToday}>
+        <div className="space-x-4">
+          <button
+            className="w-28 h-6 bg-zinc-600"
+            onClick={handleNextDay}
+            disabled={isToday}
+          >
             Next Day
           </button>
-          <button onClick={handleToday} disabled={isToday}>
+          <button
+            className="w-28 h-6 bg-zinc-600"
+            onClick={handleToday}
+            disabled={isToday}
+          >
             Today
           </button>
         </div>
