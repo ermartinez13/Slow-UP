@@ -35,7 +35,7 @@ interface TimeBreakdown {
   centiseconds: number;
 }
 
-function millisecondsToTimeBreakdown(milliseconds: number): TimeBreakdown {
+export function millisecondsToTimeBreakdown(milliseconds: number): TimeBreakdown {
   const centiseconds = Math.floor((milliseconds % 1000) / 10);
   const seconds = Math.floor(milliseconds / 1000);
   const hours = Math.floor(seconds / 3600);
