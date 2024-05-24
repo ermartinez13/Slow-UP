@@ -1,11 +1,10 @@
 import { Timer } from "./components/Timer";
-import { NotificationsPermissionBtn } from "./components/NotificationsPermissionBtn";
+import { NotificationsPermission } from "./components/NotificationsPermission";
 import { TimeEntries } from "./components/TimeEntries";
 import { getEntryIndex, getSecondsSpentToday } from "./helpers";
 import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
 import { WorkUnit } from "./components/Timer/Timer.models";
 import { useLocalStorage } from "./hooks/use-local-storage";
-import { usePermissions } from "./hooks/use-permissions";
 
 const INITIAL_ENTRIES: WorkUnit[] = [];
 
@@ -14,7 +13,6 @@ function App() {
     "entries",
     INITIAL_ENTRIES
   );
-  const notificationsPermission = usePermissions("notifications");
   const secondsSpentToday = getSecondsSpentToday(entries);
 
   const addEntry = (entry: WorkUnit) => {
@@ -37,9 +35,7 @@ function App() {
   return (
     <main className="grid gap-y-20">
       <section>
-        {"Notification" in window && notificationsPermission === "prompt" ? (
-          <NotificationsPermissionBtn />
-        ) : null}
+        <NotificationsPermission />
         <Timer addEntry={addEntry} />
       </section>
       <section>
