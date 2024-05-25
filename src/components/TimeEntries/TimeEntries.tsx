@@ -3,6 +3,7 @@ import { getDayBoundaries } from "../../helpers/date.helpers";
 import { findFirstEntryIdxByDate } from "../../helpers/work-unit.helpers";
 import { WorkUnit } from "../Timer/Timer.models";
 import { TimeEntry } from "./TimeEntry";
+import { TotalsDisplay } from "../Timer/TotalsDisplay";
 
 interface Props {
   entries: WorkUnit[];
@@ -27,6 +28,10 @@ export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
   const targetEntries = entries
     .slice(firstEntryIdxForTargetDate, firstEntryIdxForNextDay)
     .reverse();
+  const millisecondsSpentOnTargetDate = targetEntries.reduce(
+    (acc, entry) => acc + entry.spent,
+    0
+  );
 
   const handlePreviousDay = () => {
     setDateOffset(dateOffset + 1);
@@ -52,6 +57,7 @@ export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
 
   return (
     <div>
+      <TotalsDisplay totalMilliseconds={millisecondsSpentOnTargetDate} />
       <div className="flex justify-between mb-4">
         <button className="w-28 h-6 bg-zinc-600" onClick={handlePreviousDay}>
           Previous Day

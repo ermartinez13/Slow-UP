@@ -1,8 +1,7 @@
 import { Timer } from "./components/Timer";
 import { NotificationsPermission } from "./components/NotificationsPermission";
 import { TimeEntries } from "./components/TimeEntries";
-import { getEntryIndex, getMillisecondsSpentToday } from "./helpers";
-import { TotalsDisplay } from "./components/Timer/TotalsDisplay";
+import { getEntryIndex } from "./helpers";
 import { WorkUnit } from "./components/Timer/Timer.models";
 import { useLocalStorage } from "./hooks/use-local-storage";
 
@@ -13,7 +12,6 @@ function App() {
     "entries",
     INITIAL_ENTRIES
   );
-  const millisecondsSpentToday = getMillisecondsSpentToday(entries);
 
   const addEntry = (entry: WorkUnit) => {
     setEntries(entries.concat(entry));
@@ -39,7 +37,6 @@ function App() {
         <Timer addEntry={addEntry} />
       </section>
       <section>
-        <TotalsDisplay totalMilliseconds={millisecondsSpentToday} />
         <TimeEntries
           entries={entries}
           updateEntry={updateEntry}
