@@ -57,12 +57,14 @@ export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
 
   return (
     <div>
-      <TotalsDisplay totalMilliseconds={millisecondsSpentOnTargetDate} />
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between items-center mb-4">
         <button className="w-28 h-6 bg-zinc-600" onClick={handlePreviousDay}>
           Previous Day
         </button>
-        <span>{formattedDate}</span>
+        <div className="flex flex-col items-center">
+          <span>{formattedDate}</span>
+          <TotalsDisplay totalMilliseconds={millisecondsSpentOnTargetDate} />
+        </div>
         <div className="space-x-4">
           <button
             className="w-28 h-6 bg-zinc-600"
