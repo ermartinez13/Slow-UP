@@ -1,4 +1,4 @@
-import { millisecondsToTimeBreakdown } from "../../helpers/time-conversion";
+import { millisecondsToTimeBreakdown } from "../../helpers/time.helpers";
 
 export function TotalsDisplay({
   totalMilliseconds,

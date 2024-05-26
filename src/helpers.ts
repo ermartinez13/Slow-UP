@@ -29,12 +29,6 @@ export function findTodaysEarliestEntryIdx(entries: WorkUnit[]) {
   return low;
 }
 
-export function getMillisecondsSpentToday(entries: WorkUnit[]) {
-  const idx = findTodaysEarliestEntryIdx(entries);
-  const todaysEntries = entries.slice(idx);
-  return todaysEntries.reduce((acc, entry) => acc + entry.spent, 0);
-}
-
 export function getEntryIndex(entry: WorkUnit, entries: WorkUnit[]) {
   let low = 0;
   let high = entries.length - 1;
