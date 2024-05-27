@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { TimerStatus } from "./Timer.models";
+import { ToolStatus } from "../../models/tool.models";
 
 interface Props {
   millisecondsLeft: number;
   setTimeBudget: React.Dispatch<React.SetStateAction<number>>;
-  status: TimerStatus;
+  status: ToolStatus;
 }
 
 export function TimeDisplay({
@@ -43,7 +43,7 @@ export function TimeDisplay({
           value={hours}
           onChange={(e) => setHours(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== TimerStatus.OFF}
+          disabled={status !== ToolStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -57,7 +57,7 @@ export function TimeDisplay({
           value={minutes}
           onChange={(e) => setMinutes(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== TimerStatus.OFF}
+          disabled={status !== ToolStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -71,7 +71,7 @@ export function TimeDisplay({
           value={seconds}
           onChange={(e) => setSeconds(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== TimerStatus.OFF}
+          disabled={status !== ToolStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -85,7 +85,7 @@ export function TimeDisplay({
           value={centiseconds}
           onChange={(e) => setCentiseconds(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== TimerStatus.OFF}
+          disabled={status !== ToolStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>

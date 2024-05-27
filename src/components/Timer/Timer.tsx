@@ -3,11 +3,12 @@ import { useState } from "react";
 import { ActionButtons } from "./ActionButtons";
 import { TimeDisplay } from "./TimeDisplay";
 import { notify, updatePartialEntry } from "../../helpers";
-import { PartialEntry, TimerStatus, WorkUnit } from "./Timer.models";
+import { PartialEntry, WorkUnit } from "./Timer.models";
 import { ControlledTextArea } from "../ControlledTextArea";
 import { DEFAULT_ENTRY, DEFAULT_TIME } from "./Timer.constants";
 import { TimeRange } from "../TimeRange";
 import { useTick } from "../../hooks/use-tick";
+import { ToolStatus } from "../../models/tool.models";
 
 interface Props {
   addEntry: (timeEntry: WorkUnit) => void;
@@ -28,15 +29,15 @@ export function Timer({ addEntry }: Props) {
   const millisecondsLeft = timeBudget - timeSpent;
 
   const getStatus = () => {
-    if (isRunning) return TimerStatus.ON;
-    else if (timeSpent > 0) return TimerStatus.PAUSED;
-    else return TimerStatus.OFF;
+    if (isRunning) return ToolStatus.ON;
+    else if (timeSpent > 0) return ToolStatus.PAUSED;
+    else return ToolStatus.OFF;
   };
 
   const status = getStatus();
 
   const start = () => {
-    if (status === TimerStatus.ON) return;
+    if (status === ToolStatus.ON) return;
     startTicks();
     if (partialEntry.start === -1) {
       setPartialEntry((prev) =>
@@ -48,7 +49,7 @@ export function Timer({ addEntry }: Props) {
   };
 
   const stop = () => {
-    if (status === TimerStatus.OFF) return;
+    if (status === ToolStatus.OFF) return;
     reset();
     notify();
     const timeEntry: WorkUnit = {
@@ -61,7 +62,7 @@ export function Timer({ addEntry }: Props) {
   };
 
   const pause = () => {
-    if (status === TimerStatus.PAUSED) return;
+    if (status === ToolStatus.PAUSED) return;
     stopTicks();
   };
 
@@ -73,10 +74,10 @@ export function Timer({ addEntry }: Props) {
   };
 
   const handleStartPauseClick = () => {
-    if (status === TimerStatus.ON) {
+    if (status === ToolStatus.ON) {
       pause();
     } else {
-      if (status === TimerStatus.OFF) {
+      if (status === ToolStatus.OFF) {
         window.addEventListener("beforeunload", beforeUnloadHandler);
       }
       start();
@@ -88,7 +89,7 @@ export function Timer({ addEntry }: Props) {
     stop();
   };
 
-  if (timeSpent >= timeBudget && status !== "off") {
+  if (timeSpent >= timeBudget && status !== ToolStatus.OFF) {
     stop();
   }
 

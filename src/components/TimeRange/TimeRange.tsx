@@ -1,9 +1,9 @@
-import { TimerStatus } from "../Timer/Timer.models";
+import { ToolStatus } from "../../models/tool.models";
 
 interface Props {
   startTimeMs: number;
   millisecondsLeft: number;
-  status: TimerStatus;
+  status: ToolStatus;
 }
 
 function padZero(value: number): string {
@@ -21,9 +21,7 @@ export function TimeRange({ startTimeMs, millisecondsLeft, status }: Props) {
   }
 
   const expectedCompletionTime =
-    status === TimerStatus.ON
-      ? formatTime(Date.now() + millisecondsLeft)
-      : "--";
+    status === ToolStatus.ON ? formatTime(Date.now() + millisecondsLeft) : "--";
   const startTime = formatTime(startTimeMs);
 
   return (

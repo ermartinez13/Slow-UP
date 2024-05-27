@@ -1,9 +1,9 @@
-import { TimerStatus } from "./Timer.models";
+import { ToolStatus } from "../../models/tool.models";
 
 interface Props {
   onStartPauseClick: () => void;
   onStopClick: () => void;
-  status: TimerStatus;
+  status: ToolStatus;
 }
 
 export function ActionButtons({
@@ -11,8 +11,8 @@ export function ActionButtons({
   onStopClick,
   status,
 }: Props) {
-  const isOff = status === TimerStatus.OFF;
-  const isPaused = status === TimerStatus.PAUSED;
+  const isOff = status === ToolStatus.OFF;
+  const isPaused = status === ToolStatus.PAUSED;
 
   return (
     <div className="flex flex-row justify-center gap-x-4">
