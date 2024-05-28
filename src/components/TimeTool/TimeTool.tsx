@@ -42,18 +42,33 @@ export function TimeTool({ addEntry }: Props) {
   };
 
   const startPause = () => {
+    // pause time tracking
     if (status === ToolStatus.ON) {
       stopTicks();
     } else {
       if (status === ToolStatus.OFF) {
+        /*
+          when transitioning from off to on:
+          - add listener to prevent inadvertent data loss (via warning dialog)
+          - mark the start of the time tracking
+        */
         window.addEventListener("beforeunload", beforeUnloadHandler);
         setPartialEntry((prev) => ({ ...prev, start: Date.now() }));
       }
+      // start or resume time tracking
       startTicks();
     }
   };
 
   const stop = () => {
+    /*
+    when transitioning to off:
+    - remove listener that prevents data loss (via warning dialog)
+    - reset the tracked time to zero
+    - trigger desktop notifications that session has completed
+    - create and save a new entry with the tracked time
+    - reset the time entry to its default state
+  */
     window.removeEventListener("beforeunload", beforeUnloadHandler);
     reset();
     notify();

@@ -14,6 +14,7 @@ export function Timer({ timeSpent, stop, status }: Props) {
   const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
   const millisecondsLeft = timeBudget - timeSpent;
 
+  // automatically stop time tracking when the budgeted time is reached
   if (timeSpent >= timeBudget && status !== ToolStatus.OFF) {
     stop();
   }

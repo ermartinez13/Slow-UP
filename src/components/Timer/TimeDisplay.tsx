@@ -8,6 +8,10 @@ interface Props {
   status: ToolStatus;
 }
 
+/*
+  This component maintains internal state to allow intuitive editing of the time budget.
+  The state is used to update the time budget when the user blurs the input fields.
+*/
 export function TimeDisplay({
   millisecondsLeft,
   setTimeBudget,
