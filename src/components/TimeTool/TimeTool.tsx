@@ -7,6 +7,8 @@ import { ActionButtons } from "../Timer/ActionButtons";
 import { ControlledTextArea } from "../ControlledTextArea";
 import { Timer } from "../Timer";
 import React from "react";
+import { Toggle } from "../Toggle";
+import { Stopwatch } from "../Stopwatch/Stopwatch";
 
 interface Props {
   addEntry: (timeEntry: WorkUnit) => void;
@@ -20,6 +22,7 @@ export function TimeTool({ addEntry }: Props) {
     stop: stopTicks,
     reset,
   } = useTick({ tickLength: 100 });
+  const [showPrimaryTool, setShowPrimaryTool] = React.useState(true);
   const [partialEntry, setPartialEntry] = React.useState<PartialEntry>({
     ...DEFAULT_ENTRY,
   });
@@ -62,14 +65,28 @@ export function TimeTool({ addEntry }: Props) {
     addEntry(timeEntry);
   };
 
+  const toggleTool = () => {
+    setShowPrimaryTool((prev) => !prev);
+  };
+
   return (
     <div className="grid gap-y-8 place-content-center">
-      <Timer
-        timeSpent={timeSpent}
-        status={status}
-        partialEntry={partialEntry}
-        stop={stop}
+      <Toggle
+        isOn={showPrimaryTool}
+        handleToggle={toggleTool}
+        offText="Stopwatch"
+        onText="Timer"
       />
+      {showPrimaryTool ? (
+        <Timer
+          timeSpent={timeSpent}
+          stop={stop}
+          status={status}
+          partialEntry={partialEntry}
+        />
+      ) : (
+        <Stopwatch timeSpent={timeSpent} />
+      )}
       <ActionButtons
         handleStartPause={startPause}
         handleStop={stop}

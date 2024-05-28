@@ -1,9 +1,9 @@
-import { Timer } from "./components/Timer";
 import { NotificationsPermission } from "./components/NotificationsPermission";
 import { TimeEntries } from "./components/TimeEntries";
 import { getEntryIndex } from "./helpers";
 import { WorkUnit } from "./components/Timer/Timer.models";
 import { useLocalStorage } from "./hooks/use-local-storage";
+import { TimeTool } from "./components/TimeTool/TimeTool";
 
 const INITIAL_ENTRIES: WorkUnit[] = [];
 
@@ -34,7 +34,7 @@ function App() {
     <main className="grid gap-y-20">
       <section>
         <NotificationsPermission />
-        <Timer addEntry={addEntry} />
+        <TimeTool addEntry={addEntry} />
       </section>
       <section>
         <TimeEntries
