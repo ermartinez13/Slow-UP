@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import { getDayBoundaries } from "../../helpers/date.helpers";
-import { findFirstEntryIdxByDate } from "../../helpers/work-unit.helpers";
+import { getDayBoundaries, findFirstEntryIdxByDate } from "../../helpers";
 import { WorkEntry } from "../../models";
 import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "../Timer/TotalsDisplay";

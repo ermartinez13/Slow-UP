@@ -2,13 +2,13 @@ import React from "react";
 
 import { DEFAULT_ENTRY } from "../Timer/Timer.constants";
 import { useTick } from "../../hooks/use-tick";
-import { notify } from "../../helpers";
 import { ActionButtons } from "../Timer/ActionButtons";
 import { ControlledTextArea } from "../ControlledTextArea";
 import { Timer } from "../Timer";
 import { Toggle } from "../Toggle";
 import { Stopwatch } from "../Stopwatch/Stopwatch";
 import { PartialEntry, WorkEntry, ToolStatus } from "../../models";
+import { notify } from "../../helpers";
 
 interface Props {
   addEntry: (timeEntry: WorkEntry) => void;

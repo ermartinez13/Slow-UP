@@ -16,3 +16,19 @@ export function findFirstEntryIdxByDate(
   }
   return low;
 }
+
+export function getEntryIndex(entry: WorkEntry, entries: WorkEntry[]) {
+  let low = 0;
+  let high = entries.length - 1;
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    if (entries[mid].start === entry.start && entries[mid].end === entry.end) {
+      return mid;
+    } else if (entries[mid].end > entry.end) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return -1;
+}
