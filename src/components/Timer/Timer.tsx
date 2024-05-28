@@ -1,17 +1,16 @@
 import React from "react";
-import { PartialEntry, ToolStatus } from "../../models";
+import { ToolStatus } from "../../models";
 import { DEFAULT_TIME } from "./Timer.constants";
 import { TimeDisplay } from "./TimeDisplay";
-import { TimeRange } from "../TimeRange";
+import { TimeEnd } from "../TimeEnd";
 
 interface Props {
   timeSpent: number;
   stop: () => void;
   status: ToolStatus;
-  partialEntry: PartialEntry;
 }
 
-export function Timer({ timeSpent, stop, status, partialEntry }: Props) {
+export function Timer({ timeSpent, stop, status }: Props) {
   const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
   const millisecondsLeft = timeBudget - timeSpent;
 
@@ -27,11 +26,7 @@ export function Timer({ timeSpent, stop, status, partialEntry }: Props) {
         key={millisecondsLeft}
         status={status}
       />
-      <TimeRange
-        millisecondsLeft={millisecondsLeft}
-        status={status}
-        startTimeMs={partialEntry.start}
-      />
+      <TimeEnd millisecondsLeft={millisecondsLeft} status={status} />
     </>
   );
 }

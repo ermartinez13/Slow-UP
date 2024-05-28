@@ -9,6 +9,7 @@ import { Toggle } from "../Toggle";
 import { Stopwatch } from "../Stopwatch/Stopwatch";
 import { PartialEntry, WorkEntry, ToolStatus } from "../../models";
 import { notify } from "../../helpers";
+import { TimeStart } from "../TimeStart";
 
 interface Props {
   addEntry: (timeEntry: WorkEntry) => void;
@@ -77,13 +78,9 @@ export function TimeTool({ addEntry }: Props) {
         offText="Stopwatch"
         onText="Timer"
       />
+      <TimeStart startTimeMs={partialEntry.start} />
       {showPrimaryTool ? (
-        <Timer
-          timeSpent={timeSpent}
-          stop={stop}
-          status={status}
-          partialEntry={partialEntry}
-        />
+        <Timer timeSpent={timeSpent} stop={stop} status={status} />
       ) : (
         <Stopwatch timeSpent={timeSpent} />
       )}
