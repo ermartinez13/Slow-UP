@@ -1,4 +1,4 @@
-import { WorkUnit } from "./components/Timer/Timer.models";
+import { WorkEntry } from "./models";
 
 export function notify() {
   const permissionGranted = window.Notification?.permission === "granted";
@@ -13,7 +13,7 @@ export function notify() {
   }
 }
 
-export function findTodaysEarliestEntryIdx(entries: WorkUnit[]) {
+export function findTodaysEarliestEntryIdx(entries: WorkEntry[]) {
   const today = new Date();
   const timestamp = today.setHours(0, 0, 0, 0);
   let low = 0;
@@ -29,7 +29,7 @@ export function findTodaysEarliestEntryIdx(entries: WorkUnit[]) {
   return low;
 }
 
-export function getEntryIndex(entry: WorkUnit, entries: WorkUnit[]) {
+export function getEntryIndex(entry: WorkEntry, entries: WorkEntry[]) {
   let low = 0;
   let high = entries.length - 1;
   while (low <= high) {

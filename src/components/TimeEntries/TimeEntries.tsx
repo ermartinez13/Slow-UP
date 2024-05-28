@@ -1,14 +1,15 @@
 import { useState } from "react";
+
 import { getDayBoundaries } from "../../helpers/date.helpers";
 import { findFirstEntryIdxByDate } from "../../helpers/work-unit.helpers";
-import { WorkUnit } from "../Timer/Timer.models";
+import { WorkEntry } from "../../models";
 import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "../Timer/TotalsDisplay";
 
 interface Props {
-  entries: WorkUnit[];
-  updateEntry: (timeEntry: WorkUnit) => void;
-  deleteEntry: (timeEntry: WorkUnit) => void;
+  entries: WorkEntry[];
+  updateEntry: (timeEntry: WorkEntry) => void;
+  deleteEntry: (timeEntry: WorkEntry) => void;
 }
 
 export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {

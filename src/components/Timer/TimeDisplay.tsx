@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { ToolStatus } from "../../models/tool.models";
+import React from "react";
+
+import { ToolStatus } from "../../models";
 
 interface Props {
   millisecondsLeft: number;
@@ -12,14 +13,16 @@ export function TimeDisplay({
   setTimeBudget,
   status,
 }: Props) {
-  const [hours, setHours] = useState(Math.floor(millisecondsLeft / 3600000));
-  const [minutes, setMinutes] = useState(
+  const [hours, setHours] = React.useState(
+    Math.floor(millisecondsLeft / 3600000)
+  );
+  const [minutes, setMinutes] = React.useState(
     Math.floor((millisecondsLeft % 3600000) / 60000)
   );
-  const [seconds, setSeconds] = useState(
+  const [seconds, setSeconds] = React.useState(
     Math.floor((millisecondsLeft % 60000) / 1000)
   );
-  const [centiseconds, setCentiseconds] = useState(
+  const [centiseconds, setCentiseconds] = React.useState(
     Math.floor((millisecondsLeft % 1000) / 100)
   );
 

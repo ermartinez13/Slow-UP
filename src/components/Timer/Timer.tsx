@@ -1,6 +1,5 @@
 import React from "react";
-import { ToolStatus } from "../../models/tool.models";
-import { PartialEntry } from "./Timer.models";
+import { PartialEntry, ToolStatus } from "../../models";
 import { DEFAULT_TIME } from "./Timer.constants";
 import { TimeDisplay } from "./TimeDisplay";
 import { TimeRange } from "../TimeRange";

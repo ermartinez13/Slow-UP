@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ClockEvent } from '../components/Timer/Timer.models'; 
+import { ClockEvent } from '../models'; 
 import { startWorker, stopWorker } from '../workers/clock.helpers';
 
 interface Options {

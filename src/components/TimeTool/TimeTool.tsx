@@ -1,17 +1,17 @@
-import { ToolStatus } from "../../models/tool.models";
-import { PartialEntry, WorkUnit } from "../Timer/Timer.models";
+import React from "react";
+
 import { DEFAULT_ENTRY } from "../Timer/Timer.constants";
 import { useTick } from "../../hooks/use-tick";
 import { notify } from "../../helpers";
 import { ActionButtons } from "../Timer/ActionButtons";
 import { ControlledTextArea } from "../ControlledTextArea";
 import { Timer } from "../Timer";
-import React from "react";
 import { Toggle } from "../Toggle";
 import { Stopwatch } from "../Stopwatch/Stopwatch";
+import { PartialEntry, WorkEntry, ToolStatus } from "../../models";
 
 interface Props {
-  addEntry: (timeEntry: WorkUnit) => void;
+  addEntry: (timeEntry: WorkEntry) => void;
 }
 
 export function TimeTool({ addEntry }: Props) {
@@ -56,7 +56,7 @@ export function TimeTool({ addEntry }: Props) {
     window.removeEventListener("beforeunload", beforeUnloadHandler);
     reset();
     notify();
-    const timeEntry: WorkUnit = {
+    const timeEntry: WorkEntry = {
       ...partialEntry,
       end: Date.now(),
       spent: timeSpent,

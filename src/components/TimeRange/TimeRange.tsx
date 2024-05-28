@@ -1,4 +1,4 @@
-import { ToolStatus } from "../../models/tool.models";
+import { ToolStatus } from "../../models";
 
 interface Props {
   startTimeMs: number;

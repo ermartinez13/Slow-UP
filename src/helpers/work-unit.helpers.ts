@@ -1,8 +1,8 @@
-import { WorkUnit } from "../components/Timer/Timer.models";
+import { WorkEntry } from "../models";
 
 export function findFirstEntryIdxByDate(
   dateInMilliseconds: number,
-  entries: WorkUnit[]
+  entries: WorkEntry[]
 ) {
   let low = 0;
   let high = entries.length - 1;
