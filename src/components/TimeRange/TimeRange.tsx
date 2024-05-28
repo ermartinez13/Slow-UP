@@ -1,13 +1,10 @@
+import { formatDateTime } from "../../helpers";
 import { ToolStatus } from "../../models";
 
 interface Props {
   startTimeMs: number;
-  millisecondsLeft: number;
-  status: ToolStatus;
-}
-
-function padZero(value: number): string {
-  return value.toString().padStart(2, "0");
+  millisecondsLeft?: number;
+  status?: string;
 }
 
 export function TimeRange({ startTimeMs, millisecondsLeft, status }: Props) {
@@ -20,39 +17,25 @@ export function TimeRange({ startTimeMs, millisecondsLeft, status }: Props) {
     );
   }
 
-  const expectedCompletionTime =
-    status === ToolStatus.ON ? formatTime(Date.now() + millisecondsLeft) : "--";
-  const startTime = formatTime(startTimeMs);
+  const startTime = formatDateTime(startTimeMs, {
+    showSeconds: true,
+    showAmPm: true,
+  });
 
   return (
     <div>
       <p>Started at: {startTime}</p>
-      <p>Expected completion: {expectedCompletionTime}</p>
+      {millisecondsLeft ? (
+        <p>
+          Expected completion:{" "}
+          {status === ToolStatus.ON
+            ? formatDateTime(Date.now() + millisecondsLeft, {
+                showSeconds: true,
+                showAmPm: true,
+              })
+            : "--"}
+        </p>
+      ) : null}
     </div>
   );
-}
-
-interface FormatTimeOptions {
-  showSeconds?: boolean;
-  padHours?: boolean;
-}
-
-function formatTime(milliseconds: number, options?: FormatTimeOptions): string {
-  const defaultOptions = {
-    showSeconds: true,
-    padHours: false,
-  };
-  const opts = { ...defaultOptions, ...options };
-
-  const date = new Date(milliseconds);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  const ampm = hours >= 12 ? "pm" : "am";
-  const hours12 = hours % 12 || 12;
-
-  const hoursStr = opts.padHours ? padZero(hours12) : hours12;
-  const secondsStr = opts.showSeconds ? `:${padZero(seconds)}` : "";
-
-  return `${hoursStr}:${padZero(minutes)}${secondsStr} ${ampm}`;
 }
