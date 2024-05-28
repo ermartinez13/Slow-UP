@@ -3,16 +3,19 @@ interface TimeBreakdown {
   minutes: number;
   seconds: number;
   centiseconds: number;
+  tenthsOfASecond: number;
 }
 
 export function millisecondsToTimeBreakdown(milliseconds: number): TimeBreakdown {
-  const centiseconds = Math.floor((milliseconds % 1000) / 10);
-  const seconds = Math.floor(milliseconds / 1000);
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const secondsLeft = seconds % 60;
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const totalMinutes = Math.floor(totalSeconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  const seconds = totalSeconds % 60;
+  const centiseconds = Math.floor((milliseconds % 1000) / 10); // 10ms units
+  const tenthsOfASecond = Math.floor(centiseconds / 10); // 100ms units
 
-  return { hours, minutes, seconds: secondsLeft, centiseconds };
+  return { hours, minutes, seconds, centiseconds, tenthsOfASecond };
 }
 
 interface FormatOptions {
@@ -23,13 +26,9 @@ interface FormatOptions {
 }
 
 export function formatDuration(milliseconds: number, options?: FormatOptions): string {
-  const seconds = Math.floor(milliseconds / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const secondsRemaining = seconds % 60;
-  const tenthsOfASecond = Math.floor((milliseconds % 1000) / 100);
+  const { hours, minutes, seconds, tenthsOfASecond } = millisecondsToTimeBreakdown(milliseconds);
 
-  return formatTimeString(hours, minutes, secondsRemaining, tenthsOfASecond, options);
+  return formatTimeString(hours, minutes, seconds, tenthsOfASecond, options);
 }
 
 export function formatDateTime(milliseconds: number, options?: FormatOptions): string {
