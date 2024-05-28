@@ -49,9 +49,18 @@ function formatTimeString(
   tenthsOfASecond: number,
   options?: FormatOptions
 ): string {
-  const hoursStr = options?.padHours ? padZero(hours) : hours;
-  const secondsStr = options?.showSeconds ? `:${padZero(seconds)}` : "";
-  const tenthsOfASecondStr = options?.showTenthsOfASecond ? `.${tenthsOfASecond}` : "";
+  const defaultOptions: FormatOptions = {
+    showSeconds: true,
+    padHours: false,
+    showTenthsOfASecond: false,
+    showAmPm: false,
+  };
+
+  const mergedOptions: FormatOptions = { ...defaultOptions, ...options };
+
+  const hoursStr = mergedOptions.padHours ? padZero(hours) : hours;
+  const secondsStr = mergedOptions.showSeconds ? `:${padZero(seconds)}` : "";
+  const tenthsOfASecondStr = mergedOptions.showTenthsOfASecond ? `.${tenthsOfASecond}` : "";
 
   return `${hoursStr}:${padZero(minutes)}${secondsStr}${tenthsOfASecondStr}`;
 }
