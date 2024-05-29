@@ -6,7 +6,7 @@ interface Props {
   handleToggle: () => void;
   offText: string;
   onText: string;
-  predicate: () => boolean;
+  shouldShowWarning: () => boolean;
   warningMessage: string;
 }
 
@@ -15,26 +15,22 @@ export function ProtectedToggle({
   handleToggle,
   offText,
   onText,
-  predicate,
+  shouldShowWarning,
   warningMessage,
 }: Props) {
-  const [warningDisplayed, setWarningDisplayed] = React.useState(false);
-  const [predicateExecuted, setPredicateExecuted] = React.useState(false);
+  const [hasWarned, setHasWarned] = React.useState(false);
+  const [isWarningVisible, setIsWarningVisible] = React.useState(false);
 
   const handleChange = () => {
-    if (!isOn && !predicateExecuted) {
-      if (predicate()) {
-        handleToggle();
-      } else {
-        setWarningDisplayed(true);
-        setTimeout(() => {
-          setWarningDisplayed(false);
-        }, 5000);
-      }
-      setPredicateExecuted(true);
+    if (!isOn && !hasWarned && shouldShowWarning()) {
+      setIsWarningVisible(true);
+      setTimeout(() => {
+        setIsWarningVisible(false);
+      }, 5000);
+      setHasWarned(true);
     } else {
       handleToggle();
-      setWarningDisplayed(false);
+      setIsWarningVisible(false);
     }
   };
 
@@ -46,7 +42,7 @@ export function ProtectedToggle({
         offText={offText}
         onText={onText}
       />
-      {warningDisplayed && !isOn && (
+      {isWarningVisible && (
         <div className="bg-yellow-500 dark:bg-yellow-800 p-2 rounded-md text-white dark:text-gray-200 mt-2">
           <span className="text-lg">{warningMessage}</span>
         </div>
