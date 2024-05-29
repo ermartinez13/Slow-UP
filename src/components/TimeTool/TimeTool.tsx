@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DEFAULT_ENTRY } from "../Timer/Timer.constants";
+import { DEFAULT_ENTRY, DEFAULT_TIME } from "../Timer/Timer.constants";
 import { useTick } from "../../hooks/use-tick";
 import { ActionButtons } from "../Timer/ActionButtons";
 import { ControlledTextArea } from "../ControlledTextArea";
@@ -27,6 +27,7 @@ export function TimeTool({ addEntry }: Props) {
   const [partialEntry, setPartialEntry] = React.useState<PartialEntry>({
     ...DEFAULT_ENTRY,
   });
+  const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
 
   const status = isRunning
     ? ToolStatus.ON
@@ -95,7 +96,11 @@ export function TimeTool({ addEntry }: Props) {
       />
       <TimeStart startTimeMs={partialEntry.start} />
       {showPrimaryTool ? (
-        <Timer timeSpent={timeSpent} stop={stop} status={status} />
+        <Timer
+          millisecondsLeft={timeBudget - timeSpent}
+          setTimeBudget={setTimeBudget}
+          status={status}
+        />
       ) : (
         <Stopwatch timeSpent={timeSpent} />
       )}
