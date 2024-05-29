@@ -1,25 +1,32 @@
-import { useState } from "react";
-import { TimerStatus } from "./Timer.models";
+import React from "react";
+
+import { ToolStatus } from "../../models";
 
 interface Props {
   millisecondsLeft: number;
   setTimeBudget: React.Dispatch<React.SetStateAction<number>>;
-  status: TimerStatus;
+  status: ToolStatus;
 }
 
+/*
+  This component maintains internal state to allow intuitive editing of the time budget.
+  The state is used to update the time budget when the user blurs the input fields.
+*/
 export function TimeDisplay({
   millisecondsLeft,
   setTimeBudget,
   status,
 }: Props) {
-  const [hours, setHours] = useState(Math.floor(millisecondsLeft / 3600000));
-  const [minutes, setMinutes] = useState(
+  const [hours, setHours] = React.useState(
+    Math.floor(millisecondsLeft / 3600000)
+  );
+  const [minutes, setMinutes] = React.useState(
     Math.floor((millisecondsLeft % 3600000) / 60000)
   );
-  const [seconds, setSeconds] = useState(
+  const [seconds, setSeconds] = React.useState(
     Math.floor((millisecondsLeft % 60000) / 1000)
   );
-  const [centiseconds, setCentiseconds] = useState(
+  const [centiseconds, setCentiseconds] = React.useState(
     Math.floor((millisecondsLeft % 1000) / 100)
   );
 
@@ -43,7 +50,7 @@ export function TimeDisplay({
           value={hours}
           onChange={(e) => setHours(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== TimerStatus.OFF}
+          disabled={status !== ToolStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -57,7 +64,7 @@ export function TimeDisplay({
           value={minutes}
           onChange={(e) => setMinutes(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== TimerStatus.OFF}
+          disabled={status !== ToolStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -71,7 +78,7 @@ export function TimeDisplay({
           value={seconds}
           onChange={(e) => setSeconds(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== TimerStatus.OFF}
+          disabled={status !== ToolStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -85,7 +92,7 @@ export function TimeDisplay({
           value={centiseconds}
           onChange={(e) => setCentiseconds(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== TimerStatus.OFF}
+          disabled={status !== ToolStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>

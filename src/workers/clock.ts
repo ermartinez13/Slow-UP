@@ -1,4 +1,4 @@
-import { ClockEvent } from "../components/Timer/Timer.models";
+import { ClockEvent } from "../models";
 
 let intervalId: number | undefined;
 

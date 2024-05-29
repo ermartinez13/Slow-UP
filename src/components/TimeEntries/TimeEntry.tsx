@@ -1,5 +1,5 @@
 import { ControlledTextArea } from "../ControlledTextArea";
-import { WorkUnit } from "../Timer/Timer.models";
+import { WorkEntry } from "../../models";
 import {
   getDatesToRender,
   getTimeSpentStr,
@@ -7,9 +7,9 @@ import {
 } from "./TimeEntries.helpers";
 
 interface Props {
-  entry: WorkUnit;
-  updateEntry: (entry: WorkUnit) => void;
-  deleteEntry: (entry: WorkUnit) => void;
+  entry: WorkEntry;
+  updateEntry: (entry: WorkEntry) => void;
+  deleteEntry: (entry: WorkEntry) => void;
 }
 
 export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
@@ -45,10 +45,7 @@ export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
       <p>{dates}</p>
       <p>{times}</p>
       <p>{timeSpentStr}</p>
-      <ControlledTextArea
-        content={entry.description ? entry.description : entry.text ?? ""}
-        setContent={setContent}
-      />
+      <ControlledTextArea content={entry.description} setContent={setContent} />
     </div>
   );
 }

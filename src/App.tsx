@@ -1,30 +1,30 @@
-import { Timer } from "./components/Timer";
 import { NotificationsPermission } from "./components/NotificationsPermission";
 import { TimeEntries } from "./components/TimeEntries";
 import { getEntryIndex } from "./helpers";
-import { WorkUnit } from "./components/Timer/Timer.models";
+import { WorkEntry } from "./models";
 import { useLocalStorage } from "./hooks/use-local-storage";
+import { TimeTool } from "./components/TimeTool/TimeTool";
 
-const INITIAL_ENTRIES: WorkUnit[] = [];
+const INITIAL_ENTRIES: WorkEntry[] = [];
 
 function App() {
-  const [entries, setEntries] = useLocalStorage<WorkUnit[]>(
+  const [entries, setEntries] = useLocalStorage<WorkEntry[]>(
     "entries",
     INITIAL_ENTRIES
   );
 
-  const addEntry = (entry: WorkUnit) => {
+  const addEntry = (entry: WorkEntry) => {
     setEntries(entries.concat(entry));
   };
 
-  const updateEntry = (entry: WorkUnit) => {
+  const updateEntry = (entry: WorkEntry) => {
     const nextEntries = window.structuredClone(entries);
     const targetIdx = getEntryIndex(entry, nextEntries);
     Object.assign(nextEntries[targetIdx], entry);
     setEntries(nextEntries);
   };
 
-  const deleteEntry = (entry: WorkUnit) => {
+  const deleteEntry = (entry: WorkEntry) => {
     const targetIdx = getEntryIndex(entry, entries);
     const nextEntries = entries.toSpliced(targetIdx, 1);
     setEntries(nextEntries);
@@ -34,7 +34,7 @@ function App() {
     <main className="grid gap-y-20">
       <section>
         <NotificationsPermission />
-        <Timer addEntry={addEntry} />
+        <TimeTool addEntry={addEntry} />
       </section>
       <section>
         <TimeEntries

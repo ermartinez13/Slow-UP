@@ -1,4 +1,4 @@
-import { millisecondsToTimeBreakdown } from "../../helpers/time.helpers";
+import { millisecondsToTimeBreakdown } from "../../helpers";
 
 export function getFormattedDate(timestamp: number) {
   const date = new Date(timestamp);
