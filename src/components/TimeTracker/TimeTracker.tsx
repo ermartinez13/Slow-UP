@@ -4,16 +4,17 @@ import { DEFAULT_TIME } from "../Timer/Timer.constants";
 import { useTimeTracking } from "../../hooks/use-time-tracking";
 import { ActionButtons } from "../Timer/ActionButtons";
 import { Timer } from "../Timer";
-import { Toggle } from "../Toggle";
 import { Stopwatch } from "../Stopwatch/Stopwatch";
 import { TrackingMode, TrackerStatus } from "../../models";
+import { ProtectedToggle } from "../ProtectedToggle";
 
 interface Props {
   onStart: (startTimestamp: number) => void;
   onEnd: (endTimestamp: number, timeSpentMs: number) => void;
+  sessionId: number;
 }
 
-export function TimeTracker({ onStart, onEnd }: Props) {
+export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
   const [mode, setMode] = React.useState<TrackingMode>(TrackingMode.TIMER);
   const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
   const {
@@ -56,13 +57,18 @@ export function TimeTracker({ onStart, onEnd }: Props) {
     setMode(nextMode);
   };
 
+  const shouldShowWarning = () => timeSpent > timeBudget;
+
   return (
     <div className="grid gap-y-8 place-content-center">
-      <Toggle
+      <ProtectedToggle
         isOn={isTimerMode}
         handleToggle={handleToggle}
         offText="Stopwatch"
         onText="Timer"
+        warningMessage="Switching to timer mode will stop your time tracking session. Try again to proceed anyways."
+        shouldShowWarning={shouldShowWarning}
+        key={sessionId}
       />
       {isTimerMode ? (
         <Timer

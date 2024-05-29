@@ -61,7 +61,11 @@ export function CurrentEntry({ saveEntry }: Props) {
   return (
     <div className="grid gap-y-8 place-content-center">
       <StartTime startTimestamp={partialEntry.start} />
-      <TimeTracker onStart={handleStart} onEnd={handleEnd} />
+      <TimeTracker
+        onStart={handleStart}
+        onEnd={handleEnd}
+        sessionId={partialEntry.start}
+      />
       <ControlledTextArea
         content={partialEntry.description}
         setContent={updateEntryDescription}
