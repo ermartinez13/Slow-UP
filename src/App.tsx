@@ -1,5 +1,5 @@
 import { NotificationsPermission } from "./components/NotificationsPermission";
-import { TimeEntries } from "./components/TimeEntries";
+import { PreviousEntries } from "./components/TimeEntries";
 import { getEntryIndex } from "./helpers";
 import { WorkEntry } from "./models";
 import { useLocalStorage } from "./hooks/use-local-storage";
@@ -37,7 +37,7 @@ function App() {
         <CurrentEntry saveEntry={saveEntry} />
       </section>
       <section>
-        <TimeEntries
+        <PreviousEntries
           entries={entries}
           updateEntry={updateEntry}
           deleteEntry={deleteEntry}
