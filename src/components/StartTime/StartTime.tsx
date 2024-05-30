@@ -1,10 +1,10 @@
-import { formatDateTime } from "../helpers";
+import { formatDateTime } from "../../helpers";
 
 interface Props {
   startTimeMs: number;
 }
 
-export function TimeStart({ startTimeMs }: Props) {
+export function StartTime({ startTimeMs }: Props) {
   if (startTimeMs === -1) {
     return <p>Started at: --</p>;
   }
