@@ -15,7 +15,7 @@ function getTenthsOfASecondFromPrevTime(previousTime: number) {
   return Math.round(val) * 100
 }
 
-export function useTick({
+export function useTimeTracking({
   mode,
   onTimerExpiration,
   timerExpiration,

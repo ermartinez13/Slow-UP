@@ -1,7 +1,7 @@
 import React from "react";
 
 import { DEFAULT_TIME } from "../Timer/Timer.constants";
-import { useTick } from "../../hooks/use-tick";
+import { useTimeTracking } from "../../hooks/use-time-tracking";
 import { ActionButtons } from "../Timer/ActionButtons";
 import { Timer } from "../Timer";
 import { Toggle } from "../Toggle";
@@ -22,7 +22,7 @@ export function TimeTracker({ onStart, onEnd }: Props) {
     start: startTicks,
     pause: pauseTicks,
     reset,
-  } = useTick({
+  } = useTimeTracking({
     mode,
     onTimerExpiration: onEnd,
     timerExpiration: timeBudget,
