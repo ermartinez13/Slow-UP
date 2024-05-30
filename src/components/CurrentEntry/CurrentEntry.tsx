@@ -1,7 +1,8 @@
 import React from "react";
+
 import { PartialEntry, WorkEntry } from "../../models";
 import { TimeStart } from "../TimeStart";
-import { TimeTool } from "../TimeTool/TimeTool";
+import { TimeTracker } from "../TimeTracker";
 import { ControlledTextArea } from "../ControlledTextArea";
 import { notify } from "../../helpers";
 
@@ -50,6 +51,7 @@ export function CurrentEntry({ saveEntry }: Props) {
     when time tracking session completes:
     - remove listener that prevents data loss (via warning dialog)
     - trigger desktop notifications that session has completed
+    - save completed entry and reset current entry state
   */
     window.removeEventListener("beforeunload", beforeUnloadHandler);
     notify();
@@ -59,7 +61,7 @@ export function CurrentEntry({ saveEntry }: Props) {
   return (
     <div className="grid gap-y-8 place-content-center">
       <TimeStart startTimeMs={partialEntry.start} />
-      <TimeTool onStart={handleStart} onEnd={handleEnd} />
+      <TimeTracker onStart={handleStart} onEnd={handleEnd} />
       <ControlledTextArea
         content={partialEntry.description}
         setContent={updateEntryDescription}

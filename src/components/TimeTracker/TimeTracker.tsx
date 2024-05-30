@@ -12,7 +12,7 @@ interface TimeToolProps {
   onEnd: (endTimestamp: number, timeSpent: number) => void;
 }
 
-export function TimeTool({ onStart, onEnd }: TimeToolProps) {
+export function TimeTracker({ onStart, onEnd }: TimeToolProps) {
   const [mode, setMode] = React.useState<TimeMode>(TimeMode.TIMER);
   const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
   const {
