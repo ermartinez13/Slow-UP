@@ -1,19 +1,20 @@
+import React from "react";
+
 import { DEFAULT_TIME } from "../Timer/Timer.constants";
 import { useTick } from "../../hooks/use-tick";
 import { ActionButtons } from "../Timer/ActionButtons";
 import { Timer } from "../Timer";
 import { Toggle } from "../Toggle";
 import { Stopwatch } from "../Stopwatch/Stopwatch";
-import { TimeMode, ToolStatus } from "../../models";
-import React from "react";
+import { TrackingMode, TrackerStatus } from "../../models";
 
-interface TimeToolProps {
-  onStart: (startTime: number) => void;
-  onEnd: (endTimestamp: number, timeSpent: number) => void;
+interface Props {
+  onStart: (startTimestamp: number) => void;
+  onEnd: (endTimestamp: number, timeSpentMs: number) => void;
 }
 
-export function TimeTracker({ onStart, onEnd }: TimeToolProps) {
-  const [mode, setMode] = React.useState<TimeMode>(TimeMode.TIMER);
+export function TimeTracker({ onStart, onEnd }: Props) {
+  const [mode, setMode] = React.useState<TrackingMode>(TrackingMode.TIMER);
   const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
   const {
     ticks: timeSpent,
@@ -27,17 +28,17 @@ export function TimeTracker({ onStart, onEnd }: TimeToolProps) {
     timerExpiration: timeBudget,
   });
 
-  const isTimer = mode === TimeMode.TIMER;
-  const status = isRunning
-    ? ToolStatus.ON
+  const isTimerMode = mode === TrackingMode.TIMER;
+  const trackerStatus = isRunning
+    ? TrackerStatus.ON
     : timeSpent > 0
-    ? ToolStatus.PAUSED
-    : ToolStatus.OFF;
+    ? TrackerStatus.PAUSED
+    : TrackerStatus.OFF;
 
   const handleStartPause = () => {
-    if (status === ToolStatus.ON) {
+    if (trackerStatus === TrackerStatus.ON) {
       pauseTicks();
-    } else if (status === ToolStatus.OFF) {
+    } else if (trackerStatus === TrackerStatus.OFF) {
       onStart(startTicks());
     } else {
       startTicks();
@@ -51,31 +52,31 @@ export function TimeTracker({ onStart, onEnd }: TimeToolProps) {
 
   const handleToggle = () => {
     const nextMode =
-      mode === TimeMode.TIMER ? TimeMode.STOPWATCH : TimeMode.TIMER;
+      mode === TrackingMode.TIMER ? TrackingMode.STOPWATCH : TrackingMode.TIMER;
     setMode(nextMode);
   };
 
   return (
     <div className="grid gap-y-8 place-content-center">
       <Toggle
-        isOn={isTimer}
+        isOn={isTimerMode}
         handleToggle={handleToggle}
         offText="Stopwatch"
         onText="Timer"
       />
-      {isTimer ? (
+      {isTimerMode ? (
         <Timer
           millisecondsLeft={timeBudget - timeSpent}
           setTimeBudget={setTimeBudget}
-          status={isRunning ? ToolStatus.ON : ToolStatus.OFF}
+          status={trackerStatus}
         />
       ) : (
-        <Stopwatch timeSpent={timeSpent} />
+        <Stopwatch timeSpentMs={timeSpent} />
       )}
       <ActionButtons
-        handleStartPause={handleStartPause}
-        handleStop={handleStop}
-        status={status}
+        onStartPause={handleStartPause}
+        onStop={handleStop}
+        status={trackerStatus}
       />
     </div>
   );

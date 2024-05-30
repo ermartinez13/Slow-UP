@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { TimeMode } from '../models';
+import { TrackingMode } from '../models';
 
 interface Options {
   tickLength?: number;
-  mode: TimeMode;
+  mode: TrackingMode;
   onTimerExpiration?: (endTimestamp: number, ticks: number) => void;
   timerExpiration?: number;
 }
@@ -50,7 +50,7 @@ export function useTick({
   
   useInterval(() => {
     setTicks(offsetTicks + getTenthsOfASecondFromPrevTime(previousTime))
-    if (mode === TimeMode.TIMER && ticks >= timerExpiration!) {
+    if (mode === TrackingMode.TIMER && ticks >= timerExpiration!) {
       onTimerExpiration?.(Date.now(), ticks)
       reset()
     }

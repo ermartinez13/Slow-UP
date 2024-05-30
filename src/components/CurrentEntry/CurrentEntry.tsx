@@ -20,11 +20,11 @@ export function CurrentEntry({ saveEntry }: Props) {
     setPartialEntry((prev) => ({ ...prev, start: startTimestamp }));
   };
 
-  const saveAndResetEntry = (endTimestamp: number, timeSpent: number) => {
+  const saveAndResetEntry = (endTimestamp: number, timeSpentMs: number) => {
     const entry: WorkEntry = {
       ...partialEntry,
       end: endTimestamp,
-      spent: timeSpent,
+      spent: timeSpentMs,
     };
     saveEntry(entry);
     setPartialEntry({
@@ -46,7 +46,7 @@ export function CurrentEntry({ saveEntry }: Props) {
     updateEntryStart(startTimestamp);
   };
 
-  const handleEnd = (endTimestamp: number, timeSpent: number) => {
+  const handleEnd = (endTimestamp: number, timeSpentMs: number) => {
     /*
     when time tracking session completes:
     - remove listener that prevents data loss (via warning dialog)
@@ -55,12 +55,12 @@ export function CurrentEntry({ saveEntry }: Props) {
   */
     window.removeEventListener("beforeunload", beforeUnloadHandler);
     notify();
-    saveAndResetEntry(endTimestamp, timeSpent);
+    saveAndResetEntry(endTimestamp, timeSpentMs);
   };
 
   return (
     <div className="grid gap-y-8 place-content-center">
-      <StartTime startTimeMs={partialEntry.start} />
+      <StartTime startTimestamp={partialEntry.start} />
       <TimeTracker onStart={handleStart} onEnd={handleEnd} />
       <ControlledTextArea
         content={partialEntry.description}

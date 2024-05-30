@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 
-import { ToolStatus } from "../../models";
+import { TrackerStatus } from "../../models";
 import { TimeDisplay } from "./TimeDisplay";
 import { TimeEnd } from "../TimeEnd";
 
 interface Props {
   millisecondsLeft: number;
-  status: ToolStatus;
+  status: TrackerStatus;
   setTimeBudget: Dispatch<SetStateAction<number>>;
 }
 

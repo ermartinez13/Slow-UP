@@ -1,5 +1,5 @@
 import { formatDateTime } from "../helpers";
-import { ToolStatus } from "../models";
+import { TrackerStatus } from "../models";
 
 interface Props {
   millisecondsLeft?: number;
@@ -12,7 +12,7 @@ export function TimeEnd({ millisecondsLeft, status }: Props) {
   }
 
   const expectedCompletionTime =
-    status === ToolStatus.ON
+    status === TrackerStatus.ON
       ? formatDateTime(Date.now() + millisecondsLeft, {
           showSeconds: true,
           showAmPm: true,

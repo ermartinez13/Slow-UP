@@ -1,10 +1,10 @@
-export enum ToolStatus {
+export enum TrackerStatus {
   OFF = 'OFF',
   ON = 'ON',
   PAUSED = 'PAUSED',
 }
 
-export enum TimeMode {
+export enum TrackingMode {
   TIMER = "TIMER",
   STOPWATCH = "STOPWATCH",
 }
