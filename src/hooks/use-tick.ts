@@ -1,51 +1,80 @@
-import { useState, useEffect, useRef } from 'react';
-import { ClockEvent } from '../models'; 
-import { startWorker, stopWorker } from '../workers/clock.helpers';
+import React from 'react';
+
+import { TimeMode } from '../models';
 
 interface Options {
-  initialTicks?: number;
   tickLength?: number;
+  mode: TimeMode;
+  onTimerExpiration?: (endTimestamp: number, ticks: number) => void;
+  timerExpiration?: number;
 }
 
-export function useTick({initialTicks = 0, tickLength = 1000}: Options) {
-  const [ticks, setTicks] = useState(initialTicks);
-  const [isRunning, setIsRunning] = useState(false);
-  const workerRef = useRef<Worker | null>(null);
+function getTenthsOfASecondFromPrevTime(previousTime: number) {
+  const millisecondsDistance = Date.now() - previousTime;
+  const val = millisecondsDistance / 100;
+  return Math.round(val) * 100
+}
 
-  useEffect(() => {
-    const worker = new Worker(
-      new URL("../workers/clock.ts", import.meta.url),
-      {
-        type: "module",
-      }
-    );
-    workerRef.current = worker;
+export function useTick({
+  mode,
+  onTimerExpiration,
+  timerExpiration,
+}: Options) {
+  const [offsetTicks, setOffsetTicks] = React.useState(0);
+  const [previousTime, setPreviousTime] = React.useState(Date.now());
+  const [ticks, setTicks] = React.useState(offsetTicks + getTenthsOfASecondFromPrevTime(previousTime));
+  const [isRunning, setIsRunning] = React.useState(false);
 
-const tick = () => setTicks((prev) => prev + tickLength);
-
-    worker.onmessage = ({ data }) => {
-      if (data.type === ClockEvent.TICK) tick();
-    };
-
-    return () => {
-      worker.terminate();
-    };
-  }, [tickLength]);
-
-  const start = () => {
-    startWorker(workerRef.current, tickLength)
+  const start = React.useCallback(() => {
+    const startTimestamp = Date.now()
+    setPreviousTime(startTimestamp);
     setIsRunning(true);
-  };
+    setTicks(offsetTicks + getTenthsOfASecondFromPrevTime(startTimestamp))
+    return startTimestamp
+  }, [offsetTicks]);
 
-  const stop = () => {
-    stopWorker(workerRef.current)
+  const pause = React.useCallback(() => {
+    setOffsetTicks(ticks)
     setIsRunning(false);
-  };
+  }, []);
 
-  const reset = () => {
-    stop()
-    setTicks(initialTicks);
-  };
+  const reset = React.useCallback(() => {
+    const newPrevTime = Date.now()
+    const newOffsetTicks = 0
+    setOffsetTicks(newOffsetTicks)
+    setPreviousTime(newPrevTime)
+    setTicks(newOffsetTicks + getTenthsOfASecondFromPrevTime(newPrevTime));
+    setIsRunning(false)
+  }, []);
 
-  return { ticks, isRunning, start, stop, reset };
+  
+  useInterval(() => {
+    setTicks(offsetTicks + getTenthsOfASecondFromPrevTime(previousTime))
+    if (mode === TimeMode.TIMER && ticks >= timerExpiration!) {
+      onTimerExpiration?.(Date.now(), ticks)
+      reset()
+    }
+  }, isRunning ? 100 : null)
+
+  return { ticks, isRunning, start, pause, reset };
+}
+
+function useInterval(callback: () => void, delay: number | null) {
+  const callbacRef = React.useRef<() => void>();
+
+  // update callback function with current render callback that has access to latest props and state
+  React.useEffect(() => {
+    callbacRef.current = callback;
+  });
+
+  React.useEffect(() => {
+    if (!delay) {
+      return () => {};
+    }
+
+    const interval = setInterval(() => {
+      callbacRef.current && callbacRef.current();
+    }, delay);
+    return () => clearInterval(interval);
+  }, [delay]);
 }

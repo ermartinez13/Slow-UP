@@ -3,7 +3,7 @@ import { TimeEntries } from "./components/TimeEntries";
 import { getEntryIndex } from "./helpers";
 import { WorkEntry } from "./models";
 import { useLocalStorage } from "./hooks/use-local-storage";
-import { TimeTool } from "./components/TimeTool/TimeTool";
+import { CurrentEntry } from "./components/CurrentEntry";
 
 const INITIAL_ENTRIES: WorkEntry[] = [];
 
@@ -13,7 +13,7 @@ function App() {
     INITIAL_ENTRIES
   );
 
-  const addEntry = (entry: WorkEntry) => {
+  const saveEntry = (entry: WorkEntry) => {
     setEntries(entries.concat(entry));
   };
 
@@ -34,7 +34,7 @@ function App() {
     <main className="grid gap-y-20">
       <section>
         <NotificationsPermission />
-        <TimeTool addEntry={addEntry} />
+        <CurrentEntry saveEntry={saveEntry} />
       </section>
       <section>
         <TimeEntries

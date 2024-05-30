@@ -3,3 +3,8 @@ export enum ToolStatus {
   ON = 'ON',
   PAUSED = 'PAUSED',
 }
+
+export enum TimeMode {
+  TIMER = "TIMER",
+  STOPWATCH = "STOPWATCH",
+}
