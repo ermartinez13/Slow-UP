@@ -3,68 +3,66 @@ import React from 'react';
 import { TrackingMode } from '../models';
 
 interface Options {
-  tickLength?: number;
   mode: TrackingMode;
-  onTimerExpiration?: (endTimestamp: number, ticks: number) => void;
-  timerExpiration?: number;
+  onTimerExpiration?: (endTimestamp: number, timeSpentMs: number) => void;
+  timeBudgetMs?: number;
 }
 
-function getTenthsOfASecondFromPrevTime(previousTime: number) {
+function getTimeElapsedSincePrevTime(previousTime: number) {
   const millisecondsDistance = Date.now() - previousTime;
-  const val = millisecondsDistance / 100;
-  return Math.round(val) * 100
+  const tenthsOfASecondElapsed = millisecondsDistance / 100;
+  return Math.round(tenthsOfASecondElapsed) * 100
 }
 
 export function useTimeTracking({
   mode,
   onTimerExpiration,
-  timerExpiration,
+  timeBudgetMs,
 }: Options) {
-  const [offsetTicks, setOffsetTicks] = React.useState(0);
+  const [timeElapsedOffset, setTimeElapsedOffset] = React.useState(0);
   const [previousTime, setPreviousTime] = React.useState(Date.now());
-  const [ticks, setTicks] = React.useState(offsetTicks + getTenthsOfASecondFromPrevTime(previousTime));
+  const [timeElapsed, setTimeElapsed] = React.useState(timeElapsedOffset + getTimeElapsedSincePrevTime(previousTime));
   const [isRunning, setIsRunning] = React.useState(false);
 
   const start = React.useCallback(() => {
-    const startTimestamp = Date.now()
-    setPreviousTime(startTimestamp);
+    const newPrevTime = Date.now()
+    setPreviousTime(newPrevTime);
     setIsRunning(true);
-    setTicks(offsetTicks + getTenthsOfASecondFromPrevTime(startTimestamp))
-    return startTimestamp
-  }, [offsetTicks]);
+    setTimeElapsed(timeElapsedOffset + getTimeElapsedSincePrevTime(newPrevTime))
+    return newPrevTime
+  }, [timeElapsedOffset]);
 
   const pause = React.useCallback(() => {
-    setOffsetTicks(ticks)
+    setTimeElapsedOffset(timeElapsed)
     setIsRunning(false);
-  }, []);
+  }, [timeElapsed]);
 
   const reset = React.useCallback(() => {
     const newPrevTime = Date.now()
-    const newOffsetTicks = 0
-    setOffsetTicks(newOffsetTicks)
+    const newTimeElapsedOffset = 0
+    setTimeElapsedOffset(newTimeElapsedOffset)
     setPreviousTime(newPrevTime)
-    setTicks(newOffsetTicks + getTenthsOfASecondFromPrevTime(newPrevTime));
+    setTimeElapsed(newTimeElapsedOffset + getTimeElapsedSincePrevTime(newPrevTime));
     setIsRunning(false)
   }, []);
-
   
   useInterval(() => {
-    setTicks(offsetTicks + getTenthsOfASecondFromPrevTime(previousTime))
-    if (mode === TrackingMode.TIMER && ticks >= timerExpiration!) {
-      onTimerExpiration?.(Date.now(), ticks)
+    setTimeElapsed(timeElapsedOffset + getTimeElapsedSincePrevTime(previousTime))
+    if (mode === TrackingMode.TIMER && timeBudgetMs && timeElapsed >= timeBudgetMs) {
+      onTimerExpiration?.(Date.now(), timeElapsed)
       reset()
     }
   }, isRunning ? 100 : null)
 
-  return { ticks, isRunning, start, pause, reset };
+  return { ticks: timeElapsed, isRunning, start, pause, reset };
 }
 
 function useInterval(callback: () => void, delay: number | null) {
-  const callbacRef = React.useRef<() => void>();
+  const callbackRef = React.useRef<() => void>();
 
-  // update callback function with current render callback that has access to latest props and state
+  // update callback ref with current render callback that has access to latest props and state
   React.useEffect(() => {
-    callbacRef.current = callback;
+    callbackRef.current = callback;
   });
 
   React.useEffect(() => {
@@ -73,8 +71,9 @@ function useInterval(callback: () => void, delay: number | null) {
     }
 
     const interval = setInterval(() => {
-      callbacRef.current && callbacRef.current();
+      callbackRef.current && callbackRef.current();
     }, delay);
+    
     return () => clearInterval(interval);
   }, [delay]);
 }

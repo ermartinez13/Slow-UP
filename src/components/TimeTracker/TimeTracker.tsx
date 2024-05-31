@@ -25,7 +25,7 @@ export function TimeTracker({ onStart, onEnd }: Props) {
   } = useTimeTracking({
     mode,
     onTimerExpiration: onEnd,
-    timerExpiration: timeBudget,
+    timeBudgetMs: timeBudget,
   });
 
   const isTimerMode = mode === TrackingMode.TIMER;
