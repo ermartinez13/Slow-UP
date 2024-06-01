@@ -58,9 +58,10 @@ export function useTimeTracking({
 }
 
 function useInterval(callback: () => void, delay: number | null) {
+   // we don't want the interval to be re-created whenever the callback changes
   const callbackRef = React.useRef<() => void>();
 
-  // update callback ref with current render callback that has access to latest props and state
+  // but we do want to make sure the callback function is always up-to-date (i.e. latest props and state)
   React.useEffect(() => {
     callbackRef.current = callback;
   });
