@@ -11,7 +11,7 @@ interface Props {
   deleteEntry: (timeEntry: WorkEntry) => void;
 }
 
-export function TimeEntries({ entries, updateEntry, deleteEntry }: Props) {
+export function PreviousEntries({ entries, updateEntry, deleteEntry }: Props) {
   const [dateOffset, setDateOffset] = useState(0);
 
   const { start: targetDateStart, end: targetDateEnd } =

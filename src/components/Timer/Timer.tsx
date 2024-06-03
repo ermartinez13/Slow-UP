@@ -1,24 +1,16 @@
-import React from "react";
-import { ToolStatus } from "../../models";
-import { DEFAULT_TIME } from "./Timer.constants";
+import { Dispatch, SetStateAction } from "react";
+
+import { TrackerStatus } from "../../models";
 import { TimeDisplay } from "./TimeDisplay";
 import { TimeEnd } from "../TimeEnd";
 
 interface Props {
-  timeSpent: number;
-  stop: () => void;
-  status: ToolStatus;
+  millisecondsLeft: number;
+  status: TrackerStatus;
+  setTimeBudget: Dispatch<SetStateAction<number>>;
 }
 
-export function Timer({ timeSpent, stop, status }: Props) {
-  const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
-  const millisecondsLeft = timeBudget - timeSpent;
-
-  // automatically stop time tracking when the budgeted time is reached
-  if (timeSpent >= timeBudget && status !== ToolStatus.OFF) {
-    stop();
-  }
-
+export function Timer({ millisecondsLeft, status, setTimeBudget }: Props) {
   return (
     <>
       <TimeDisplay

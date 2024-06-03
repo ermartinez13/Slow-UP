@@ -7,9 +7,8 @@ const tick = () => {
 };
 
 self.onmessage = ({ data }) => {
-if (data.type === ClockEvent.START) {
-    const tickLength = data.tickLength;
-    intervalId = self.setInterval(tick, tickLength);
+  if (data.type === ClockEvent.START) {
+    intervalId = self.setInterval(tick, 100);
   }
 
   if (data.type === ClockEvent.STOP) {

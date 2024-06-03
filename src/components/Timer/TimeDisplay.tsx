@@ -1,11 +1,11 @@
 import React from "react";
 
-import { ToolStatus } from "../../models";
+import { TrackerStatus } from "../../models";
 
 interface Props {
   millisecondsLeft: number;
   setTimeBudget: React.Dispatch<React.SetStateAction<number>>;
-  status: ToolStatus;
+  status: TrackerStatus;
 }
 
 /*
@@ -50,7 +50,7 @@ export function TimeDisplay({
           value={hours}
           onChange={(e) => setHours(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== ToolStatus.OFF}
+          disabled={status !== TrackerStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -64,7 +64,7 @@ export function TimeDisplay({
           value={minutes}
           onChange={(e) => setMinutes(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== ToolStatus.OFF}
+          disabled={status !== TrackerStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -78,7 +78,7 @@ export function TimeDisplay({
           value={seconds}
           onChange={(e) => setSeconds(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== ToolStatus.OFF}
+          disabled={status !== TrackerStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
@@ -92,7 +92,7 @@ export function TimeDisplay({
           value={centiseconds}
           onChange={(e) => setCentiseconds(Number(e.currentTarget.value))}
           onBlur={updateTimeBudget}
-          disabled={status !== ToolStatus.OFF}
+          disabled={status !== TrackerStatus.OFF}
           className="w-16 text-2xl text-center border-none"
         />
       </div>
