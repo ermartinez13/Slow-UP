@@ -62,13 +62,14 @@ export function useTimeTracking({
     if (isRunning) {
       const timeElapsedSincePrevTime =
         getTimeElapsedSincePrevTime(previousTime);
-      setTimeElapsed(timeElapsedOffset + timeElapsedSincePrevTime);
+      const newElapsedTime = timeElapsedOffset + timeElapsedSincePrevTime;
+      setTimeElapsed(newElapsedTime);
       if (
         mode === TrackingMode.TIMER &&
         timeBudgetMs &&
-        timeElapsed >= timeBudgetMs
+        newElapsedTime >= timeBudgetMs
       ) {
-        onTimerExpiration?.(Date.now(), timeElapsed);
+        onTimerExpiration?.(Date.now(), newElapsedTime);
         reset();
       }
     }
