@@ -9,10 +9,8 @@ interface Options {
   timeBudgetMs?: number;
 }
 
-function getTimeElapsedSincePrevTime(previousTime: number) {
-  const millisecondsDistance = Date.now() - previousTime;
-  const tenthsOfASecondElapsed = millisecondsDistance / 100;
-  return Math.round(tenthsOfASecondElapsed) * 100;
+function getMsSincePrevStartTime(prevStartTimeMs: number) {
+  return Date.now() - prevStartTimeMs;
 }
 
 export function useTimeTracking({
@@ -20,10 +18,10 @@ export function useTimeTracking({
   onTimerExpiration,
   timeBudgetMs,
 }: Options) {
-  const [timeElapsedOffset, setTimeElapsedOffset] = React.useState(0);
-  const [previousTime, setPreviousTime] = React.useState(Date.now());
-  const [timeElapsed, setTimeElapsed] = React.useState(
-    timeElapsedOffset + getTimeElapsedSincePrevTime(previousTime)
+  const [msOffset, setMsOffset] = React.useState(0);
+  const [prevStartTimeMs, setPrevStartTimeMs] = React.useState(Date.now());
+  const [timeElapsedMs, setTimeElapsedMs] = React.useState(
+    msOffset + getMsSincePrevStartTime(prevStartTimeMs)
   );
   const [isRunning, setIsRunning] = React.useState(false);
   const workerRef = React.useRef<Worker | null>(null);
@@ -31,45 +29,40 @@ export function useTimeTracking({
 
   const start = React.useCallback(() => {
     const newPrevTime = Date.now();
-    setPreviousTime(newPrevTime);
-    setIsRunning(true);
-    setTimeElapsed(
-      timeElapsedOffset + getTimeElapsedSincePrevTime(newPrevTime)
-    );
+    setPrevStartTimeMs(newPrevTime);
     startWorker(workerRef.current);
+    setTimeElapsedMs(msOffset + getMsSincePrevStartTime(newPrevTime));
+    setIsRunning(true);
     return newPrevTime;
-  }, [timeElapsedOffset]);
+  }, [msOffset]);
 
   const pause = React.useCallback(() => {
-    setTimeElapsedOffset(timeElapsed);
+    setMsOffset(timeElapsedMs);
     setIsRunning(false);
     stopWorker(workerRef.current);
-  }, [timeElapsed]);
+  }, [timeElapsedMs]);
 
   const reset = React.useCallback(() => {
     const newPrevTime = Date.now();
-    const newTimeElapsedOffset = 0;
-    setTimeElapsedOffset(newTimeElapsedOffset);
-    setPreviousTime(newPrevTime);
-    setTimeElapsed(
-      newTimeElapsedOffset + getTimeElapsedSincePrevTime(newPrevTime)
-    );
+    const newMsOffset = 0;
+    setMsOffset(newMsOffset);
+    setPrevStartTimeMs(newPrevTime);
+    setTimeElapsedMs(newMsOffset + getMsSincePrevStartTime(newPrevTime));
     setIsRunning(false);
     stopWorker(workerRef.current);
   }, []);
 
   const handleTick = () => {
     if (isRunning) {
-      const timeElapsedSincePrevTime =
-        getTimeElapsedSincePrevTime(previousTime);
-      const newElapsedTime = timeElapsedOffset + timeElapsedSincePrevTime;
-      setTimeElapsed(newElapsedTime);
+      const msSincePrevStartTime = getMsSincePrevStartTime(prevStartTimeMs);
+      const newElapsedTimeMs = msOffset + msSincePrevStartTime;
+      setTimeElapsedMs(newElapsedTimeMs);
       if (
         mode === TrackingMode.TIMER &&
         timeBudgetMs &&
-        newElapsedTime >= timeBudgetMs
+        newElapsedTimeMs >= timeBudgetMs
       ) {
-        onTimerExpiration?.(Date.now(), newElapsedTime);
+        onTimerExpiration?.(Date.now(), newElapsedTimeMs);
         reset();
       }
     }
@@ -95,5 +88,5 @@ export function useTimeTracking({
     };
   }, []);
 
-  return { ticks: timeElapsed, isRunning, start, pause, reset };
+  return { ticks: timeElapsedMs, isRunning, start, pause, reset };
 }
