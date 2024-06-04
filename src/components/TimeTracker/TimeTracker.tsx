@@ -66,7 +66,7 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
         handleToggle={handleToggle}
         offText="Stopwatch"
         onText="Timer"
-        warningMessage="Switching to timer mode will stop your time tracking session. Try again to proceed anyways."
+        warningMessage="Switching to timer mode will end the current time tracking session. Try again to switch anyways."
         shouldShowWarning={shouldShowWarning}
         key={sessionId}
       />

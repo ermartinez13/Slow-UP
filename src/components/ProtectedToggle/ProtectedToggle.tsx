@@ -47,14 +47,14 @@ export function ProtectedToggle({
         onText={onText}
       />
       {isWarningVisible && (
-        <div className="bg-yellow-500 dark:bg-yellow-800 p-2 rounded-md text-white dark:text-gray-200 mt-2">
-          <span className="text-lg">{warningMessage}</span>
+        <div className="bg-yellow-500 dark:bg-yellow-800 p-4 rounded-md text-white dark:text-gray-200 mt-2 max-w-md relative">
           <button
-            className="ml-2 text-lg font-bold"
+            className="absolute top-0 right-0 p-2 text-lg font-bold"
             onClick={handleDismissWarning}
           >
             ×
           </button>
+          <span className="text-lg">{warningMessage}</span>
         </div>
       )}
     </div>
