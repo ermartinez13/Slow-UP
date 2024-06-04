@@ -34,6 +34,10 @@ export function ProtectedToggle({
     }
   };
 
+  const handleDismissWarning = () => {
+    setIsWarningVisible(false);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center">
       <Toggle
@@ -45,6 +49,12 @@ export function ProtectedToggle({
       {isWarningVisible && (
         <div className="bg-yellow-500 dark:bg-yellow-800 p-2 rounded-md text-white dark:text-gray-200 mt-2">
           <span className="text-lg">{warningMessage}</span>
+          <button
+            className="ml-2 text-lg font-bold"
+            onClick={handleDismissWarning}
+          >
+            ×
+          </button>
         </div>
       )}
     </div>
