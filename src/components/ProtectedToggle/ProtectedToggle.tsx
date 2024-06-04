@@ -8,6 +8,7 @@ interface Props {
   onText: string;
   shouldShowWarning: () => boolean;
   warningMessage: string;
+  warningTimeout?: number;
 }
 
 export function ProtectedToggle({
@@ -17,6 +18,7 @@ export function ProtectedToggle({
   onText,
   shouldShowWarning,
   warningMessage,
+  warningTimeout = 5000,
 }: Props) {
   const [hasWarned, setHasWarned] = React.useState(false);
   const [isWarningVisible, setIsWarningVisible] = React.useState(false);
@@ -26,7 +28,7 @@ export function ProtectedToggle({
       setIsWarningVisible(true);
       setTimeout(() => {
         setIsWarningVisible(false);
-      }, 5000);
+      }, warningTimeout);
       setHasWarned(true);
     } else {
       handleToggle();
