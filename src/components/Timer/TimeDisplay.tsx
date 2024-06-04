@@ -17,17 +17,19 @@ export function TimeDisplay({
   setTimeBudget,
   status,
 }: Props) {
+  const clampedMillisecondsLeft = Math.max(millisecondsLeft, 0);
+
   const [hours, setHours] = React.useState(
-    Math.floor(millisecondsLeft / 3600000)
+    Math.floor(clampedMillisecondsLeft / 3600000)
   );
   const [minutes, setMinutes] = React.useState(
-    Math.floor((millisecondsLeft % 3600000) / 60000)
+    Math.floor((clampedMillisecondsLeft % 3600000) / 60000)
   );
   const [seconds, setSeconds] = React.useState(
-    Math.floor((millisecondsLeft % 60000) / 1000)
+    Math.floor((clampedMillisecondsLeft % 60000) / 1000)
   );
   const [centiseconds, setCentiseconds] = React.useState(
-    Math.floor((millisecondsLeft % 1000) / 100)
+    Math.floor((clampedMillisecondsLeft % 1000) / 10)
   );
 
   const updateTimeBudget = () => {
