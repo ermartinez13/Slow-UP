@@ -4,6 +4,7 @@ import { getEntryIndex } from "./helpers";
 import { WorkEntry } from "./models";
 import { useLocalStorage } from "./hooks/use-local-storage";
 import { CurrentEntry } from "./components/CurrentEntry";
+import { ThemeProvider } from "@/components/Theme";
 
 const INITIAL_ENTRIES: WorkEntry[] = [];
 
@@ -31,19 +32,21 @@ function App() {
   };
 
   return (
-    <main className="grid gap-y-20">
-      <section>
-        <NotificationsPermission />
-        <CurrentEntry saveEntry={saveEntry} />
-      </section>
-      <section>
-        <PreviousEntries
-          entries={entries}
-          updateEntry={updateEntry}
-          deleteEntry={deleteEntry}
-        />
-      </section>
-    </main>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <main className="grid gap-y-20">
+        <section>
+          <NotificationsPermission />
+          <CurrentEntry saveEntry={saveEntry} />
+        </section>
+        <section>
+          <PreviousEntries
+            entries={entries}
+            updateEntry={updateEntry}
+            deleteEntry={deleteEntry}
+          />
+        </section>
+      </main>
+    </ThemeProvider>
   );
 }
 
