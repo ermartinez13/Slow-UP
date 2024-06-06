@@ -45,7 +45,11 @@ export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
       <p>{dates}</p>
       <p>{times}</p>
       <p>{timeSpentStr}</p>
-      <ControlledTextArea content={entry.description} setContent={setContent} />
+      <ControlledTextArea
+        content={entry.description}
+        setContent={setContent}
+        label="Notes"
+      />
     </div>
   );
 }
