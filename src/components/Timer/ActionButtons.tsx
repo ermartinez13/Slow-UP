@@ -7,12 +7,6 @@ interface Props {
   status: TrackerStatus;
 }
 
-interface Props {
-  onStartPause: () => void;
-  onStop: () => void;
-  status: TrackerStatus;
-}
-
 export function ActionButtons({ onStartPause, onStop, status }: Props) {
   const isOff = status === TrackerStatus.OFF;
   const isPaused = status === TrackerStatus.PAUSED;
