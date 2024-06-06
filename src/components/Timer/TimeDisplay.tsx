@@ -1,6 +1,9 @@
 import React from "react";
 
 import { TrackerStatus } from "../../models";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 
 interface Props {
   millisecondsLeft: number;
@@ -8,10 +11,6 @@ interface Props {
   status: TrackerStatus;
 }
 
-/*
-  This component maintains internal state to allow intuitive editing of the time budget.
-  The state is used to update the time budget when the user blurs the input fields.
-*/
 export function TimeDisplay({
   millisecondsLeft,
   setTimeBudget,
@@ -28,7 +27,7 @@ export function TimeDisplay({
   const [seconds, setSeconds] = React.useState(
     Math.floor((clampedMillisecondsLeft % 60000) / 1000)
   );
-  const [centiseconds, setCentiseconds] = React.useState(
+  const [centiseconds] = React.useState(
     Math.floor((clampedMillisecondsLeft % 1000) / 10)
   );
 
@@ -36,68 +35,65 @@ export function TimeDisplay({
     const nextHours = hours * 3600000;
     const nextMinutes = minutes * 60000;
     const nextSeconds = seconds * 1000;
-    const nextCentiseconds = centiseconds * 10;
 
-    setTimeBudget(nextHours + nextMinutes + nextSeconds + nextCentiseconds);
+    setTimeBudget(nextHours + nextMinutes + nextSeconds);
   };
 
   return (
-    <div className="flex flex-row justify-center">
-      <div className="flex flex-col">
-        <label htmlFor="hours">hr</label>
-        <input
-          type="number"
-          name="hours"
-          id="hours"
-          value={hours}
-          onChange={(e) => setHours(Number(e.currentTarget.value))}
-          onBlur={updateTimeBudget}
-          disabled={status !== TrackerStatus.OFF}
-          className="w-16 text-2xl text-center border-none"
-        />
-      </div>
-      <span>:</span>
-      <div className="flex flex-col">
-        <label htmlFor="minutes">min</label>
-        <input
-          type="number"
-          name="minutes"
-          id="minutes"
-          value={minutes}
-          onChange={(e) => setMinutes(Number(e.currentTarget.value))}
-          onBlur={updateTimeBudget}
-          disabled={status !== TrackerStatus.OFF}
-          className="w-16 text-2xl text-center border-none"
-        />
-      </div>
-      <span>:</span>
-      <div className="flex flex-col">
-        <label htmlFor="seconds">sec</label>
-        <input
-          type="number"
-          name="seconds"
-          id="seconds"
-          value={seconds}
-          onChange={(e) => setSeconds(Number(e.currentTarget.value))}
-          onBlur={updateTimeBudget}
-          disabled={status !== TrackerStatus.OFF}
-          className="w-16 text-2xl text-center border-none"
-        />
-      </div>
-      <span>:</span>
-      <div className="flex flex-col">
-        <label htmlFor="hundredths">hs</label>
-        <input
-          type="number"
-          name="hundredths"
-          id="hundredths"
-          value={centiseconds}
-          onChange={(e) => setCentiseconds(Number(e.currentTarget.value))}
-          onBlur={updateTimeBudget}
-          disabled={status !== TrackerStatus.OFF}
-          className="w-16 text-2xl text-center border-none"
-        />
-      </div>
+    <div className="flex justify-center gap-4 h-24">
+      {status === TrackerStatus.OFF ? (
+        <div className="flex flex-col justify-between h-full">
+          <div className="flex justify-between">
+            <div className="w-24 text-center">
+              <Label htmlFor="hours">hr</Label>
+            </div>
+            <div className="w-24 text-center">
+              <Label htmlFor="minutes">min</Label>
+            </div>
+            <div className="w-24 text-center">
+              <Label htmlFor="seconds">sec</Label>
+            </div>
+          </div>
+          <Card className="flex gap-4 py-4">
+            <Input
+              type="number"
+              id="hours"
+              value={hours}
+              onChange={(e) => setHours(Number(e.currentTarget.value))}
+              onBlur={updateTimeBudget}
+              className="w-24 text-4xl text-center font-mono bg-card"
+            />
+            <span className="text-4xl self-center">:</span>
+            <Input
+              type="number"
+              id="minutes"
+              value={minutes}
+              onChange={(e) => setMinutes(Number(e.currentTarget.value))}
+              onBlur={updateTimeBudget}
+              className="w-24 text-4xl text-center font-mono bg-card"
+            />
+            <span className="text-4xl self-center">:</span>
+            <Input
+              type="number"
+              id="seconds"
+              value={seconds}
+              onChange={(e) => setSeconds(Number(e.currentTarget.value))}
+              onBlur={updateTimeBudget}
+              className="w-24 text-4xl text-center font-mono bg-card"
+            />
+          </Card>
+        </div>
+      ) : (
+        <div className="flex gap-4 text-4xl font-mono self-center">
+          <span>{hours.toString().padStart(2, "0")}</span>
+          <span>:</span>
+          <span>{minutes.toString().padStart(2, "0")}</span>
+          <span>:</span>
+          <span>{seconds.toString().padStart(2, "0")}</span>
+          <span>.</span>
+          <span>{centiseconds.toString().padStart(2, "0")}</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { TrackerStatus } from "../../models";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   onStartPause: () => void;
@@ -12,21 +13,24 @@ export function ActionButtons({ onStartPause, onStop, status }: Props) {
 
   return (
     <div className="flex flex-row justify-center gap-x-4">
-      <button
-        onClick={onStop}
+      <Button
+        variant="destructive"
         disabled={isOff}
-        className="w-24 h-6 bg-zinc-600"
+        onClick={onStop}
+        className="w-24"
       >
-        Stop
-      </button>
-      <button
+        Finish
+      </Button>
+      <Button
         onClick={onStartPause}
-        className={`${
-          isOff || isPaused ? "bg-green-700" : "bg-amber-700"
-        } w-24 h-6`}
+        className={`w-24 text-white ${
+          isOff || isPaused
+            ? "bg-green-700 hover:bg-green-700/80"
+            : "bg-amber-700 hover:bg-amber-700/80"
+        }`}
       >
         {isOff ? "Start" : isPaused ? "Resume" : "Pause"}
-      </button>
+      </Button>
     </div>
   );
 }

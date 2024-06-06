@@ -70,6 +70,7 @@ export function CurrentEntry({ saveEntry }: Props) {
         content={partialEntry.description}
         setContent={updateEntryDescription}
         key={partialEntry.description}
+        label="Notes"
       />
     </div>
   );

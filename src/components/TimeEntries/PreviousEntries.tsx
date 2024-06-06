@@ -4,6 +4,7 @@ import { getDayBoundaries, findFirstEntryIdxByDate } from "../../helpers";
 import { WorkEntry } from "../../models";
 import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "../Timer/TotalsDisplay";
+import { Button } from "../ui/button";
 
 interface Props {
   entries: WorkEntry[];
@@ -58,28 +59,24 @@ export function PreviousEntries({ entries, updateEntry, deleteEntry }: Props) {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <button className="w-28 h-6 bg-zinc-600" onClick={handlePreviousDay}>
+        <Button variant="secondary" onClick={handlePreviousDay}>
           Previous Day
-        </button>
+        </Button>
         <div className="flex flex-col items-center">
           <span>{formattedDate}</span>
           <TotalsDisplay totalMilliseconds={millisecondsSpentOnTargetDate} />
         </div>
         <div className="space-x-4">
-          <button
-            className="w-28 h-6 bg-zinc-600"
+          <Button
+            variant="secondary"
             onClick={handleNextDay}
             disabled={isToday}
           >
             Next Day
-          </button>
-          <button
-            className="w-28 h-6 bg-zinc-600"
-            onClick={handleToday}
-            disabled={isToday}
-          >
+          </Button>
+          <Button variant="secondary" onClick={handleToday} disabled={isToday}>
             Today
-          </button>
+          </Button>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
