@@ -61,7 +61,7 @@ export function TimeDisplay({
               value={hours}
               onChange={(e) => setHours(Number(e.currentTarget.value))}
               onBlur={updateTimeBudget}
-              className="w-24 text-4xl text-center font-mono"
+              className="w-24 text-4xl text-center font-mono bg-card"
             />
             <span className="text-4xl self-center">:</span>
             <Input
@@ -70,7 +70,7 @@ export function TimeDisplay({
               value={minutes}
               onChange={(e) => setMinutes(Number(e.currentTarget.value))}
               onBlur={updateTimeBudget}
-              className="w-24 text-4xl text-center font-mono"
+              className="w-24 text-4xl text-center font-mono bg-card"
             />
             <span className="text-4xl self-center">:</span>
             <Input
@@ -79,7 +79,7 @@ export function TimeDisplay({
               value={seconds}
               onChange={(e) => setSeconds(Number(e.currentTarget.value))}
               onBlur={updateTimeBudget}
-              className="w-24 text-4xl text-center font-mono"
+              className="w-24 text-4xl text-center font-mono bg-card"
             />
           </Card>
         </div>
