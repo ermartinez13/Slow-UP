@@ -6,14 +6,16 @@ interface TimeBreakdown {
   tenthsOfASecond: number;
 }
 
-export function millisecondsToTimeBreakdown(milliseconds: number): TimeBreakdown {
+export function millisecondsToTimeBreakdown(
+  milliseconds: number
+): TimeBreakdown {
   const totalSeconds = Math.floor(milliseconds / 1000);
   const totalMinutes = Math.floor(totalSeconds / 60);
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
   const seconds = totalSeconds % 60;
-  const centiseconds = Math.floor((milliseconds % 1000) / 10); // 10ms units
-  const tenthsOfASecond = Math.floor(centiseconds / 10); // 100ms units
+  const tenthsOfASecond = Math.floor((milliseconds % 1000) / 100); // 100ms units
+  const centiseconds = Math.floor((milliseconds % 100) / 10); // updated logic
 
   return { hours, minutes, seconds, centiseconds, tenthsOfASecond };
 }
@@ -25,13 +27,20 @@ interface FormatOptions {
   showAmPm?: boolean;
 }
 
-export function formatDuration(milliseconds: number, options?: FormatOptions): string {
-  const { hours, minutes, seconds, tenthsOfASecond } = millisecondsToTimeBreakdown(milliseconds);
+export function formatDuration(
+  milliseconds: number,
+  options?: FormatOptions
+): string {
+  const { hours, minutes, seconds, tenthsOfASecond } =
+    millisecondsToTimeBreakdown(milliseconds);
 
   return formatTimeString(hours, minutes, seconds, tenthsOfASecond, options);
 }
 
-export function formatDateTime(milliseconds: number, options?: FormatOptions): string {
+export function formatDateTime(
+  milliseconds: number,
+  options?: FormatOptions
+): string {
   const date = new Date(milliseconds);
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -59,7 +68,9 @@ function formatTimeString(
 
   const hoursStr = mergedOptions.padHours ? padZero(hours) : hours;
   const secondsStr = mergedOptions.showSeconds ? `:${padZero(seconds)}` : "";
-  const tenthsOfASecondStr = mergedOptions.showTenthsOfASecond ? `.${tenthsOfASecond}` : "";
+  const tenthsOfASecondStr = mergedOptions.showTenthsOfASecond
+    ? `.${tenthsOfASecond}`
+    : "";
 
   return `${hoursStr}:${padZero(minutes)}${secondsStr}${tenthsOfASecondStr}`;
 }
