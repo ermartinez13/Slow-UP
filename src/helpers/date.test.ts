@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { getDayBoundaries } from "./date.helpers";
+import { formatDateTime } from "./time.helpers";
 
 describe("getDayBoundaries", () => {
   it("should return correct boundaries for a date string in ISO format", () => {
@@ -79,5 +80,52 @@ describe("getDayBoundaries", () => {
     const boundaries = getDayBoundaries(Number.MAX_SAFE_INTEGER + 1);
     expect(boundaries.start).toBeNaN();
     expect(boundaries.end).toBeNaN();
+  });
+});
+
+describe("formatDateTime", () => {
+  it("should format morning time correctly", () => {
+    const morningDate = new Date("2024-06-07T06:30:00.000Z");
+    const result = formatDateTime(morningDate.getTime(), {
+      showSeconds: true,
+      showAmPm: true,
+    });
+    expect(result).toBe("6:30:00 am");
+  });
+
+  it("should format evening time correctly", () => {
+    const eveningDate = new Date("2024-06-07T18:30:00.000Z");
+    const result = formatDateTime(eveningDate.getTime(), {
+      showSeconds: true,
+      showAmPm: true,
+    });
+    expect(result).toBe("6:30:00 pm");
+  });
+
+  it("should format midnight correctly", () => {
+    const midnightDate = new Date("2024-06-07T00:00:00.000Z");
+    const result = formatDateTime(midnightDate.getTime(), {
+      showSeconds: true,
+      showAmPm: true,
+    });
+    expect(result).toBe("12:00:00 am");
+  });
+
+  it("should format one second before midnight correctly", () => {
+    const beforeMidnightDate = new Date("2024-06-06T23:59:59.000Z");
+    const result = formatDateTime(beforeMidnightDate.getTime(), {
+      showSeconds: true,
+      showAmPm: true,
+    });
+    expect(result).toBe("11:59:59 pm");
+  });
+
+  it("should format one second after midnight correctly", () => {
+    const afterMidnightDate = new Date("2024-06-07T00:00:01.000Z");
+    const result = formatDateTime(afterMidnightDate.getTime(), {
+      showSeconds: true,
+      showAmPm: true,
+    });
+    expect(result).toBe("12:00:01 am");
   });
 });
