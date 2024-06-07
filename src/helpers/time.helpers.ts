@@ -27,6 +27,13 @@ interface FormatOptions {
   showAmPm?: boolean;
 }
 
+interface Time {
+  hours: number;
+  minutes: number;
+  seconds: number;
+  tenthsOfASecond: number;
+}
+
 export function formatDuration(
   milliseconds: number,
   options?: FormatOptions
@@ -34,31 +41,39 @@ export function formatDuration(
   const { hours, minutes, seconds, tenthsOfASecond } =
     millisecondsToTimeBreakdown(milliseconds);
 
-  return formatTimeString(hours, minutes, seconds, tenthsOfASecond, options);
+  const time: Time = {
+    hours,
+    minutes,
+    seconds,
+    tenthsOfASecond,
+  };
+
+  return formatTimeString(time, options);
 }
 
 export function formatDateTime(
   milliseconds: number,
-  options?: FormatOptions
+  options: FormatOptions
 ): string {
   const date = new Date(milliseconds);
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
-  const ampm = options?.showAmPm ? (hours >= 12 ? "pm" : "am") : "";
 
-  const hours12 = hours % 12 || 12;
+  const time: Time = {
+    hours: options.showAmPm ? hours % 12 || 12 : hours,
+    minutes,
+    seconds,
+    tenthsOfASecond: 0,
+  };
 
-  return formatTimeString(hours12, minutes, seconds, 0, options) + ` ${ampm}`;
+  const timeString = formatTimeString(time, options);
+  const ampm = options.showAmPm ? formatAmPm(hours) : "";
+
+  return `${timeString} ${ampm}`.trim();
 }
 
-function formatTimeString(
-  hours: number,
-  minutes: number,
-  seconds: number,
-  tenthsOfASecond: number,
-  options?: FormatOptions
-): string {
+function formatTimeString(time: Time, options?: FormatOptions): string {
   const defaultOptions: FormatOptions = {
     showSeconds: true,
     padHours: false,
@@ -68,13 +83,21 @@ function formatTimeString(
 
   const mergedOptions: FormatOptions = { ...defaultOptions, ...options };
 
-  const hoursStr = mergedOptions.padHours ? padZero(hours) : hours;
-  const secondsStr = mergedOptions.showSeconds ? `:${padZero(seconds)}` : "";
+  const hoursStr = mergedOptions.padHours ? padZero(time.hours) : time.hours;
+  const secondsStr = mergedOptions.showSeconds
+    ? `:${padZero(time.seconds)}`
+    : "";
   const tenthsOfASecondStr = mergedOptions.showTenthsOfASecond
-    ? `.${tenthsOfASecond}`
+    ? `.${time.tenthsOfASecond}`
     : "";
 
-  return `${hoursStr}:${padZero(minutes)}${secondsStr}${tenthsOfASecondStr}`;
+  return `${hoursStr}:${padZero(
+    time.minutes
+  )}${secondsStr}${tenthsOfASecondStr}`;
+}
+
+function formatAmPm(hours: number): string {
+  return hours >= 12 ? "pm" : "am";
 }
 
 function padZero(number: number): string {
