@@ -47,7 +47,9 @@ export function formatDateTime(
   const seconds = date.getSeconds();
   const ampm = options?.showAmPm ? (hours >= 12 ? "pm" : "am") : "";
 
-  return formatTimeString(hours, minutes, seconds, 0, options) + ` ${ampm}`;
+  const hours12 = hours % 12 || 12;
+
+  return formatTimeString(hours12, minutes, seconds, 0, options) + ` ${ampm}`;
 }
 
 function formatTimeString(
