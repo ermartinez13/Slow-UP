@@ -1,9 +1,13 @@
-import { describe, it, vi, expect } from "vitest";
+import { describe, it, vi, expect, afterEach } from "vitest";
 import { waitFor } from "@testing-library/dom";
 
 import { notify } from "./notification.helpers";
 
 describe("notify", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("should create a notification if permission is granted", () => {
     const notificationMock = {
       addEventListener: vi.fn(),
