@@ -17,7 +17,7 @@ export function Stopwatch({ timeSpentMs }: Props) {
         <span>:</span>
         <span>{seconds.toString().padStart(2, "0")}</span>
         <span>.</span>
-        <span>{tenthsOfASecond.toString().padStart(2, "0")}</span>
+        <span>{tenthsOfASecond.toString()}</span>
       </div>
     </div>
   );
