@@ -1,4 +1,4 @@
-import { formatDateTime } from "../helpers";
+import { dateTimeToString } from "../helpers";
 import { TrackerStatus } from "../models";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 export function TimeEnd({ millisecondsLeft, status }: Props) {
   const expectedCompletionTime =
     status === TrackerStatus.ON
-      ? formatDateTime(Date.now() + millisecondsLeft, {
+      ? dateTimeToString(Date.now() + millisecondsLeft, {
           showSeconds: true,
           showAmPm: true,
         })

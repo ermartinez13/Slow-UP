@@ -1,4 +1,4 @@
-import { formatDateTime } from "../../helpers";
+import { dateTimeToString } from "../../helpers";
 
 interface Props {
   startTimestamp: number;
@@ -8,7 +8,7 @@ export function StartTime({ startTimestamp }: Props) {
   const startTime =
     startTimestamp === -1
       ? "--"
-      : formatDateTime(startTimestamp, {
+      : dateTimeToString(startTimestamp, {
           showSeconds: true,
           showAmPm: true,
         });

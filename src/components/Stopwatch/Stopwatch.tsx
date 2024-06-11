@@ -1,12 +1,12 @@
-import { millisecondsToTimeBreakdown } from "../../helpers";
+import { millisecondsToTime } from "../../helpers";
 
 interface Props {
   timeSpentMs: number;
 }
 
 export function Stopwatch({ timeSpentMs }: Props) {
-  const { hours, minutes, seconds, centiseconds } =
-    millisecondsToTimeBreakdown(timeSpentMs);
+  const { hours, minutes, seconds, tenthsOfASecond } =
+    millisecondsToTime(timeSpentMs);
 
   return (
     <div className="flex justify-center gap-4 h-24">
@@ -17,7 +17,7 @@ export function Stopwatch({ timeSpentMs }: Props) {
         <span>:</span>
         <span>{seconds.toString().padStart(2, "0")}</span>
         <span>.</span>
-        <span>{centiseconds.toString().padStart(2, "0")}</span>
+        <span>{tenthsOfASecond.toString().padStart(2, "0")}</span>
       </div>
     </div>
   );

@@ -5,8 +5,8 @@ import { StartTime } from "./StartTime";
 
 const formattedTime = "some formatted time";
 
-vi.mock("../../helpers", () => ({
-  formatDateTime: () => formattedTime,
+vi.mock("@/helpers/time.helpers", () => ({
+  dateTimeToString: () => formattedTime,
 }));
 
 describe("StartTime component", () => {
