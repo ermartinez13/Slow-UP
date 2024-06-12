@@ -1,4 +1,4 @@
-import { millisecondsToTimeBreakdown } from "../../helpers";
+import { millisecondsToTime } from "../../helpers";
 
 export function getFormattedDate(timestamp: number) {
   const date = new Date(timestamp);
@@ -31,8 +31,8 @@ export function getTimesToRender(startTimestamp: number, endTimestamp: number) {
 }
 
 export function getTimeSpentStr(timeSpent: number) {
-  const {hours, minutes, seconds} = millisecondsToTimeBreakdown(timeSpent);
-  let timeString = '';
+  const { hours, minutes, seconds } = millisecondsToTime(timeSpent);
+  let timeString = "";
   if (hours > 0) timeString += `${hours}h `;
   if (minutes > 0) timeString += `${minutes}m `;
   timeString += `${seconds}s`;

@@ -27,8 +27,8 @@ export function TimeDisplay({
   const [seconds, setSeconds] = React.useState(
     Math.floor((clampedMillisecondsLeft % 60000) / 1000)
   );
-  const [centiseconds] = React.useState(
-    Math.floor((clampedMillisecondsLeft % 1000) / 10)
+  const [tenthsOfASecond] = React.useState(
+    Math.floor((clampedMillisecondsLeft % 1000) / 100)
   );
 
   const updateTimeBudget = () => {
@@ -91,7 +91,7 @@ export function TimeDisplay({
           <span>:</span>
           <span>{seconds.toString().padStart(2, "0")}</span>
           <span>.</span>
-          <span>{centiseconds.toString().padStart(2, "0")}</span>
+          <span>{tenthsOfASecond.toString()}</span>
         </div>
       )}
     </div>

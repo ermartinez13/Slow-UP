@@ -1,67 +1,66 @@
-interface TimeBreakdown {
-  hours: number;
-  minutes: number;
-  seconds: number;
-  centiseconds: number;
-  tenthsOfASecond: number;
-}
+import type { FormatOptions, Time } from "@/models/time.models";
 
-export function millisecondsToTimeBreakdown(milliseconds: number): TimeBreakdown {
+export function millisecondsToTime(milliseconds: number): Time {
   const totalSeconds = Math.floor(milliseconds / 1000);
   const totalMinutes = Math.floor(totalSeconds / 60);
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
   const seconds = totalSeconds % 60;
-  const centiseconds = Math.floor((milliseconds % 1000) / 10); // 10ms units
-  const tenthsOfASecond = Math.floor(centiseconds / 10); // 100ms units
+  const tenthsOfASecond = Math.floor((milliseconds % 1000) / 100); // 100ms units
+  const hundredthsOfASecond = Math.floor((milliseconds % 100) / 10); // 10ms units
 
-  return { hours, minutes, seconds, centiseconds, tenthsOfASecond };
+  return { hours, minutes, seconds, tenthsOfASecond, hundredthsOfASecond };
 }
 
-interface FormatOptions {
-  showSeconds?: boolean;
-  padHours?: boolean;
-  showTenthsOfASecond?: boolean;
-  showAmPm?: boolean;
-}
-
-export function formatDuration(milliseconds: number, options?: FormatOptions): string {
-  const { hours, minutes, seconds, tenthsOfASecond } = millisecondsToTimeBreakdown(milliseconds);
-
-  return formatTimeString(hours, minutes, seconds, tenthsOfASecond, options);
-}
-
-export function formatDateTime(milliseconds: number, options?: FormatOptions): string {
-  const date = new Date(milliseconds);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  const ampm = options?.showAmPm ? (hours >= 12 ? "pm" : "am") : "";
-
-  return formatTimeString(hours, minutes, seconds, 0, options) + ` ${ampm}`;
-}
-
-function formatTimeString(
-  hours: number,
-  minutes: number,
-  seconds: number,
-  tenthsOfASecond: number,
+export function durationToString(
+  milliseconds: number,
   options?: FormatOptions
 ): string {
-  const defaultOptions: FormatOptions = {
-    showSeconds: true,
-    padHours: false,
-    showTenthsOfASecond: false,
-    showAmPm: false,
+  const time = millisecondsToTime(milliseconds);
+  return timeToString(time, options);
+}
+
+export function dateTimeToString(
+  milliseconds: number,
+  options: FormatOptions
+): string {
+  const date = new Date(milliseconds);
+
+  const time: Time = {
+    hours: date.getHours(),
+    minutes: date.getMinutes(),
+    seconds: date.getSeconds(),
+    tenthsOfASecond: Math.floor((date.getMilliseconds() % 1000) / 100),
+    hundredthsOfASecond: Math.floor((date.getMilliseconds() % 100) / 10),
   };
 
-  const mergedOptions: FormatOptions = { ...defaultOptions, ...options };
+  return timeToString(time, options);
+}
 
-  const hoursStr = mergedOptions.padHours ? padZero(hours) : hours;
-  const secondsStr = mergedOptions.showSeconds ? `:${padZero(seconds)}` : "";
-  const tenthsOfASecondStr = mergedOptions.showTenthsOfASecond ? `.${tenthsOfASecond}` : "";
+function timeToString(time: Time, options?: FormatOptions): string {
+  const {
+    showSeconds = true,
+    padHours = false,
+    showTenthsOfASecond = false,
+    showAmPm = false,
+  } = options || {};
+  let hours = time.hours;
+  let ampm = "";
 
-  return `${hoursStr}:${padZero(minutes)}${secondsStr}${tenthsOfASecondStr}`;
+  if (showAmPm) {
+    hours = hours % 12 || 12;
+    ampm = time.hours >= 12 ? "pm" : "am";
+  }
+
+  const hoursStr = padHours ? padZero(hours) : hours;
+  const secondsStr = showSeconds ? `:${padZero(time.seconds)}` : "";
+  const tenthsOfASecondStr = showTenthsOfASecond
+    ? `.${time.tenthsOfASecond}`
+    : "";
+
+  return `${hoursStr}:${padZero(
+    time.minutes
+  )}${secondsStr}${tenthsOfASecondStr} ${ampm}`.trim();
 }
 
 function padZero(number: number): string {
