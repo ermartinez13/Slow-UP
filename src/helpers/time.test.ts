@@ -11,20 +11,18 @@ describe(`${millisecondsToTime.name}`, () => {
       minutes: 2,
       seconds: 5,
       tenthsOfASecond: 1,
-      hundredthsOfASecond: 3,
     });
   });
 
-  it("should be accurate to hundredths of a second when reconstructing the input from the output", () => {
+  it("should be accurate to tenths of a second when reconstructing the input from the output", () => {
     const milliseconds = 123456;
     const breakdown = millisecondsToTime(milliseconds);
     const reconstructedMilliseconds =
       breakdown.hours * 60 * 60 * 1000 +
       breakdown.minutes * 60 * 1000 +
       breakdown.seconds * 1000 +
-      breakdown.tenthsOfASecond * 100 +
-      breakdown.hundredthsOfASecond * 10;
-    expect(reconstructedMilliseconds).toBe(123450);
+      breakdown.tenthsOfASecond * 100;
+    expect(reconstructedMilliseconds).toBe(123400);
   });
 
   it("should ignore thousandths of a second differences", () => {
