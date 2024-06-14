@@ -3,10 +3,7 @@ import React from "react";
 import { DEFAULT_TIME } from "../Timer/Timer.constants";
 import { useTimeTracking } from "../../hooks/use-time-tracking";
 import { ActionButtons } from "../Timer/ActionButtons";
-import { Timer } from "../Timer";
-import { Stopwatch } from "../Stopwatch/Stopwatch";
 import { TrackingMode, TrackerStatus } from "../../models";
-import { ProtectedToggle } from "../ProtectedToggle";
 import { TimeTrackingMode } from "./TimeTrackingMode";
 
 interface Props {
@@ -30,7 +27,6 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
     timeBudgetMs: timeBudget,
   });
 
-  const isTimerMode = mode === TrackingMode.TIMER;
   const trackerStatus = isRunning
     ? TrackerStatus.ON
     : timeSpent > 0
@@ -52,13 +48,11 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
     reset();
   };
 
-  const handleToggle = () => {
-    const nextMode =
-      mode === TrackingMode.TIMER ? TrackingMode.STOPWATCH : TrackingMode.TIMER;
-    setMode(nextMode);
+  const handleModeChange = (value: string) => {
+    if (isTrackingMode(value)) {
+      setMode(value);
+    }
   };
-
-  const shouldShowWarning = () => timeSpent > timeBudget;
 
   return (
     <div className="grid gap-y-8 place-content-center">
@@ -67,6 +61,9 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
         setTimeBudget={setTimeBudget}
         timeSpent={timeSpent}
         timeBudget={timeBudget}
+        mode={mode}
+        onModeChange={handleModeChange}
+        key={sessionId}
       />
       <ActionButtons
         onStartPause={handleStartPause}
@@ -75,4 +72,8 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
       />
     </div>
   );
+}
+
+function isTrackingMode(value: string): value is TrackingMode {
+  return Object.values(TrackingMode).some((mode) => mode === value);
 }
