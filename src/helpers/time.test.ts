@@ -3,36 +3,58 @@ import { describe, it, expect } from "vitest";
 import { dateTimeToString, millisecondsToTime } from ".";
 
 describe(`${millisecondsToTime.name}`, () => {
-  it("should break down a specific time range", () => {
-    const milliseconds = 3725130;
+  it("should break down duration in milliseconds to tenths of a second accuracy", () => {
+    const milliseconds = 9999;
     const breakdown = millisecondsToTime(milliseconds);
     expect(breakdown).toEqual({
-      hours: 1,
-      minutes: 2,
-      seconds: 5,
-      tenthsOfASecond: 1,
-      hundredthsOfASecond: 3,
+      hours: 0,
+      minutes: 0,
+      seconds: 9,
+      tenthsOfASecond: 9,
     });
   });
 
-  it("should be accurate to hundredths of a second when reconstructing the input from the output", () => {
-    const milliseconds = 123456;
+  it("should reconstruct duration in milliseconds to tenths of a second accuracy", () => {
+    const milliseconds = 999;
     const breakdown = millisecondsToTime(milliseconds);
     const reconstructedMilliseconds =
       breakdown.hours * 60 * 60 * 1000 +
       breakdown.minutes * 60 * 1000 +
       breakdown.seconds * 1000 +
-      breakdown.tenthsOfASecond * 100 +
-      breakdown.hundredthsOfASecond * 10;
-    expect(reconstructedMilliseconds).toBe(123450);
+      breakdown.tenthsOfASecond * 100;
+    expect(reconstructedMilliseconds).toBe(900);
   });
 
-  it("should ignore thousandths of a second differences", () => {
-    const milliseconds1 = 123450;
-    const milliseconds2 = 123459;
+  it("should ignore hundredths and thousandths of a second differences when not rounding", () => {
+    const milliseconds1 = 900;
+    const milliseconds2 = 999;
     const breakdown1 = millisecondsToTime(milliseconds1);
     const breakdown2 = millisecondsToTime(milliseconds2);
     expect(breakdown2).toEqual(breakdown1);
+    expect(breakdown1.tenthsOfASecond).toBe(9);
+    expect(breakdown2.tenthsOfASecond).toBe(9);
+  });
+
+  it("should round to the nearest second when shouldRound is true", () => {
+    const milliseconds1 = 900;
+    const milliseconds2 = 999;
+    const breakdown1 = millisecondsToTime(milliseconds1, true);
+    const breakdown2 = millisecondsToTime(milliseconds2, true);
+    expect(breakdown1.tenthsOfASecond).toBe(9);
+    expect(breakdown1.seconds).toBe(0);
+    expect(breakdown2.tenthsOfASecond).toBe(0);
+    expect(breakdown2.seconds).toBe(1);
+  });
+
+  it("should round all time units when necessary", () => {
+    const milliseconds = 3599999; // 59 minutes, 59 seconds, 999 milliseconds
+    const breakdown = millisecondsToTime(milliseconds, true);
+    expect(breakdown).toEqual({
+      hours: 1,
+      minutes: 0,
+      seconds: 0,
+      tenthsOfASecond: 0,
+    });
   });
 });
 

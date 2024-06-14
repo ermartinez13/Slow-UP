@@ -4,6 +4,7 @@ import { TrackerStatus } from "../../models";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { millisecondsToTime } from "@/helpers";
 
 interface Props {
   millisecondsLeft: number;
@@ -18,18 +19,17 @@ export function TimeDisplay({
 }: Props) {
   const clampedMillisecondsLeft = Math.max(millisecondsLeft, 0);
 
-  const [hours, setHours] = React.useState(
-    Math.floor(clampedMillisecondsLeft / 3600000)
-  );
-  const [minutes, setMinutes] = React.useState(
-    Math.floor((clampedMillisecondsLeft % 3600000) / 60000)
-  );
-  const [seconds, setSeconds] = React.useState(
-    Math.floor((clampedMillisecondsLeft % 60000) / 1000)
-  );
-  const [tenthsOfASecond] = React.useState(
-    Math.floor((clampedMillisecondsLeft % 1000) / 100)
-  );
+  const {
+    hours: _hours,
+    minutes: _minutes,
+    seconds: _seconds,
+    tenthsOfASecond: _tenthsOfASecond,
+  } = millisecondsToTime(clampedMillisecondsLeft, true);
+
+  const [hours, setHours] = React.useState(_hours);
+  const [minutes, setMinutes] = React.useState(_minutes);
+  const [seconds, setSeconds] = React.useState(_seconds);
+  const [tenthsOfASecond] = React.useState(_tenthsOfASecond);
 
   const updateTimeBudget = () => {
     const nextHours = hours * 3600000;

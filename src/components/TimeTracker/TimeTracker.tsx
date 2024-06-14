@@ -48,9 +48,21 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
     reset();
   };
 
-  const handleModeChange = (value: string) => {
-    if (isTrackingMode(value)) {
-      setMode(value);
+  const handleModeChange = (nextMode: string) => {
+    if (isTrackingMode(nextMode)) {
+      setMode(nextMode);
+      // Edge case: When switching from stopwatch to timer mode while the time tracking system is paused,
+      // and the time spent exceeds the time budget, expire the timer and reset it.
+      // TODO: Explore moving this logic to the useTimeTracking hook.
+      if (
+        !isRunning &&
+        mode === TrackingMode.STOPWATCH &&
+        nextMode === TrackingMode.TIMER &&
+        timeSpent >= timeBudget
+      ) {
+        onEnd(Date.now(), timeSpent);
+        reset();
+      }
     }
   };
 

@@ -3,7 +3,6 @@ export interface Time {
   minutes: number;
   seconds: number;
   tenthsOfASecond: number;
-  hundredthsOfASecond: number;
 }
 
 export interface FormatOptions {

@@ -1,15 +1,41 @@
 import type { FormatOptions, Time } from "@/models/time.models";
 
-export function millisecondsToTime(milliseconds: number): Time {
+export function millisecondsToTime(
+  milliseconds: number,
+  roundTenths: boolean = false
+): Time {
   const totalSeconds = Math.floor(milliseconds / 1000);
   const totalMinutes = Math.floor(totalSeconds / 60);
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
   const seconds = totalSeconds % 60;
-  const tenthsOfASecond = Math.floor((milliseconds % 1000) / 100); // 100ms units
-  const hundredthsOfASecond = Math.floor((milliseconds % 100) / 10); // 10ms units
+  const hundredthsOfASecondDetailed = Math.floor((milliseconds % 1000) / 10);
+  let tenthsOfASecond = roundTenths
+    ? Math.round(hundredthsOfASecondDetailed / 10)
+    : Math.floor(hundredthsOfASecondDetailed / 10);
+  let secondsAdjusted = seconds;
+  let minutesAdjusted = minutes;
+  let hoursAdjusted = hours;
 
-  return { hours, minutes, seconds, tenthsOfASecond, hundredthsOfASecond };
+  if (tenthsOfASecond === 10) {
+    tenthsOfASecond = 0;
+    secondsAdjusted++;
+    if (secondsAdjusted === 60) {
+      secondsAdjusted = 0;
+      minutesAdjusted++;
+      if (minutesAdjusted === 60) {
+        minutesAdjusted = 0;
+        hoursAdjusted++;
+      }
+    }
+  }
+
+  return {
+    hours: hoursAdjusted,
+    minutes: minutesAdjusted,
+    seconds: secondsAdjusted,
+    tenthsOfASecond,
+  };
 }
 
 export function durationToString(
@@ -31,7 +57,6 @@ export function dateTimeToString(
     minutes: date.getMinutes(),
     seconds: date.getSeconds(),
     tenthsOfASecond: Math.floor((date.getMilliseconds() % 1000) / 100),
-    hundredthsOfASecond: Math.floor((date.getMilliseconds() % 100) / 10),
   };
 
   return timeToString(time, options);
