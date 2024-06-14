@@ -45,6 +45,17 @@ describe(`${millisecondsToTime.name}`, () => {
     expect(breakdown2.tenthsOfASecond).toBe(0);
     expect(breakdown2.seconds).toBe(1);
   });
+
+  it("should round all time units when necessary", () => {
+    const milliseconds = 3599999; // 59 minutes, 59 seconds, 999 milliseconds
+    const breakdown = millisecondsToTime(milliseconds, true);
+    expect(breakdown).toEqual({
+      hours: 1,
+      minutes: 0,
+      seconds: 0,
+      tenthsOfASecond: 0,
+    });
+  });
 });
 
 describe(`${dateTimeToString.name}`, () => {
