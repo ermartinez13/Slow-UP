@@ -4,9 +4,10 @@ import { TrackerStatus } from "../models";
 interface Props {
   millisecondsLeft: number;
   status: TrackerStatus;
+  timeBudget: number;
 }
 
-export function TimeEnd({ millisecondsLeft, status }: Props) {
+export function TimeEnd({ millisecondsLeft, status, timeBudget }: Props) {
   const expectedCompletionTime =
     status === TrackerStatus.ON
       ? dateTimeToString(Date.now() + millisecondsLeft, {
@@ -15,5 +16,10 @@ export function TimeEnd({ millisecondsLeft, status }: Props) {
         })
       : "--";
 
-  return <p>Expected completion: {expectedCompletionTime}</p>;
+  return (
+    <>
+      <p>Expected completion: {expectedCompletionTime}</p>
+      <p>Time budget: {timeBudget / 1000} seconds</p>
+    </>
+  );
 }

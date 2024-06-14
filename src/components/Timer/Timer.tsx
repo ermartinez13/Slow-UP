@@ -12,14 +12,11 @@ interface Props {
 
 export function Timer({ millisecondsLeft, status, setTimeBudget }: Props) {
   return (
-    <>
-      <TimeDisplay
-        millisecondsLeft={millisecondsLeft}
-        setTimeBudget={setTimeBudget}
-        key={millisecondsLeft}
-        status={status}
-      />
-      <TimeEnd millisecondsLeft={millisecondsLeft} status={status} />
-    </>
+    <TimeDisplay
+      millisecondsLeft={millisecondsLeft}
+      setTimeBudget={setTimeBudget}
+      key={millisecondsLeft}
+      status={status}
+    />
   );
 }
