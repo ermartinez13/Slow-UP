@@ -7,6 +7,7 @@ import { Timer } from "../Timer";
 import { Stopwatch } from "../Stopwatch/Stopwatch";
 import { TrackingMode, TrackerStatus } from "../../models";
 import { ProtectedToggle } from "../ProtectedToggle";
+import { TimeTrackingMode } from "./TimeTrackingMode";
 
 interface Props {
   onStart: (startTimestamp: number) => void;
@@ -61,24 +62,12 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
 
   return (
     <div className="grid gap-y-8 place-content-center">
-      <ProtectedToggle
-        isOn={isTimerMode}
-        handleToggle={handleToggle}
-        offText="Stopwatch"
-        onText="Timer"
-        warningMessage="Switching to timer mode will end the current time tracking session. Try again to switch anyways."
-        shouldShowWarning={shouldShowWarning}
-        key={sessionId}
+      <TimeTrackingMode
+        status={trackerStatus}
+        setTimeBudget={setTimeBudget}
+        timeSpent={timeSpent}
+        timeBudget={timeBudget}
       />
-      {isTimerMode ? (
-        <Timer
-          millisecondsLeft={timeBudget - timeSpent}
-          setTimeBudget={setTimeBudget}
-          status={trackerStatus}
-        />
-      ) : (
-        <Stopwatch timeSpentMs={timeSpent} />
-      )}
       <ActionButtons
         onStartPause={handleStartPause}
         onStop={handleStop}
