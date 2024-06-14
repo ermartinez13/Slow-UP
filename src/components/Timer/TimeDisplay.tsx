@@ -45,13 +45,19 @@ export function TimeDisplay({
         <div className="flex flex-col justify-between h-full">
           <div className="flex justify-between">
             <div className="w-24 text-center">
-              <Label htmlFor="hours">hr</Label>
+              <Label htmlFor="hours" aria-label="Hours">
+                hr
+              </Label>
             </div>
             <div className="w-24 text-center">
-              <Label htmlFor="minutes">min</Label>
+              <Label htmlFor="minutes" aria-label="Minutes">
+                min
+              </Label>
             </div>
             <div className="w-24 text-center">
-              <Label htmlFor="seconds">sec</Label>
+              <Label htmlFor="seconds" aria-label="Seconds">
+                sec
+              </Label>
             </div>
           </div>
           <Card className="flex gap-4 py-4">
@@ -62,6 +68,9 @@ export function TimeDisplay({
               onChange={(e) => setHours(Number(e.currentTarget.value))}
               onBlur={updateTimeBudget}
               className="w-24 text-4xl text-center font-mono bg-card"
+              min="0"
+              step="1"
+              pattern="[0-9]*"
             />
             <span className="text-4xl self-center">:</span>
             <Input
@@ -71,6 +80,9 @@ export function TimeDisplay({
               onChange={(e) => setMinutes(Number(e.currentTarget.value))}
               onBlur={updateTimeBudget}
               className="w-24 text-4xl text-center font-mono bg-card"
+              min="0"
+              step="1"
+              pattern="[0-9]*"
             />
             <span className="text-4xl self-center">:</span>
             <Input
@@ -80,6 +92,9 @@ export function TimeDisplay({
               onChange={(e) => setSeconds(Number(e.currentTarget.value))}
               onBlur={updateTimeBudget}
               className="w-24 text-4xl text-center font-mono bg-card"
+              min="0"
+              step="1"
+              pattern="[0-9]*"
             />
           </Card>
         </div>
