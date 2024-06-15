@@ -13,5 +13,5 @@ export function StartTime({ startTimestamp }: Props) {
           showAmPm: true,
         });
 
-  return <p>Started at: {startTime}</p>;
+  return <p className="text-muted-foreground">Started at: {startTime}</p>;
 }

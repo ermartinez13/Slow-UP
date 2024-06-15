@@ -32,8 +32,12 @@ export function SessionDetails({
       <StartTime startTimestamp={startTimestamp} />
       {mode === TrackingMode.TIMER ? (
         <>
-          <p>Expected completion: {expectedCompletionTime}</p>
-          <p>Time budget: {timeBudget / 1000} seconds</p>
+          <p className="text-muted-foreground">
+            Expected completion: {expectedCompletionTime}
+          </p>
+          <p className="text-muted-foreground">
+            Time budget: {timeBudget / 1000} seconds
+          </p>
         </>
       ) : null}
     </div>
