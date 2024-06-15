@@ -62,7 +62,7 @@ export function CurrentEntry({ saveEntry }: Props) {
       <TimeTracker
         onStart={handleStart}
         onEnd={handleEnd}
-        sessionId={partialEntry.start}
+        startTimestamp={partialEntry.start}
       />
       <ControlledTextArea
         content={partialEntry.description}

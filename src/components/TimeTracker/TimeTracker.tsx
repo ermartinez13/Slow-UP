@@ -9,10 +9,10 @@ import { TimeTrackingMode } from "./TimeTrackingMode";
 interface Props {
   onStart: (startTimestamp: number) => void;
   onEnd: (endTimestamp: number, timeSpentMs: number) => void;
-  sessionId: number;
+  startTimestamp: number;
 }
 
-export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
+export function TimeTracker({ onStart, onEnd, startTimestamp }: Props) {
   const [mode, setMode] = React.useState<TrackingMode>(TrackingMode.TIMER);
   const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
   const {
@@ -75,8 +75,8 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
         timeBudget={timeBudget}
         mode={mode}
         onModeChange={handleModeChange}
-        key={sessionId}
-        startTimestamp={sessionId}
+        startTimestamp={startTimestamp}
+        key={startTimestamp}
       />
       <ActionButtons
         onStartPause={handleStartPause}
