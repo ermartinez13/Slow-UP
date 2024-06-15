@@ -45,7 +45,7 @@ export function TimeTrackingMode({
   };
 
   return (
-    <div className="min-h-[200px]">
+    <div className="min-h-[240px]">
       <Tabs
         value={mode}
         onValueChange={handleValueChange}
@@ -76,6 +76,7 @@ export function TimeTrackingMode({
         status={status}
         timeBudget={timeBudget}
         startTimestamp={startTimestamp}
+        mode={mode}
         className="mt-4"
       />
       {showWarning ? (
