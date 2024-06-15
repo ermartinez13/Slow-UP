@@ -1,7 +1,6 @@
 import React from "react";
 
 import { PartialEntry, WorkEntry } from "../../models";
-import { StartTime } from "../StartTime";
 import { TimeTracker } from "../TimeTracker";
 import { ControlledTextArea } from "../ControlledTextArea";
 import { notify } from "../../helpers";
@@ -60,7 +59,6 @@ export function CurrentEntry({ saveEntry }: Props) {
 
   return (
     <div className="grid gap-y-8 place-content-center">
-      <StartTime startTimestamp={partialEntry.start} />
       <TimeTracker
         onStart={handleStart}
         onEnd={handleEnd}

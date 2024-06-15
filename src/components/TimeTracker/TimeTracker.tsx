@@ -76,6 +76,7 @@ export function TimeTracker({ onStart, onEnd, sessionId }: Props) {
         mode={mode}
         onModeChange={handleModeChange}
         key={sessionId}
+        startTimestamp={sessionId}
       />
       <ActionButtons
         onStartPause={handleStartPause}

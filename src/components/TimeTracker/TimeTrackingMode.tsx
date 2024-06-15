@@ -15,6 +15,7 @@ interface Props {
   timeBudget: number;
   mode: TrackingMode;
   onModeChange: (value: string) => void;
+  startTimestamp: number;
 }
 
 export function TimeTrackingMode({
@@ -24,6 +25,7 @@ export function TimeTrackingMode({
   timeBudget,
   mode,
   onModeChange,
+  startTimestamp,
 }: Props) {
   const [hasWarned, setHasWarned] = React.useState(false);
   const [showWarning, setShowWarning] = React.useState(false);
@@ -69,6 +71,7 @@ export function TimeTrackingMode({
               millisecondsLeft={timeBudget - timeSpent}
               status={status}
               timeBudget={timeBudget}
+              startTimestamp={startTimestamp}
             />
           </div>
         </TabsContent>
