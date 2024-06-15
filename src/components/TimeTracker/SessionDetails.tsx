@@ -1,5 +1,5 @@
-import { dateTimeToString } from "../helpers";
-import { TrackerStatus } from "../models";
+import { dateTimeToString } from "../../helpers";
+import { TrackerStatus } from "../../models";
 
 interface Props {
   millisecondsLeft: number;
@@ -7,7 +7,11 @@ interface Props {
   timeBudget: number;
 }
 
-export function TimeEnd({ millisecondsLeft, status, timeBudget }: Props) {
+export function SessionDetails({
+  millisecondsLeft,
+  status,
+  timeBudget,
+}: Props) {
   const expectedCompletionTime =
     status === TrackerStatus.ON
       ? dateTimeToString(Date.now() + millisecondsLeft, {

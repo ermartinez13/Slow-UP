@@ -6,7 +6,7 @@ import { Timer } from "../Timer";
 import { Stopwatch } from "../Stopwatch/Stopwatch";
 import { TrackerStatus, TrackingMode } from "@/models";
 import { Alert, AlertDescription } from "../ui/alert";
-import { TimeEnd } from "../TimeEnd";
+import { SessionDetails } from "./SessionDetails";
 
 interface Props {
   status: TrackerStatus;
@@ -43,7 +43,7 @@ export function TimeTrackingMode({
   };
 
   return (
-    <div>
+    <div className="min-h-[210px]">
       <Tabs
         value={mode}
         onValueChange={handleValueChange}
@@ -64,15 +64,13 @@ export function TimeTrackingMode({
             setTimeBudget={setTimeBudget}
             status={status}
           />
-          {mode === TrackingMode.TIMER ? (
-            <TimeEnd
+          <div className="mt-4">
+            <SessionDetails
               millisecondsLeft={timeBudget - timeSpent}
               status={status}
               timeBudget={timeBudget}
             />
-          ) : (
-            <div style={{ height: "48px" }} /> // preserve the space
-          )}
+          </div>
         </TabsContent>
         <TabsContent value={TrackingMode.STOPWATCH}>
           <Stopwatch timeSpentMs={timeSpent} />

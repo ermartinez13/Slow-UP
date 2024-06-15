@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction } from "react";
 
 import { TrackerStatus } from "../../models";
 import { TimeDisplay } from "./TimeDisplay";
-import { TimeEnd } from "../TimeEnd";
 
 interface Props {
   millisecondsLeft: number;
