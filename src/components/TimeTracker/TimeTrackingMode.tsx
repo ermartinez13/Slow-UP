@@ -45,7 +45,7 @@ export function TimeTrackingMode({
   };
 
   return (
-    <div className="min-h-[210px]">
+    <div className="min-h-[200px]">
       <Tabs
         value={mode}
         onValueChange={handleValueChange}
@@ -66,19 +66,18 @@ export function TimeTrackingMode({
             setTimeBudget={setTimeBudget}
             status={status}
           />
-          <div className="mt-4">
-            <SessionDetails
-              millisecondsLeft={timeBudget - timeSpent}
-              status={status}
-              timeBudget={timeBudget}
-              startTimestamp={startTimestamp}
-            />
-          </div>
         </TabsContent>
         <TabsContent value={TrackingMode.STOPWATCH}>
           <Stopwatch timeSpentMs={timeSpent} />
         </TabsContent>
       </Tabs>
+      <SessionDetails
+        millisecondsLeft={timeBudget - timeSpent}
+        status={status}
+        timeBudget={timeBudget}
+        startTimestamp={startTimestamp}
+        className="mt-4"
+      />
       {showWarning ? (
         <Alert className="w-[400px]">
           <AlertCircle className="h-4 w-4" />

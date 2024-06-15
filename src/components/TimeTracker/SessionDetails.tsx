@@ -7,6 +7,7 @@ interface Props {
   status: TrackerStatus;
   timeBudget: number;
   startTimestamp: number;
+  className?: string;
 }
 
 export function SessionDetails({
@@ -14,6 +15,7 @@ export function SessionDetails({
   status,
   timeBudget,
   startTimestamp,
+  className = "",
 }: Props) {
   const expectedCompletionTime =
     status === TrackerStatus.ON
@@ -24,10 +26,10 @@ export function SessionDetails({
       : "--";
 
   return (
-    <>
+    <div className={className}>
       <StartTime startTimestamp={startTimestamp} />
       <p>Expected completion: {expectedCompletionTime}</p>
       <p>Time budget: {timeBudget / 1000} seconds</p>
-    </>
+    </div>
   );
 }
