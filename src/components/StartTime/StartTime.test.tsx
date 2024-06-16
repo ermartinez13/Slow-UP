@@ -12,7 +12,8 @@ vi.mock("@/helpers/time.helpers", () => ({
 describe("StartTime component", () => {
   it("renders -- when session has not started", () => {
     render(<StartTime startTimestamp={-1} />);
-    expect(screen.getByText("Started at: --")).toBeInTheDocument();
+    expect(screen.getByText("Started at:")).toBeInTheDocument();
+    expect(screen.getByText("--")).toBeInTheDocument();
   });
 
   it("renders the start time when session has started", () => {
