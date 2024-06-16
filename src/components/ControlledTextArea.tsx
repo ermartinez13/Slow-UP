@@ -14,9 +14,16 @@ export function ControlledTextArea({ content, setContent, label }: Props) {
   const [localContent, setLocalContent] = React.useState<string>(content);
 
   return (
-    <Card className="p-0 w-full min-w-[33ch]">
-      <CardContent className="p-4 space-y-1">
-        {label && <Label htmlFor="textarea">{label}</Label>}
+    <Card className="p-0 w-full min-w-[33ch] rounded-sm">
+      <CardContent className="p-1 space-y-1">
+        {label && (
+          <Label
+            htmlFor="textarea"
+            className="text-muted-foreground leading-none pl-1"
+          >
+            {label}
+          </Label>
+        )}
         <Textarea
           id="textarea"
           value={localContent}
