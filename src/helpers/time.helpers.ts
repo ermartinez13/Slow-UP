@@ -38,12 +38,23 @@ export function millisecondsToTime(
   };
 }
 
-export function durationToString(
-  milliseconds: number,
-  options?: FormatOptions
-): string {
+export function durationToString(milliseconds: number): string {
   const time = millisecondsToTime(milliseconds);
-  return timeToString(time, options);
+  const units = [];
+
+  if (time.hours > 0) {
+    units.push(`${time.hours}hr${time.hours > 1 ? "s" : ""}`);
+  }
+
+  if (time.minutes > 0) {
+    units.push(`${time.minutes}min${time.minutes > 1 ? "s" : ""}`);
+  }
+
+  if (time.seconds > 0) {
+    units.push(`${time.seconds}s`);
+  }
+
+  return units.join(" ");
 }
 
 export function dateTimeToString(

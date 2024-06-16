@@ -6,6 +6,7 @@ import { Timer } from "../Timer";
 import { Stopwatch } from "../Stopwatch/Stopwatch";
 import { TrackerStatus, TrackingMode } from "@/models";
 import { Alert, AlertDescription } from "../ui/alert";
+import { SessionDetails } from "./SessionDetails";
 
 interface Props {
   status: TrackerStatus;
@@ -14,6 +15,7 @@ interface Props {
   timeBudget: number;
   mode: TrackingMode;
   onModeChange: (value: string) => void;
+  startTimestamp: number;
 }
 
 export function TimeTrackingMode({
@@ -23,6 +25,7 @@ export function TimeTrackingMode({
   timeBudget,
   mode,
   onModeChange,
+  startTimestamp,
 }: Props) {
   const [hasWarned, setHasWarned] = React.useState(false);
   const [showWarning, setShowWarning] = React.useState(false);
@@ -42,7 +45,7 @@ export function TimeTrackingMode({
   };
 
   return (
-    <div>
+    <div className="min-h-[240px]">
       <Tabs
         value={mode}
         onValueChange={handleValueChange}
@@ -68,6 +71,14 @@ export function TimeTrackingMode({
           <Stopwatch timeSpentMs={timeSpent} />
         </TabsContent>
       </Tabs>
+      <SessionDetails
+        millisecondsLeft={timeBudget - timeSpent}
+        status={status}
+        timeBudget={timeBudget}
+        startTimestamp={startTimestamp}
+        mode={mode}
+        className="mt-4"
+      />
       {showWarning ? (
         <Alert className="w-[400px]">
           <AlertCircle className="h-4 w-4" />

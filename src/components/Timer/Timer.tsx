@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction } from "react";
 
 import { TrackerStatus } from "../../models";
 import { TimeDisplay } from "./TimeDisplay";
-import { TimeEnd } from "../TimeEnd";
 
 interface Props {
   millisecondsLeft: number;
@@ -12,14 +11,11 @@ interface Props {
 
 export function Timer({ millisecondsLeft, status, setTimeBudget }: Props) {
   return (
-    <>
-      <TimeDisplay
-        millisecondsLeft={millisecondsLeft}
-        setTimeBudget={setTimeBudget}
-        key={millisecondsLeft}
-        status={status}
-      />
-      <TimeEnd millisecondsLeft={millisecondsLeft} status={status} />
-    </>
+    <TimeDisplay
+      millisecondsLeft={millisecondsLeft}
+      setTimeBudget={setTimeBudget}
+      key={millisecondsLeft}
+      status={status}
+    />
   );
 }

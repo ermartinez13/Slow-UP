@@ -1,5 +1,3 @@
-import { millisecondsToTime } from "../../helpers";
-
 export function getFormattedDate(timestamp: number) {
   const date = new Date(timestamp);
   const month = (date.getMonth() + 1).toString();
@@ -28,13 +26,4 @@ export function getTimesToRender(startTimestamp: number, endTimestamp: number) {
   const timeEnd = getFormattedTime(endTimestamp);
   const isSameTime = timeStart === timeEnd;
   return `${timeStart}${isSameTime ? "" : ` - ${timeEnd}`}`;
-}
-
-export function getTimeSpentStr(timeSpent: number) {
-  const { hours, minutes, seconds } = millisecondsToTime(timeSpent);
-  let timeString = "";
-  if (hours > 0) timeString += `${hours}h `;
-  if (minutes > 0) timeString += `${minutes}m `;
-  timeString += `${seconds}s`;
-  return timeString;
 }
