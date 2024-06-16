@@ -1,7 +1,6 @@
-import { dateTimeToString } from "../../helpers";
+import { dateTimeToString, durationToString } from "../../helpers";
 import { TrackerStatus, TrackingMode } from "../../models";
 import { StartTime } from "../StartTime";
-import { getTimeSpentStr } from "../TimeEntries/TimeEntries.helpers";
 
 interface Props {
   millisecondsLeft: number;
@@ -36,7 +35,7 @@ export function SessionDetails({
           <div className="flex justify-between">
             <span className="text-muted-foreground">Time Budget:</span>
             <span className="text-muted-foreground">
-              {getTimeSpentStr(timeBudget)}
+              {durationToString(timeBudget)}
             </span>
           </div>
           <div className="flex justify-between">

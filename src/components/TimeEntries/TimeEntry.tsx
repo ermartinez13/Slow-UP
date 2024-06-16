@@ -1,10 +1,7 @@
 import { ControlledTextArea } from "../ControlledTextArea";
 import { WorkEntry } from "../../models";
-import {
-  getDatesToRender,
-  getTimeSpentStr,
-  getTimesToRender,
-} from "./TimeEntries.helpers";
+import { getDatesToRender, getTimesToRender } from "./TimeEntries.helpers";
+import { durationToString } from "@/helpers";
 
 interface Props {
   entry: WorkEntry;
@@ -13,7 +10,7 @@ interface Props {
 }
 
 export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
-  const timeSpentStr = getTimeSpentStr(entry.spent);
+  const timeSpentStr = durationToString(entry.spent);
   const dates = getDatesToRender(entry.start, entry.end);
   const times = getTimesToRender(entry.start, entry.end);
   const setContent = (content: string) => {

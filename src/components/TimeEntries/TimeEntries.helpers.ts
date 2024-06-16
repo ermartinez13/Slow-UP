@@ -29,12 +29,3 @@ export function getTimesToRender(startTimestamp: number, endTimestamp: number) {
   const isSameTime = timeStart === timeEnd;
   return `${timeStart}${isSameTime ? "" : ` - ${timeEnd}`}`;
 }
-
-export function getTimeSpentStr(timeSpent: number) {
-  const { hours, minutes, seconds } = millisecondsToTime(timeSpent);
-  let timeString = "";
-  if (hours > 0) timeString += `${hours}h `;
-  if (minutes > 0) timeString += `${minutes}m `;
-  timeString += `${seconds}s`;
-  return timeString;
-}
