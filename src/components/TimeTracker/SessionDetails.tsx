@@ -1,6 +1,7 @@
 import { dateTimeToString } from "../../helpers";
 import { TrackerStatus, TrackingMode } from "../../models";
 import { StartTime } from "../StartTime";
+import { getTimeSpentStr } from "../TimeEntries/TimeEntries.helpers";
 
 interface Props {
   millisecondsLeft: number;
@@ -32,12 +33,18 @@ export function SessionDetails({
       <StartTime startTimestamp={startTimestamp} />
       {mode === TrackingMode.TIMER ? (
         <>
-          <p className="text-muted-foreground">
-            Expected completion: {expectedCompletionTime}
-          </p>
-          <p className="text-muted-foreground">
-            Time budget: {timeBudget / 1000} seconds
-          </p>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Time Budget:</span>
+            <span className="text-muted-foreground">
+              {getTimeSpentStr(timeBudget)}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">End At:</span>
+            <span className="text-muted-foreground">
+              {expectedCompletionTime}
+            </span>
+          </div>
         </>
       ) : null}
     </div>

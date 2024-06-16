@@ -13,5 +13,10 @@ export function StartTime({ startTimestamp }: Props) {
           showAmPm: true,
         });
 
-  return <p className="text-muted-foreground">Started at: {startTime}</p>;
+  return (
+    <div className="flex justify-between">
+      <span className="text-muted-foreground">Started at:</span>
+      <span className="text-muted-foreground">{startTime}</span>
+    </div>
+  );
 }
