@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { dateTimeToString, millisecondsToTime } from ".";
+import { dateTimeToString, millisecondsToTime, durationToString } from ".";
 
 describe(`${millisecondsToTime.name}`, () => {
   it("should break down duration in milliseconds to tenths of a second accuracy", () => {
@@ -150,5 +150,27 @@ describe(`${dateTimeToString.name}`, () => {
       padHours: true,
     });
     expect(result).toBe("00:00:01");
+  });
+});
+
+describe(`${durationToString.name}`, () => {
+  it("formats duration with hours, minutes, and seconds", () => {
+    const milliseconds = 3661000; // 1 hour, 1 minute, 1 second
+    expect(durationToString(milliseconds)).toBe("1hr 1min 1s");
+  });
+
+  it("formats duration with minutes and seconds only", () => {
+    const milliseconds = 61000; // 1 minute, 1 second
+    expect(durationToString(milliseconds)).toBe("1min 1s");
+  });
+
+  it("formats duration with seconds only", () => {
+    const milliseconds = 1000; // 1 second
+    expect(durationToString(milliseconds)).toBe("1s");
+  });
+
+  it("formats duration with minutes only", () => {
+    const milliseconds = 60000; // 1 minute
+    expect(durationToString(milliseconds)).toBe("1min");
   });
 });
