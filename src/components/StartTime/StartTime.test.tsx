@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import React from "react";
 
 import { StartTime } from "./StartTime";
@@ -9,6 +9,8 @@ const formattedTime = "some formatted time";
 vi.mock("@/helpers/time.helpers", () => ({
   dateTimeToString: () => formattedTime,
 }));
+
+afterEach(cleanup);
 
 describe("StartTime component", () => {
   it("renders -- when session has not started", () => {
@@ -20,8 +22,7 @@ describe("StartTime component", () => {
   it("renders the start time when session has started", () => {
     const timestamp = 1643723400; // some timestamp
     render(<StartTime startTimestamp={timestamp} />);
-    expect(
-      screen.getByText(`Started at: ${formattedTime}`)
-    ).toBeInTheDocument();
+    expect(screen.getByText("Started at:")).toBeInTheDocument();
+    expect(screen.getByText(formattedTime)).toBeInTheDocument();
   });
 });
