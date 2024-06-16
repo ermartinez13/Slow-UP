@@ -1,5 +1,3 @@
-import { millisecondsToTime } from "../../helpers";
-
 export function getFormattedDate(timestamp: number) {
   const date = new Date(timestamp);
   const month = (date.getMonth() + 1).toString();
