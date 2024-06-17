@@ -14,6 +14,7 @@ import {
 
 interface AddTagFormProps {
   tags: string[];
+  addTag: (value: string) => void;
 }
 
 const tagSchema = z.object({
@@ -22,7 +23,7 @@ const tagSchema = z.object({
   }),
 });
 
-export function TagForm({ tags }: AddTagFormProps) {
+export function TagForm({ tags, addTag }: AddTagFormProps) {
   const form = useForm<z.infer<typeof tagSchema>>({
     resolver: zodResolver(tagSchema),
     defaultValues: {
@@ -31,7 +32,7 @@ export function TagForm({ tags }: AddTagFormProps) {
   });
 
   function onSubmit(values: z.infer<typeof tagSchema>) {
-    console.log(values); // placeholder
+    addTag(values.tag);
     form.reset();
   }
 

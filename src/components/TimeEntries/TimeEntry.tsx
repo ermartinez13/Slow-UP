@@ -17,6 +17,10 @@ export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
   const setContent = (content: string) => {
     updateEntry({ ...entry, description: content });
   };
+  const addTag = (tag: string) => {
+    const newTags = entry.tags ? [...entry.tags, tag] : [tag];
+    updateEntry({ ...entry, tags: newTags });
+  };
 
   return (
     <div className="flex flex-col items-center p-4 border border-dashed border-gray-400">
@@ -48,12 +52,20 @@ export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
         setContent={setContent}
         label="Notes"
       />
+      <div className="h-6">
+        {entry.tags?.map((tag) => (
+          <span key={tag} className="mr-2">
+            {tag}
+          </span>
+        ))}
+      </div>
       <TagForm
         tags={[
           "uber long text here that should not all display",
           "short",
           "medium length",
         ]}
+        addTag={addTag}
       />
     </div>
   );
