@@ -2,20 +2,7 @@ import { ControlledTextArea } from "../ControlledTextArea";
 import { WorkEntry } from "../../models";
 import { getDatesToRender, getTimesToRender } from "./TimeEntries.helpers";
 import { durationToString } from "@/helpers";
-import { Form, useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { Select } from "@radix-ui/react-select";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { AddTagForm } from "./TagForm";
 
 interface Props {
   entry: WorkEntry;
@@ -69,59 +56,5 @@ export function TimeEntry({
       />
       <AddTagForm tags={tags} />
     </div>
-  );
-}
-
-interface AddTagFormProps {
-  tags: string[];
-}
-
-const tagSchema = z.object({
-  tag: z.string().min(1, {
-    message: "Tag is required.",
-  }),
-});
-
-function AddTagForm({ tags }: AddTagFormProps) {
-  const form = useForm<z.infer<typeof tagSchema>>({
-    resolver: zodResolver(tagSchema),
-    defaultValues: {
-      tag: "",
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof tagSchema>) {
-    console.log(values);
-    form.reset();
-  }
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="tag"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tag</FormLabel>
-              <FormControl>
-                <Select {...field}>
-                  <option value="">Select a tag</option>
-                  {tags.map((tag) => (
-                    <option key={tag} value={tag}>
-                      {tag}
-                    </option>
-                  ))}
-                </Select>
-                <FormDescription>Or enter a new tag</FormDescription>
-                <Input placeholder="New tag" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Add Tag</Button>
-      </form>
-    </Form>
   );
 }
