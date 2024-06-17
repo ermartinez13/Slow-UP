@@ -36,7 +36,7 @@ export function TagForm({ tags }: AddTagFormProps) {
   }
 
   return (
-    <div className="mt-4">
+    <div className="w-full mt-4">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

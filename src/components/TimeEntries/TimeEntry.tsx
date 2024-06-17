@@ -48,7 +48,13 @@ export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
         setContent={setContent}
         label="Notes"
       />
-      <TagForm tags={["some text here", "short", "medium length"]} />
+      <TagForm
+        tags={[
+          "uber long text here that should not all display",
+          "short",
+          "medium length",
+        ]}
+      />
     </div>
   );
 }
