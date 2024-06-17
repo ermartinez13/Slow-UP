@@ -49,7 +49,10 @@ export function TagForm({ tags }: AddTagFormProps) {
               <FormItem className="flex flex-row items-center space-y-0 space-x-4">
                 <FormLabel>Tag</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={form.watch("tag")}
+                  >
                     <SelectTrigger className="w-40">
                       <SelectValue placeholder="Select a tag" />
                     </SelectTrigger>
