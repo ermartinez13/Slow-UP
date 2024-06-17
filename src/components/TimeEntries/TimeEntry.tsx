@@ -2,21 +2,15 @@ import { ControlledTextArea } from "../ControlledTextArea";
 import { WorkEntry } from "../../models";
 import { getDatesToRender, getTimesToRender } from "./TimeEntries.helpers";
 import { durationToString } from "@/helpers";
-import { AddTagForm } from "./TagForm";
+import { TagForm } from "./TagForm";
 
 interface Props {
   entry: WorkEntry;
   updateEntry: (entry: WorkEntry) => void;
   deleteEntry: (entry: WorkEntry) => void;
-  tags: string[];
 }
 
-export function TimeEntry({
-  entry,
-  updateEntry,
-  deleteEntry,
-  tags = ["one", "two", "three"],
-}: Props) {
+export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
   const timeSpentStr = durationToString(entry.spent);
   const dates = getDatesToRender(entry.start, entry.end);
   const times = getTimesToRender(entry.start, entry.end);
@@ -54,7 +48,7 @@ export function TimeEntry({
         setContent={setContent}
         label="Notes"
       />
-      <AddTagForm tags={tags} />
+      <TagForm tags={["some text here", "short", "medium length"]} />
     </div>
   );
 }
