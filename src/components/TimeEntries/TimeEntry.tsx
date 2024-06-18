@@ -60,7 +60,10 @@ export function TimeEntry({ entry, updateEntry, deleteEntry, tags }: Props) {
           </span>
         ))}
       </div>
-      <TagForm tags={tags} addTag={addTag} />
+      <TagForm
+        tags={tags.filter((tag) => !entry.tags?.includes(tag))}
+        addTag={addTag}
+      />
     </div>
   );
 }

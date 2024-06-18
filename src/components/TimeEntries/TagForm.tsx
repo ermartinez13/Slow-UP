@@ -53,6 +53,7 @@ export function TagForm({ tags, addTag }: AddTagFormProps) {
                   <Select
                     onValueChange={field.onChange}
                     value={form.watch("tag")}
+                    disabled={tags.length === 0}
                   >
                     <SelectTrigger className="w-40">
                       <SelectValue placeholder="Select a tag" />
@@ -69,7 +70,9 @@ export function TagForm({ tags, addTag }: AddTagFormProps) {
               </FormItem>
             )}
           />
-          <Button type="submit">Add Tag</Button>
+          <Button type="submit" disabled={tags.length === 0}>
+            Add Tag
+          </Button>
         </form>
       </Form>
     </div>
