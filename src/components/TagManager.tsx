@@ -37,6 +37,13 @@ export function TagManager({ tags, addTag, deleteTag }: TagManagerProps) {
     form.reset();
   }
 
+  const tagInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    form.setValue("tag", e.target.value);
+    if (form.formState.errors.tag) {
+      form.clearErrors("tag");
+    }
+  };
+
   return (
     <div className="container mx-auto max-w-[400px] text-center">
       <Form {...form}>
@@ -48,7 +55,7 @@ export function TagManager({ tags, addTag, deleteTag }: TagManagerProps) {
               <FormItem>
                 <FormLabel>Tag</FormLabel>
                 <FormControl className="w-[50%] mx-auto">
-                  <Input {...field} />
+                  <Input {...field} onChange={tagInputChangeHandler} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
