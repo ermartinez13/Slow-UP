@@ -3,6 +3,7 @@ import { WorkEntry } from "../../models";
 import { getDatesToRender, getTimesToRender } from "./TimeEntries.helpers";
 import { durationToString } from "@/helpers";
 import { TagForm } from "./TagForm";
+import { Badge } from "../ui/badge";
 
 interface Props {
   entry: WorkEntry;
@@ -53,11 +54,11 @@ export function TimeEntry({ entry, updateEntry, deleteEntry, tags }: Props) {
         setContent={setContent}
         label="Notes"
       />
-      <div className="h-6">
+      <div className="h-6 flex flex-wrap gap-2">
         {entry.tags?.map((tag) => (
-          <span key={tag} className="mr-2">
-            {tag}
-          </span>
+          <Badge key={tag} variant="outline">
+            <span className="text-sm">{tag}</span>
+          </Badge>
         ))}
       </div>
       <TagForm
