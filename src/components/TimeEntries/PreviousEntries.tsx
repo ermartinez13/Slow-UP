@@ -10,9 +10,15 @@ interface Props {
   entries: WorkEntry[];
   updateEntry: (timeEntry: WorkEntry) => void;
   deleteEntry: (timeEntry: WorkEntry) => void;
+  tags: string[];
 }
 
-export function PreviousEntries({ entries, updateEntry, deleteEntry }: Props) {
+export function PreviousEntries({
+  entries,
+  updateEntry,
+  deleteEntry,
+  tags,
+}: Props) {
   const [dateOffset, setDateOffset] = useState(0);
 
   const { start: targetDateStart, end: targetDateEnd } =
@@ -87,6 +93,7 @@ export function PreviousEntries({ entries, updateEntry, deleteEntry }: Props) {
               key={entry.start}
               updateEntry={updateEntry}
               deleteEntry={deleteEntry}
+              tags={tags}
             />
           );
         })}

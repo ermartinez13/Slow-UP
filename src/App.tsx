@@ -57,6 +57,7 @@ function App() {
             entries={entries}
             updateEntry={updateEntry}
             deleteEntry={deleteEntry}
+            tags={tags}
           />
         </section>
       </main>

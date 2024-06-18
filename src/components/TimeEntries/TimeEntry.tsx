@@ -8,9 +8,10 @@ interface Props {
   entry: WorkEntry;
   updateEntry: (entry: WorkEntry) => void;
   deleteEntry: (entry: WorkEntry) => void;
+  tags: string[];
 }
 
-export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
+export function TimeEntry({ entry, updateEntry, deleteEntry, tags }: Props) {
   const timeSpentStr = durationToString(entry.spent);
   const dates = getDatesToRender(entry.start, entry.end);
   const times = getTimesToRender(entry.start, entry.end);
@@ -59,14 +60,7 @@ export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
           </span>
         ))}
       </div>
-      <TagForm
-        tags={[
-          "uber long text here that should not all display",
-          "short",
-          "medium length",
-        ]}
-        addTag={addTag}
-      />
+      <TagForm tags={tags} addTag={addTag} />
     </div>
   );
 }
