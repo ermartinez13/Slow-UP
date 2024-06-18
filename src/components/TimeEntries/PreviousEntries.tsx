@@ -5,6 +5,7 @@ import { WorkEntry } from "../../models";
 import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "../Timer/TotalsDisplay";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 
 interface Props {
   entries: WorkEntry[];
@@ -19,6 +20,7 @@ export function PreviousEntries({
   deleteEntry,
   tags,
 }: Props) {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [dateOffset, setDateOffset] = useState(0);
 
   const { start: targetDateStart, end: targetDateEnd } =
@@ -62,6 +64,23 @@ export function PreviousEntries({
     day: "numeric",
   });
 
+  const handleTagClick = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleClearFilters = () => {
+    setSelectedTags([]);
+  };
+
+  const filteredEntries = targetEntries.filter((entry) => {
+    if (selectedTags.length === 0) return true;
+    return selectedTags.every((tag) => entry.tags.includes(tag));
+  });
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -85,8 +104,26 @@ export function PreviousEntries({
           </Button>
         </div>
       </div>
+      <div className="flex flex-wrap gap-2 mb-4">
+        {tags.map((tag) => (
+          <Badge
+            key={tag}
+            onClick={() => handleTagClick(tag)}
+            variant={selectedTags.includes(tag) ? "primary" : "secondary"}
+          >
+            {tag}
+          </Badge>
+        ))}
+        <Button
+          variant="secondary"
+          onClick={handleClearFilters}
+          disabled={selectedTags.length === 0}
+        >
+          Clear Filters
+        </Button>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {targetEntries.map((entry) => {
+        {filteredEntries.map((entry) => {
           return (
             <TimeEntry
               entry={entry}
