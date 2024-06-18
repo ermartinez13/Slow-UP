@@ -5,7 +5,8 @@ import { WorkEntry } from "../../models";
 import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "../Timer/TotalsDisplay";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+import { badgeVariants } from "../ui/badge";
+import { Checkbox } from "@radix-ui/react-checkbox";
 
 interface Props {
   entries: WorkEntry[];
@@ -106,13 +107,23 @@ export function PreviousEntries({
       </div>
       <div className="flex flex-wrap gap-2 mb-4">
         {tags.map((tag) => (
-          <Badge
-            key={tag}
-            onClick={() => handleTagClick(tag)}
-            variant={selectedTags.includes(tag) ? "primary" : "secondary"}
-          >
-            {tag}
-          </Badge>
+          <div key={tag} className="flex items-center space-x-2">
+            <Checkbox
+              id={tag}
+              checked={selectedTags.includes(tag)}
+              onCheckedChange={() => handleTagClick(tag)}
+            />
+            <label
+              htmlFor={tag}
+              className={
+                selectedTags.includes(tag)
+                  ? badgeVariants({ variant: "default" })
+                  : badgeVariants({ variant: "secondary" })
+              }
+            >
+              {tag}
+            </label>
+          </div>
         ))}
         <Button
           variant="secondary"
