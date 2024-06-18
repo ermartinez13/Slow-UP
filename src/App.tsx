@@ -42,6 +42,15 @@ function App() {
     const targetIdx = tags.indexOf(tag);
     const nextTags = tags.toSpliced(targetIdx, 1);
     setTags(nextTags);
+
+    const nextEntries = entries.map((entry) => {
+      if (entry.tags) {
+        const nextEntryTags = entry.tags.filter((entryTag) => entryTag !== tag);
+        return { ...entry, tags: nextEntryTags };
+      }
+      return entry;
+    });
+    setEntries(nextEntries);
   };
 
   return (
