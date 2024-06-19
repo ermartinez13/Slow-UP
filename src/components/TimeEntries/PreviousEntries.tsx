@@ -5,14 +5,22 @@ import { WorkEntry } from "../../models";
 import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "../Timer/TotalsDisplay";
 import { Button } from "../ui/button";
+import { TagsFilter } from "../TagFilter";
 
 interface Props {
   entries: WorkEntry[];
   updateEntry: (timeEntry: WorkEntry) => void;
   deleteEntry: (timeEntry: WorkEntry) => void;
+  tags: string[];
 }
 
-export function PreviousEntries({ entries, updateEntry, deleteEntry }: Props) {
+export function PreviousEntries({
+  entries,
+  updateEntry,
+  deleteEntry,
+  tags,
+}: Props) {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [dateOffset, setDateOffset] = useState(0);
 
   const { start: targetDateStart, end: targetDateEnd } =
@@ -56,6 +64,11 @@ export function PreviousEntries({ entries, updateEntry, deleteEntry }: Props) {
     day: "numeric",
   });
 
+  const filteredEntries = targetEntries.filter((entry) => {
+    if (selectedTags.length === 0) return true;
+    return selectedTags.every((tag) => entry.tags?.includes(tag));
+  });
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -79,14 +92,22 @@ export function PreviousEntries({ entries, updateEntry, deleteEntry }: Props) {
           </Button>
         </div>
       </div>
+      <div className="flex flex-wrap gap-2 mb-4">
+        <TagsFilter
+          tags={tags}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {targetEntries.map((entry) => {
+        {filteredEntries.map((entry) => {
           return (
             <TimeEntry
               entry={entry}
               key={entry.start}
               updateEntry={updateEntry}
               deleteEntry={deleteEntry}
+              tags={tags}
             />
           );
         })}

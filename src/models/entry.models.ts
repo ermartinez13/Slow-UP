@@ -3,6 +3,7 @@ export interface WorkEntry {
   end: number; // milliseconds
   description: string;
   spent: number; // milliseconds
+  tags?: string[];
 }
 
 export type PartialEntry = Pick<WorkEntry, "start" | "description">;

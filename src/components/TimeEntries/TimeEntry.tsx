@@ -2,19 +2,26 @@ import { ControlledTextArea } from "../ControlledTextArea";
 import { WorkEntry } from "../../models";
 import { getDatesToRender, getTimesToRender } from "./TimeEntries.helpers";
 import { durationToString } from "@/helpers";
+import { TagForm } from "./TagForm";
+import { Badge } from "../ui/badge";
 
 interface Props {
   entry: WorkEntry;
   updateEntry: (entry: WorkEntry) => void;
   deleteEntry: (entry: WorkEntry) => void;
+  tags: string[];
 }
 
-export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
+export function TimeEntry({ entry, updateEntry, deleteEntry, tags }: Props) {
   const timeSpentStr = durationToString(entry.spent);
   const dates = getDatesToRender(entry.start, entry.end);
   const times = getTimesToRender(entry.start, entry.end);
   const setContent = (content: string) => {
     updateEntry({ ...entry, description: content });
+  };
+  const addTag = (tag: string) => {
+    const newTags = entry.tags ? [...entry.tags, tag] : [tag];
+    updateEntry({ ...entry, tags: newTags });
   };
 
   return (
@@ -46,6 +53,17 @@ export function TimeEntry({ entry, updateEntry, deleteEntry }: Props) {
         content={entry.description}
         setContent={setContent}
         label="Notes"
+      />
+      <div className="h-6 flex flex-wrap gap-2 mb-4 mt-4">
+        {entry.tags?.map((tag) => (
+          <Badge key={tag} variant="secondary">
+            <span className="text-sm">{tag}</span>
+          </Badge>
+        ))}
+      </div>
+      <TagForm
+        tags={tags.filter((tag) => !entry.tags?.includes(tag))}
+        addTag={addTag}
       />
     </div>
   );
