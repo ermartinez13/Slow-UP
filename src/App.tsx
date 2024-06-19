@@ -55,11 +55,13 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <main className="grid gap-y-20">
+      <main className="grid gap-y-12">
         <section>
-          <TagManager tags={tags} addTag={addTag} deleteTag={deleteTag} />
           <NotificationsPermission />
           <CurrentEntry saveEntry={saveEntry} />
+        </section>
+        <section>
+          <TagManager tags={tags} addTag={addTag} deleteTag={deleteTag} />
         </section>
         <section>
           <PreviousEntries
