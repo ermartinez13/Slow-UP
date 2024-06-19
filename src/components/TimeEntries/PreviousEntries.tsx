@@ -79,7 +79,7 @@ export function PreviousEntries({
 
   const filteredEntries = targetEntries.filter((entry) => {
     if (selectedTags.length === 0) return true;
-    return selectedTags.every((tag) => entry.tags.includes(tag));
+    return selectedTags.every((tag) => entry.tags?.includes(tag));
   });
 
   return (

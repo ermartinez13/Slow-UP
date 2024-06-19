@@ -24,6 +24,7 @@ export function CurrentEntry({ saveEntry }: Props) {
       ...partialEntry,
       end: endTimestamp,
       spent: timeSpentMs,
+      tags: [],
     };
     saveEntry(entry);
     setPartialEntry({
