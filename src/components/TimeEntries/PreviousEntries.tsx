@@ -5,8 +5,6 @@ import { WorkEntry } from "../../models";
 import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "../Timer/TotalsDisplay";
 import { Button } from "../ui/button";
-import { badgeVariants } from "../ui/badge";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { TagsFilter } from "../TagFilter";
 
 interface Props {
