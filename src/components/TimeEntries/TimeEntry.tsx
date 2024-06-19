@@ -54,9 +54,9 @@ export function TimeEntry({ entry, updateEntry, deleteEntry, tags }: Props) {
         setContent={setContent}
         label="Notes"
       />
-      <div className="h-6 flex flex-wrap gap-2">
+      <div className="h-6 flex flex-wrap gap-2 mb-4 mt-4">
         {entry.tags?.map((tag) => (
-          <Badge key={tag} variant="outline">
+          <Badge key={tag} variant="secondary">
             <span className="text-sm">{tag}</span>
           </Badge>
         ))}
