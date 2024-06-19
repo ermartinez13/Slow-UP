@@ -39,6 +39,10 @@ export function millisecondsToTime(
 }
 
 export function durationToString(milliseconds: number): string {
+  if (milliseconds < 1000) {
+    return "0s";
+  }
+
   const time = millisecondsToTime(milliseconds);
   const units = [];
 
