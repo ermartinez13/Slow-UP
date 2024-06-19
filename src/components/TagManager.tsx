@@ -53,9 +53,11 @@ export function TagManager({ tags, addTag, deleteTag }: TagManagerProps) {
   };
 
   return (
-    <div className="container mx-auto max-w-[400px] text-center">
-      <NewTagForm addTag={addTag} />
-      <TagList tags={tags} deleteTag={handleDelete} />
+    <>
+      <div className="container mx-auto max-w-[400px] text-center space-y-4">
+        <NewTagForm addTag={addTag} />
+        <TagList tags={tags} deleteTag={handleDelete} />
+      </div>
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -75,6 +77,6 @@ export function TagManager({ tags, addTag, deleteTag }: TagManagerProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </>
   );
 }

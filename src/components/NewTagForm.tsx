@@ -4,7 +4,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -39,17 +38,19 @@ export function NewTagForm({ addTag }: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-row items-center justify-around"
+      >
         <FormField
           control={form.control}
           name="tag"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-row items-center space-x-4">
               <FormLabel>Tag</FormLabel>
-              <FormControl className="w-[50%] mx-auto">
+              <FormControl>
                 <Input {...field} onChange={tagInputChangeHandler} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
