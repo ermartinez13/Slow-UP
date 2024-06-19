@@ -173,4 +173,9 @@ describe(`${durationToString.name}`, () => {
     const milliseconds = 60000; // 1 minute
     expect(durationToString(milliseconds)).toBe("1min");
   });
+
+  it("formats duration with less than a second", () => {
+    const milliseconds = 0;
+    expect(durationToString(milliseconds)).toBe("0s");
+  });
 });
