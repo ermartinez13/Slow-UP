@@ -7,6 +7,7 @@ import { TotalsDisplay } from "../Timer/TotalsDisplay";
 import { Button } from "../ui/button";
 import { badgeVariants } from "../ui/badge";
 import { Checkbox } from "@radix-ui/react-checkbox";
+import { TagsFilter } from "../TagFilter";
 
 interface Props {
   entries: WorkEntry[];
@@ -65,18 +66,6 @@ export function PreviousEntries({
     day: "numeric",
   });
 
-  const handleTagClick = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter((t) => t !== tag));
-    } else {
-      setSelectedTags([...selectedTags, tag]);
-    }
-  };
-
-  const handleClearFilters = () => {
-    setSelectedTags([]);
-  };
-
   const filteredEntries = targetEntries.filter((entry) => {
     if (selectedTags.length === 0) return true;
     return selectedTags.every((tag) => entry.tags?.includes(tag));
@@ -106,32 +95,11 @@ export function PreviousEntries({
         </div>
       </div>
       <div className="flex flex-wrap gap-2 mb-4">
-        {tags.map((tag) => (
-          <div key={tag} className="flex items-center space-x-2">
-            <Checkbox
-              id={tag}
-              checked={selectedTags.includes(tag)}
-              onCheckedChange={() => handleTagClick(tag)}
-            />
-            <label
-              htmlFor={tag}
-              className={
-                selectedTags.includes(tag)
-                  ? badgeVariants({ variant: "default" })
-                  : badgeVariants({ variant: "secondary" })
-              }
-            >
-              {tag}
-            </label>
-          </div>
-        ))}
-        <Button
-          variant="secondary"
-          onClick={handleClearFilters}
-          disabled={selectedTags.length === 0}
-        >
-          Clear Filters
-        </Button>
+        <TagsFilter
+          tags={tags}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {filteredEntries.map((entry) => {
