@@ -6,6 +6,7 @@ import { ControlledTextArea } from "@/components/ControlledTextArea";
 import { notify } from "@/helpers";
 import { AddTagForm } from "@/components/AddTagForm";
 import { TagList } from "@/components/TagList";
+import { DEFAULT_PARTIAL_ENTRY } from "./Timer.constants";
 
 interface Props {
   saveEntry: (timeEntry: WorkEntry) => void;
@@ -13,11 +14,9 @@ interface Props {
 }
 
 export function CurrentEntry({ saveEntry, tags }: Props) {
-  const [partialEntry, setPartialEntry] = React.useState<PartialEntry>({
-    start: -1,
-    description: "",
-    tags: [],
-  });
+  const [partialEntry, setPartialEntry] = React.useState<PartialEntry>(
+    DEFAULT_PARTIAL_ENTRY
+  );
 
   const updateEntryStart = (startTimestamp: number) => {
     setPartialEntry((prev) => ({ ...prev, start: startTimestamp }));
@@ -30,11 +29,7 @@ export function CurrentEntry({ saveEntry, tags }: Props) {
       spent: timeSpentMs,
     };
     saveEntry(entry);
-    setPartialEntry({
-      start: -1,
-      description: "",
-      tags: [],
-    });
+    setPartialEntry(DEFAULT_PARTIAL_ENTRY);
   };
 
   const updateEntryDescription = (description: string) => {
