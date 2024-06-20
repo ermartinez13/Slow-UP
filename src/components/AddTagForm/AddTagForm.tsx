@@ -2,15 +2,21 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { FormControl, FormField, FormItem, FormLabel, Form } from "../ui/form";
-import { Button } from "../ui/button";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  Form,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 
 interface AddTagFormProps {
   tags: string[];
@@ -23,7 +29,7 @@ const tagSchema = z.object({
   }),
 });
 
-export function TagForm({ tags, addTag }: AddTagFormProps) {
+export function AddTagForm({ tags, addTag }: AddTagFormProps) {
   const form = useForm<z.infer<typeof tagSchema>>({
     resolver: zodResolver(tagSchema),
     defaultValues: {
@@ -37,11 +43,11 @@ export function TagForm({ tags, addTag }: AddTagFormProps) {
   }
 
   return (
-    <div className="w-full mt-4">
+    <div className="w-full">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full flex flex-row items-center justify-around"
+          className="w-full flex flex-row items-center justify-center gap-4"
         >
           <FormField
             control={form.control}

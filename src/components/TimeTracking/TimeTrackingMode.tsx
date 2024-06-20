@@ -2,10 +2,10 @@ import React, { Dispatch, SetStateAction } from "react";
 import { AlertCircle } from "lucide-react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Timer } from "../Timer";
-import { Stopwatch } from "../Stopwatch/Stopwatch";
+import { Timer } from "./Timer";
+import { Stopwatch } from "./Stopwatch";
 import { TrackerStatus, TrackingMode } from "@/models";
-import { Alert, AlertDescription } from "../ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { SessionDetails } from "./SessionDetails";
 
 interface Props {

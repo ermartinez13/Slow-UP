@@ -1,7 +1,7 @@
 import React from "react";
 
-import { ClockEvent, TrackingMode } from "../models";
-import { startWorker, stopWorker } from "../workers/clock.helpers";
+import { ClockEvent, TrackingMode } from "@/models";
+import { startWorker, stopWorker } from "@/workers/clock.helpers";
 
 interface Options {
   mode: TrackingMode;

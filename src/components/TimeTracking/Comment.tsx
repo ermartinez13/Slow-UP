@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PartialEntry } from "./../../models";
+import { PartialEntry } from "@/models";
 
 interface Props {
   description: string;

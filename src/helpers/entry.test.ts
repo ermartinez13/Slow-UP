@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { WorkEntry } from "../models/entry.models";
+import { WorkEntry } from "@/models/entry.models";
 import { findFirstEntryIdxByDate, getEntryIndex } from "@/helpers";
 
 describe("getEntryIndex", () => {

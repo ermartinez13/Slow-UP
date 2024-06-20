@@ -1,4 +1,4 @@
-import { ClockEvent } from "../models";
+import { ClockEvent } from "@/models";
 
 let intervalId: number | undefined;
 

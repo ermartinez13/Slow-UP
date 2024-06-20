@@ -1,4 +1,4 @@
-import { dateTimeToString } from "../../helpers";
+import { dateTimeToString } from "@/helpers";
 
 interface Props {
   startTimestamp: number;

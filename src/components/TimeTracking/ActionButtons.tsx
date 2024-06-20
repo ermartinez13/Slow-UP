@@ -1,4 +1,4 @@
-import { TrackerStatus } from "../../models";
+import { TrackerStatus } from "@/models";
 import { Button } from "@/components/ui/button";
 
 interface Props {
