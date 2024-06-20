@@ -1,9 +1,9 @@
 import React from "react";
 
-import { DEFAULT_TIME } from "../Timer/Timer.constants";
-import { useTimeTracking } from "../../hooks/use-time-tracking";
-import { ActionButtons } from "../Timer/ActionButtons";
-import { TrackingMode, TrackerStatus } from "../../models";
+import { DEFAULT_TIME } from "./Timer.constants";
+import { useTimeTracking } from "@/hooks/use-time-tracking";
+import { ActionButtons } from "./ActionButtons";
+import { TrackingMode, TrackerStatus } from "@/models";
 import { TimeTrackingMode } from "./TimeTrackingMode";
 
 interface Props {

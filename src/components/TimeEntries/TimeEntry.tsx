@@ -1,9 +1,9 @@
-import { ControlledTextArea } from "../ControlledTextArea";
-import { WorkEntry } from "../../models";
+import { ControlledTextArea } from "@/components/ControlledTextArea/ControlledTextArea";
+import { WorkEntry } from "@/models";
 import { getDatesToRender, getTimesToRender } from "./TimeEntries.helpers";
 import { durationToString } from "@/helpers";
-import { TagForm } from "./TagForm";
-import { Badge } from "../ui/badge";
+import { AddTagForm } from "@/components/AddTagForm";
+import { TagList } from "../TagList";
 
 interface Props {
   entry: WorkEntry;
@@ -21,6 +21,11 @@ export function TimeEntry({ entry, updateEntry, deleteEntry, tags }: Props) {
   };
   const addTag = (tag: string) => {
     const newTags = entry.tags ? [...entry.tags, tag] : [tag];
+    updateEntry({ ...entry, tags: newTags });
+  };
+
+  const removeTag = (tag: string) => {
+    const newTags = entry.tags?.filter((t) => t !== tag) || [];
     updateEntry({ ...entry, tags: newTags });
   };
 
@@ -54,14 +59,10 @@ export function TimeEntry({ entry, updateEntry, deleteEntry, tags }: Props) {
         setContent={setContent}
         label="Notes"
       />
-      <div className="h-6 flex flex-wrap gap-2 mb-4 mt-4">
-        {entry.tags?.map((tag) => (
-          <Badge key={tag} variant="secondary">
-            <span className="text-sm">{tag}</span>
-          </Badge>
-        ))}
+      <div className="my-4">
+        <TagList tags={entry.tags ?? []} onDelete={removeTag} />
       </div>
-      <TagForm
+      <AddTagForm
         tags={tags.filter((tag) => !entry.tags?.includes(tag))}
         addTag={addTag}
       />

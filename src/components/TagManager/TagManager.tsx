@@ -1,6 +1,8 @@
+import React from "react";
+import { z } from "zod";
+
 import { NewTagForm } from "./NewTagForm";
 import { TagList } from "./TagList";
-import { z } from "zod";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,7 +13,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import React from "react";
 
 export const tagSchema = z.object({
   tag: z.string().min(1, {

@@ -6,4 +6,5 @@ export interface WorkEntry {
   tags?: string[];
 }
 
-export type PartialEntry = Pick<WorkEntry, "start" | "description">;
+export type PartialEntry = Pick<WorkEntry, "start" | "description"> &
+  Required<Pick<WorkEntry, "tags">>;

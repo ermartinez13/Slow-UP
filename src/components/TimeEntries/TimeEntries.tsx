@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import { getDayBoundaries, findFirstEntryIdxByDate } from "../../helpers";
-import { WorkEntry } from "../../models";
+import { getDayBoundaries, findFirstEntryIdxByDate } from "@/helpers";
+import { WorkEntry } from "@/models";
 import { TimeEntry } from "./TimeEntry";
-import { TotalsDisplay } from "../Timer/TotalsDisplay";
-import { Button } from "../ui/button";
-import { TagsFilter } from "../TagFilter";
+import { TotalsDisplay } from "@/components/TimeTracking/TotalsDisplay";
+import { Button } from "@/components/ui/button";
+import { TagsFilter } from "./TagFilter";
 
 interface Props {
   entries: WorkEntry[];
@@ -14,7 +14,7 @@ interface Props {
   tags: string[];
 }
 
-export function PreviousEntries({
+export function TimeEntries({
   entries,
   updateEntry,
   deleteEntry,
@@ -37,10 +37,6 @@ export function PreviousEntries({
   const targetEntries = entries
     .slice(firstEntryIdxForTargetDate, firstEntryIdxForNextDay)
     .reverse();
-  const millisecondsSpentOnTargetDate = targetEntries.reduce(
-    (acc, entry) => acc + entry.spent,
-    0
-  );
 
   const handlePreviousDay = () => {
     setDateOffset(dateOffset + 1);
@@ -68,6 +64,11 @@ export function PreviousEntries({
     if (selectedTags.length === 0) return true;
     return selectedTags.every((tag) => entry.tags?.includes(tag));
   });
+
+  const millisecondsSpentOnTargetDate = filteredEntries.reduce(
+    (acc, entry) => acc + entry.spent,
+    0
+  );
 
   return (
     <div>

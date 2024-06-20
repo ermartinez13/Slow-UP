@@ -1,6 +1,6 @@
-import { dateTimeToString, durationToString } from "../../helpers";
-import { TrackerStatus, TrackingMode } from "../../models";
-import { StartTime } from "../StartTime";
+import { dateTimeToString, durationToString } from "@/helpers";
+import { TrackerStatus, TrackingMode } from "@/models";
+import { StartTime } from "./StartTime";
 
 interface Props {
   millisecondsLeft: number;
