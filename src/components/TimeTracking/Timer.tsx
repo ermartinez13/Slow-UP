@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import { TrackerStatus } from "../../models";
+import { TrackerStatus } from "@/models";
 import { TimeDisplay } from "./TimeDisplay";
 
 interface Props {

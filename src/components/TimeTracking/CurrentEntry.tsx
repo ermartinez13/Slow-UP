@@ -1,19 +1,22 @@
 import React from "react";
 
-import { PartialEntry, WorkEntry } from "../../models";
-import { TimeTracker } from "../TimeTracker";
-import { ControlledTextArea } from "../ControlledTextArea";
-import { notify } from "../../helpers";
+import { PartialEntry, WorkEntry } from "@/models";
+import { TimeTracker } from "./TimeTracker";
+import { ControlledTextArea } from "@/components/ControlledTextArea";
+import { notify } from "@/helpers";
+import { AddTagForm } from "@/components/AddTagForm";
+import { TagList } from "@/components/TagList";
+import { DEFAULT_PARTIAL_ENTRY } from "./Timer.constants";
 
 interface Props {
   saveEntry: (timeEntry: WorkEntry) => void;
+  tags: string[];
 }
 
-export function CurrentEntry({ saveEntry }: Props) {
-  const [partialEntry, setPartialEntry] = React.useState<PartialEntry>({
-    start: -1,
-    description: "",
-  });
+export function CurrentEntry({ saveEntry, tags }: Props) {
+  const [partialEntry, setPartialEntry] = React.useState<PartialEntry>(
+    DEFAULT_PARTIAL_ENTRY
+  );
 
   const updateEntryStart = (startTimestamp: number) => {
     setPartialEntry((prev) => ({ ...prev, start: startTimestamp }));
@@ -24,19 +27,29 @@ export function CurrentEntry({ saveEntry }: Props) {
       ...partialEntry,
       end: endTimestamp,
       spent: timeSpentMs,
-      tags: [],
     };
     saveEntry(entry);
-    setPartialEntry({
-      start: -1,
-      description: "",
-    });
+    setPartialEntry(DEFAULT_PARTIAL_ENTRY);
   };
 
   const updateEntryDescription = (description: string) => {
     setPartialEntry((prev) => ({
       ...prev,
       description,
+    }));
+  };
+
+  const addTag = (tag: string) => {
+    setPartialEntry((prev) => ({
+      ...prev,
+      tags: [...prev.tags, tag],
+    }));
+  };
+
+  const removeTag = (tag: string) => {
+    setPartialEntry((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((t) => t !== tag),
     }));
   };
 
@@ -65,12 +78,19 @@ export function CurrentEntry({ saveEntry }: Props) {
         onEnd={handleEnd}
         startTimestamp={partialEntry.start}
       />
-      <ControlledTextArea
-        content={partialEntry.description}
-        setContent={updateEntryDescription}
-        key={partialEntry.description}
-        label="Notes"
-      />
+      <div className="flex flex-col items-center gap-4">
+        <ControlledTextArea
+          content={partialEntry.description}
+          setContent={updateEntryDescription}
+          key={partialEntry.description}
+          label="Notes"
+        />
+        <TagList tags={partialEntry.tags} onDelete={removeTag} />
+        <AddTagForm
+          tags={tags.filter((tag) => !partialEntry.tags.includes(tag))}
+          addTag={addTag}
+        />
+      </div>
     </div>
   );
 }

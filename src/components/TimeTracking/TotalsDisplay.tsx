@@ -1,4 +1,4 @@
-import { millisecondsToTime } from "../../helpers";
+import { millisecondsToTime } from "@/helpers";
 
 export function TotalsDisplay({
   totalMilliseconds,

@@ -1,4 +1,4 @@
-import type { FormatOptions, Time } from "@/models/time.models";
+import type { TimeFormattingOptions, Time } from "@/models";
 
 export function millisecondsToTime(
   milliseconds: number,
@@ -63,7 +63,7 @@ export function durationToString(milliseconds: number): string {
 
 export function dateTimeToString(
   milliseconds: number,
-  options: FormatOptions
+  options: TimeFormattingOptions
 ): string {
   const date = new Date(milliseconds);
 
@@ -77,7 +77,7 @@ export function dateTimeToString(
   return timeToString(time, options);
 }
 
-function timeToString(time: Time, options?: FormatOptions): string {
+function timeToString(time: Time, options?: TimeFormattingOptions): string {
   const {
     showSeconds = true,
     padHours = false,

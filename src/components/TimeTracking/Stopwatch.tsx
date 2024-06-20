@@ -1,4 +1,4 @@
-import { millisecondsToTime } from "../../helpers";
+import { millisecondsToTime } from "@/helpers";
 
 interface Props {
   timeSpentMs: number;

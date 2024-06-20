@@ -1,5 +1,5 @@
-import { useNotifications } from "../../hooks/use-notifications";
-import { Button } from "../ui/button";
+import { useNotifications } from "@/hooks/use-notifications";
+import { Button } from "@/components/ui/button";
 
 export function NotificationsPermission() {
   const [permissionState, requestPermission] = useNotifications();

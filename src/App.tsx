@@ -1,13 +1,12 @@
-import { NotificationsPermission } from "./components/NotificationsPermission";
-import { PreviousEntries } from "./components/TimeEntries";
-import { getEntryIndex } from "./helpers";
-import { WorkEntry } from "./models";
-import { useLocalStorage } from "./hooks/use-local-storage";
-import { CurrentEntry } from "./components/CurrentEntry";
+import { NotificationsPermission } from "@/components/NotificationsPermission";
+import { TimeEntries } from "@/components/TimeEntries";
+import { getEntryIndex } from "@/helpers";
+import { WorkEntry } from "@/models";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { CurrentEntry } from "@/components/TimeTracking";
 import { ThemeProvider } from "@/components/Theme";
-import { TagManager } from "./components/TagManager";
-
-const INITIAL_ENTRIES: WorkEntry[] = [];
+import { TagManager } from "@/components/TagManager";
+import { INITIAL_ENTRIES } from "./constants";
 
 function App() {
   const [entries, setEntries] = useLocalStorage<WorkEntry[]>(
@@ -58,13 +57,13 @@ function App() {
       <main className="grid gap-y-12">
         <section>
           <NotificationsPermission />
-          <CurrentEntry saveEntry={saveEntry} />
+          <CurrentEntry saveEntry={saveEntry} tags={tags} />
         </section>
         <section>
           <TagManager tags={tags} addTag={addTag} deleteTag={deleteTag} />
         </section>
         <section>
-          <PreviousEntries
+          <TimeEntries
             entries={entries}
             updateEntry={updateEntry}
             deleteEntry={deleteEntry}

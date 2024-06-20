@@ -5,7 +5,7 @@ export interface Time {
   tenthsOfASecond: number;
 }
 
-export interface FormatOptions {
+export interface TimeFormattingOptions {
   showSeconds?: boolean;
   padHours?: boolean;
   showTenthsOfASecond?: boolean;
