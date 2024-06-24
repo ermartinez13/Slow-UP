@@ -11,12 +11,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import React from "react";
+import React, { SetStateAction } from "react";
 
 interface Props {
   tags: string[];
   selectedTags: string[];
-  setSelectedTags: (tags: string[]) => void;
+  setSelectedTags: React.Dispatch<SetStateAction<string[]>>;
 }
 
 // export function TagsFilter({
@@ -76,10 +76,21 @@ export function TagsFilter({ tags, selectedTags, setSelectedTags }: Props) {
               </Select>
             </div>
             {tags.map((tag) => (
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms2" disabled />
+              <div key={tag} className="flex items-center space-x-2">
+                <Checkbox
+                  id={tag}
+                  checked={selectedTags.includes(tag)}
+                  value={tag}
+                  onCheckedChange={(checkedState) => {
+                    if (checkedState === true) {
+                      setSelectedTags((prev) => prev.concat(tag));
+                    } else {
+                      setSelectedTags((prev) => prev.filter((t) => t !== tag));
+                    }
+                  }}
+                />
                 <label
-                  htmlFor="terms2"
+                  htmlFor={tag}
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   {tag}
