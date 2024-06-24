@@ -6,6 +6,7 @@ import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "@/components/TimeTracking/TotalsDisplay";
 import { Button } from "@/components/ui/button";
 import { TagsFilter } from "./TagFilter";
+import React from "react";
 
 interface Props {
   entries: WorkEntry[];
@@ -20,8 +21,9 @@ export function TimeEntries({
   deleteEntry,
   tags,
 }: Props) {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [dateOffset, setDateOffset] = useState(0);
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const [dateOffset, setDateOffset] = React.useState(0);
+  const [filterMode, setFilterMode] = React.useState<FilterMode>(FilterMode.OR);
 
   const { start: targetDateStart, end: targetDateEnd } =
     getDayBoundaries(dateOffset);
@@ -62,13 +64,28 @@ export function TimeEntries({
 
   const filteredEntries = targetEntries.filter((entry) => {
     if (selectedTags.length === 0) return true;
-    return selectedTags.every((tag) => entry.tags?.includes(tag));
+    switch (filterMode) {
+      case FilterMode.OR:
+        return selectedTags.some((selectedTag) =>
+          entry.tags?.includes(selectedTag)
+        );
+      case FilterMode.AND:
+        return selectedTags.every((tag) => entry.tags?.includes(tag));
+      default:
+        return true;
+    }
   });
 
   const millisecondsSpentOnTargetDate = filteredEntries.reduce(
     (acc, entry) => acc + entry.spent,
     0
   );
+
+  const handleFilterChange = (value: string) => {
+    if (isFilterMode(value)) {
+      setFilterMode(value);
+    }
+  };
 
   return (
     <div>
@@ -98,6 +115,8 @@ export function TimeEntries({
           tags={tags}
           selectedTags={selectedTags}
           setSelectedTags={setSelectedTags}
+          filterMode={filterMode}
+          handleFilterChange={handleFilterChange}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -115,4 +134,13 @@ export function TimeEntries({
       </div>
     </div>
   );
+}
+
+export enum FilterMode {
+  AND = "AND",
+  OR = "OR",
+}
+
+function isFilterMode(value: string): value is FilterMode {
+  return Object.values(FilterMode).some((mode) => mode === value);
 }

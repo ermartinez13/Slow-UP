@@ -12,11 +12,14 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import React, { SetStateAction } from "react";
+import { FilterMode } from "./TimeEntries";
 
 interface Props {
   tags: string[];
   selectedTags: string[];
   setSelectedTags: React.Dispatch<SetStateAction<string[]>>;
+  filterMode: FilterMode;
+  handleFilterChange: (value: string) => void;
 }
 
 // export function TagsFilter({
@@ -39,20 +42,13 @@ interface Props {
 //   );
 // }
 
-enum FilterMode {
-  AND = "AND",
-  OR = "OR",
-}
-
-export function TagsFilter({ tags, selectedTags, setSelectedTags }: Props) {
-  const [filterMode, setFilterMode] = React.useState<FilterMode>(FilterMode.OR);
-
-  const handleFilterChange = (value: string) => {
-    if (isFilterMode(value)) {
-      setFilterMode(value);
-    }
-  };
-
+export function TagsFilter({
+  tags,
+  selectedTags,
+  setSelectedTags,
+  filterMode,
+  handleFilterChange,
+}: Props) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -102,8 +98,4 @@ export function TagsFilter({ tags, selectedTags, setSelectedTags }: Props) {
       </PopoverContent>
     </Popover>
   );
-}
-
-function isFilterMode(value: string): value is FilterMode {
-  return Object.values(FilterMode).some((mode) => mode === value);
 }
