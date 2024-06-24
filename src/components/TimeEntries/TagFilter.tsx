@@ -1,4 +1,5 @@
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import React, { SetStateAction } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
@@ -11,8 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import React, { SetStateAction } from "react";
-import { FilterMode } from "./TimeEntries";
+import { FilterMode } from "./TimeEntries.constants";
 
 interface Props {
   tags: string[];
@@ -21,26 +21,6 @@ interface Props {
   filterMode: FilterMode;
   handleFilterChange: (value: string) => void;
 }
-
-// export function TagsFilter({
-//   tags,
-//   selectedTags,
-//   setSelectedTags,
-// }: TagsFilterProps) {
-//   return (
-//     <ToggleGroup
-//       type="multiple"
-//       value={selectedTags}
-//       onValueChange={(value) => setSelectedTags(value)}
-//     >
-//       {tags.map((tag) => (
-//         <ToggleGroupItem key={tag} value={tag}>
-//           {tag}
-//         </ToggleGroupItem>
-//       ))}
-//     </ToggleGroup>
-//   );
-// }
 
 export function TagsFilter({
   tags,

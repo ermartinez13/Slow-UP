@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 
 import { getDayBoundaries, findFirstEntryIdxByDate } from "@/helpers";
 import { WorkEntry } from "@/models";
@@ -6,7 +6,8 @@ import { TimeEntry } from "./TimeEntry";
 import { TotalsDisplay } from "@/components/TimeTracking/TotalsDisplay";
 import { Button } from "@/components/ui/button";
 import { TagsFilter } from "./TagFilter";
-import React from "react";
+import { FilterMode } from "./TimeEntries.constants";
+import { isFilterMode } from "./TimeEntries.helpers";
 
 interface Props {
   entries: WorkEntry[];
@@ -134,13 +135,4 @@ export function TimeEntries({
       </div>
     </div>
   );
-}
-
-export enum FilterMode {
-  AND = "AND",
-  OR = "OR",
-}
-
-function isFilterMode(value: string): value is FilterMode {
-  return Object.values(FilterMode).some((mode) => mode === value);
 }

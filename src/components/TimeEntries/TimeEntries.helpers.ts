@@ -1,3 +1,5 @@
+import { FilterMode } from "./TimeEntries.constants";
+
 export function getFormattedDate(timestamp: number) {
   const date = new Date(timestamp);
   const month = (date.getMonth() + 1).toString();
@@ -26,4 +28,8 @@ export function getTimesToRender(startTimestamp: number, endTimestamp: number) {
   const timeEnd = getFormattedTime(endTimestamp);
   const isSameTime = timeStart === timeEnd;
   return `${timeStart}${isSameTime ? "" : ` - ${timeEnd}`}`;
+}
+
+export function isFilterMode(value: string): value is FilterMode {
+  return Object.values(FilterMode).some((mode) => mode === value);
 }
