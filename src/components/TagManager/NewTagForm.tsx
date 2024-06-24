@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+
 import {
   Form,
   FormControl,
@@ -7,14 +10,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { tagSchema } from "./TagManager";
 
 interface Props {
   addTag: (tag: string) => void;
 }
+
+const tagSchema = z.object({
+  tag: z.string().min(1, {
+    message: "Tag is required.",
+  }),
+});
 
 export function NewTagForm({ addTag }: Props) {
   const form = useForm<z.infer<typeof tagSchema>>({
