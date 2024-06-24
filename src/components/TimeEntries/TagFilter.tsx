@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import React from "react";
 
 interface Props {
   tags: string[];
@@ -38,29 +39,39 @@ interface Props {
 //   );
 // }
 
+enum FilterMode {
+  AND = "AND",
+  OR = "OR",
+}
+
 export function TagsFilter({ tags, selectedTags, setSelectedTags }: Props) {
+  const [filterMode, setFilterMode] = React.useState<FilterMode>(FilterMode.OR);
+
+  const handleFilterChange = (value: string) => {
+    if (isFilterMode(value)) {
+      setFilterMode(value);
+    }
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          onClick={() => console.log("clicked add filter button")}
-        >
-          + Add Filter
-        </Button>
+        <Button variant="ghost">+ Add Filter</Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="type">Filter Type</Label>
-              <Select defaultValue="OR">
-                <SelectTrigger id="type" className="w-[180px]">
+              <Select value={filterMode} onValueChange={handleFilterChange}>
+                <SelectTrigger id="type" className="w-[120px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="AND">AND</SelectItem>
-                  <SelectItem value="OR">OR</SelectItem>
+                  <SelectItem value={FilterMode.AND}>
+                    {FilterMode.AND}
+                  </SelectItem>
+                  <SelectItem value={FilterMode.OR}>{FilterMode.OR}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -80,4 +91,8 @@ export function TagsFilter({ tags, selectedTags, setSelectedTags }: Props) {
       </PopoverContent>
     </Popover>
   );
+}
+
+function isFilterMode(value: string): value is FilterMode {
+  return Object.values(FilterMode).some((mode) => mode === value);
 }
