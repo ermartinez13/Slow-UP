@@ -1,5 +1,3 @@
-import React, { SetStateAction } from "react";
-
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
@@ -13,69 +11,104 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FilterMode } from "./TimeEntries.constants";
+import { FilterLayer } from "./TimeEntries.models";
 
 interface Props {
   tags: string[];
-  selectedTags: string[];
-  setSelectedTags: React.Dispatch<SetStateAction<string[]>>;
-  filterMode: FilterMode;
-  handleFilterChange: (value: string) => void;
+  filterLayers: FilterLayer[];
+  setFilterLayers: (layers: FilterLayer[]) => void;
 }
 
-export function TagsFilter({
-  tags,
-  selectedTags,
-  setSelectedTags,
-  filterMode,
-  handleFilterChange,
-}: Props) {
+export function TagsFilter({ tags, filterLayers, setFilterLayers }: Props) {
+  const addFilterLayer = () => {
+    setFilterLayers([
+      ...filterLayers,
+      { selectedTags: [], filterMode: FilterMode.OR },
+    ]);
+  };
+
+  const removeFilterLayer = (index: number) => {
+    setFilterLayers(filterLayers.filter((_, i) => i !== index));
+  };
+
+  const updateFilterLayer = (index: number, layer: FilterLayer) => {
+    const newLayers = [...filterLayers];
+    newLayers[index] = layer;
+    setFilterLayers(newLayers);
+  };
+
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost">+ Add Filter</Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="type">Filter Type</Label>
-              <Select value={filterMode} onValueChange={handleFilterChange}>
-                <SelectTrigger id="type" className="w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value={FilterMode.AND}>
-                    {FilterMode.AND}
-                  </SelectItem>
-                  <SelectItem value={FilterMode.OR}>{FilterMode.OR}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            {tags.map((tag) => (
-              <div key={tag} className="flex items-center space-x-2">
-                <Checkbox
-                  id={tag}
-                  checked={selectedTags.includes(tag)}
-                  value={tag}
-                  onCheckedChange={(checkedState) => {
-                    if (checkedState === true) {
-                      setSelectedTags((prev) => prev.concat(tag));
-                    } else {
-                      setSelectedTags((prev) => prev.filter((t) => t !== tag));
+    <div className="flex flex-row gap-4 px-12">
+      <Button onClick={addFilterLayer}>Add Filter Layer</Button>
+      {filterLayers.map((layer, index) => (
+        <Popover key={index}>
+          <PopoverTrigger asChild>
+            <Button variant="secondary">Filter {index + 1}</Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80">
+            <div className="grid gap-4">
+              <div className="grid gap-4">
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <Label htmlFor={`type-${index}`}>Filter Type</Label>
+                  <Select
+                    value={layer.filterMode}
+                    onValueChange={(value) =>
+                      updateFilterLayer(index, {
+                        ...layer,
+                        filterMode: value as FilterMode,
+                      })
                     }
-                  }}
-                />
-                <label
-                  htmlFor={tag}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    <SelectTrigger id={`type-${index}`} className="w-[120px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={FilterMode.AND}>
+                        {FilterMode.AND}
+                      </SelectItem>
+                      <SelectItem value={FilterMode.OR}>
+                        {FilterMode.OR}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col gap-y-2">
+                  {tags.map((tag) => (
+                    <div key={tag} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`${tag}-${index}`}
+                        checked={layer.selectedTags.includes(tag)}
+                        value={tag}
+                        onCheckedChange={(checkedState) => {
+                          const newSelectedTags = checkedState
+                            ? layer.selectedTags.concat(tag)
+                            : layer.selectedTags.filter((t) => t !== tag);
+                          updateFilterLayer(index, {
+                            ...layer,
+                            selectedTags: newSelectedTags,
+                          });
+                        }}
+                      />
+                      <label
+                        htmlFor={`${tag}-${index}`}
+                        className="text-sm font-medium leading-none"
+                      >
+                        {tag}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                <Button
+                  variant="secondary"
+                  onClick={() => removeFilterLayer(index)}
                 >
-                  {tag}
-                </label>
+                  Remove Layer
+                </Button>
               </div>
-            ))}
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
+            </div>
+          </PopoverContent>
+        </Popover>
+      ))}
+    </div>
   );
 }

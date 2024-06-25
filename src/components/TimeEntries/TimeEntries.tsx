@@ -7,7 +7,7 @@ import { TotalsDisplay } from "@/components/TimeTracking/TotalsDisplay";
 import { Button } from "@/components/ui/button";
 import { TagsFilter } from "./TagFilter";
 import { FilterMode } from "./TimeEntries.constants";
-import { isFilterMode } from "./TimeEntries.helpers";
+import { FilterLayer } from "./TimeEntries.models";
 
 interface Props {
   entries: WorkEntry[];
@@ -22,9 +22,8 @@ export function TimeEntries({
   deleteEntry,
   tags,
 }: Props) {
-  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const [filterLayers, setFilterLayers] = React.useState<FilterLayer[]>([]);
   const [dateOffset, setDateOffset] = React.useState(0);
-  const [filterMode, setFilterMode] = React.useState<FilterMode>(FilterMode.OR);
 
   const { start: targetDateStart, end: targetDateEnd } =
     getDayBoundaries(dateOffset);
@@ -63,30 +62,28 @@ export function TimeEntries({
     day: "numeric",
   });
 
-  const filteredEntries = targetEntries.filter((entry) => {
-    if (selectedTags.length === 0) return true;
-    switch (filterMode) {
-      case FilterMode.OR:
-        return selectedTags.some((selectedTag) =>
-          entry.tags?.includes(selectedTag)
-        );
-      case FilterMode.AND:
-        return selectedTags.every((tag) => entry.tags?.includes(tag));
-      default:
-        return true;
-    }
-  });
+  const filteredEntries = filterLayers.reduce((prevFilteredEntries, layer) => {
+    if (layer.selectedTags.length === 0) return prevFilteredEntries;
+
+    // apply the current filter layer
+    return prevFilteredEntries.filter((entry) => {
+      switch (layer.filterMode) {
+        case FilterMode.OR:
+          return layer.selectedTags.some((selectedTag) =>
+            entry.tags?.includes(selectedTag)
+          );
+        case FilterMode.AND:
+          return layer.selectedTags.every((tag) => entry.tags?.includes(tag));
+        default:
+          return true;
+      }
+    });
+  }, targetEntries); // initial value is the full list of entries
 
   const millisecondsSpentOnTargetDate = filteredEntries.reduce(
     (acc, entry) => acc + entry.spent,
     0
   );
-
-  const handleFilterChange = (value: string) => {
-    if (isFilterMode(value)) {
-      setFilterMode(value);
-    }
-  };
 
   return (
     <div>
@@ -114,10 +111,8 @@ export function TimeEntries({
       <div className="flex flex-wrap gap-2 mb-4">
         <TagsFilter
           tags={tags}
-          selectedTags={selectedTags}
-          setSelectedTags={setSelectedTags}
-          filterMode={filterMode}
-          handleFilterChange={handleFilterChange}
+          filterLayers={filterLayers}
+          setFilterLayers={setFilterLayers}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
