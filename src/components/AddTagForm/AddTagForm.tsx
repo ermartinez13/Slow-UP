@@ -9,7 +9,6 @@ import {
   FormLabel,
   Form,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -45,10 +44,7 @@ export function AddTagForm({ tags, addTag }: AddTagFormProps) {
   return (
     <div className="w-full">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full flex flex-row items-center justify-center gap-4"
-        >
+        <form className="w-full flex flex-row items-center justify-center gap-4">
           <FormField
             control={form.control}
             name="tag"
@@ -57,7 +53,10 @@ export function AddTagForm({ tags, addTag }: AddTagFormProps) {
                 <FormLabel>Tag</FormLabel>
                 <FormControl>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      form.handleSubmit(onSubmit)(); // Submit the form upon valid selection
+                    }}
                     value={form.watch("tag")}
                     disabled={tags.length === 0}
                   >
@@ -76,9 +75,6 @@ export function AddTagForm({ tags, addTag }: AddTagFormProps) {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={tags.length === 0}>
-            Add Tag
-          </Button>
         </form>
       </Form>
     </div>
