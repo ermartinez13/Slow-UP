@@ -5,6 +5,7 @@ import { useTimeTracking } from "@/hooks/use-time-tracking";
 import { ActionButtons } from "./ActionButtons";
 import { TrackingMode, TrackerStatus } from "@/models";
 import { TimeTrackingMode } from "./TimeTrackingMode";
+import { millisecondsToTime } from "@/helpers";
 
 interface Props {
   onStart: (startTimestamp: number) => void;
@@ -15,6 +16,12 @@ interface Props {
 export function TimeTracker({ onStart, onEnd, startTimestamp }: Props) {
   const [mode, setMode] = React.useState<TrackingMode>(TrackingMode.TIMER);
   const [timeBudget, setTimeBudget] = React.useState(DEFAULT_TIME);
+  const onEndTitleDecorator = (fn: typeof onEnd) => {
+    return (...args: Parameters<typeof onEnd>) => {
+      document.title = "Slow Up";
+      return fn(...args);
+    };
+  };
   const {
     ticks: timeSpent,
     isRunning,
@@ -23,9 +30,30 @@ export function TimeTracker({ onStart, onEnd, startTimestamp }: Props) {
     reset,
   } = useTimeTracking({
     mode,
-    onTimerExpiration: onEnd,
+    onTimerExpiration: onEndTitleDecorator(onEnd),
     timeBudgetMs: timeBudget,
   });
+
+  React.useEffect(() => {
+    if (isRunning) {
+      const timeRemainingOrElapsed =
+        mode === TrackingMode.TIMER
+          ? Math.max(timeBudget - timeSpent, 0)
+          : timeSpent;
+
+      const { hours, minutes, seconds } = millisecondsToTime(
+        timeRemainingOrElapsed
+      );
+      const timeString = `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+      document.title =
+        mode === TrackingMode.TIMER
+          ? `Timer - ${timeString}`
+          : `Watch - ${timeString}`;
+    }
+  }, [timeSpent, isRunning, mode, timeBudget]);
 
   const trackerStatus = isRunning
     ? TrackerStatus.ON
@@ -44,6 +72,7 @@ export function TimeTracker({ onStart, onEnd, startTimestamp }: Props) {
   };
 
   const handleStop = () => {
+    document.title = "Slow Up";
     onEnd(Date.now(), timeSpent);
     reset();
   };
